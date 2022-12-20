@@ -1,0 +1,9 @@
+{
+  "fullName": "Full Name",
+  "phoneNumber":"Phone Number",
+  "email":"Email",
+"passportImage":"Passport image",
+"checkInDate":"Check In Date",
+"checkOutDate":"Check Out Date",
+"welcomeIn":"Welcome in"
+}

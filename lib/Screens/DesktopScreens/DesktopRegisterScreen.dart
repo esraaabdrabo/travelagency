@@ -3,6 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travelagency/Helper/Colors.dart';
+import 'package:travelagency/Helper/constants.dart';
+import 'package:travelagency/Helper/my_theme.dart';
 import 'package:travelagency/Screens/TabletScreen/TabletHotelScreen.dart';
 import 'package:travelagency/Responsive/responsive_layout.dart';
 import 'package:travelagency/Controller/UserInfoConroller.dart';
@@ -21,11 +23,10 @@ class DesktopRegisterScreen extends StatelessWidget {
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
             image: DecorationImage(
-          colorFilter: ColorFilter.linearToSrgbGamma(),
-          image: NetworkImage(
-              'https://images.unsplash.com/photo-1532364158125-02d75a0f7fb9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80'),
+          colorFilter: const ColorFilter.linearToSrgbGamma(),
+          image: NetworkImage(Constants.splashImg),
           fit: BoxFit.cover,
         )),
         child: Container(
@@ -65,25 +66,13 @@ class DesktopRegisterScreen extends StatelessWidget {
                       child: TextFormField(
                         onChanged: (String keySearch) {},
                         style: const TextStyle(fontSize: 16.0),
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: AppColors.offWhiteColor,
-                          focusColor: AppColors.whiteColor,
-                          prefixIcon: const Icon(
+                        decoration: MyThemeData.inputDhintPre(
+                          icon: const Icon(
                             Icons.person,
                             color: Colors.grey,
                             size: 20,
                           ),
-                          enabled: true,
-                          enabledBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: AppColors.grayColor),
-                          ),
-                          focusedBorder: const UnderlineInputBorder(
-                            borderSide:
-                                BorderSide(color: AppColors.pomegranateColor),
-                          ),
-                          hintText: "Full Name",
-                          hintStyle: GoogleFonts.lato(),
+                          label: "Full Name",
                         ),
                       ),
                     ),
@@ -96,25 +85,13 @@ class DesktopRegisterScreen extends StatelessWidget {
                       child: TextFormField(
                         onChanged: (String keySearch) {},
                         style: const TextStyle(fontSize: 16.0),
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: AppColors.offWhiteColor,
-                          focusColor: AppColors.whiteColor,
-                          prefixIcon: const Icon(
+                        decoration: MyThemeData.inputDhintPre(
+                          icon: const Icon(
                             Icons.email,
                             color: Colors.grey,
                             size: 20,
                           ),
-                          enabled: true,
-                          enabledBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: AppColors.grayColor),
-                          ),
-                          focusedBorder: const UnderlineInputBorder(
-                            borderSide:
-                                BorderSide(color: AppColors.pomegranateColor),
-                          ),
-                          hintText: "Email",
-                          hintStyle: GoogleFonts.lato(),
+                          label: "Email",
                         ),
                       ),
                     ),
@@ -127,26 +104,13 @@ class DesktopRegisterScreen extends StatelessWidget {
                       child: TextFormField(
                         onChanged: (String keySearch) {},
                         style: const TextStyle(fontSize: 16.0),
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: AppColors.offWhiteColor,
-                          focusColor: AppColors.whiteColor,
-                          prefixIcon: const Icon(
-                            Icons.phone,
-                            color: Colors.grey,
-                            size: 20,
-                          ),
-                          enabled: true,
-                          enabledBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: AppColors.grayColor),
-                          ),
-                          focusedBorder: const UnderlineInputBorder(
-                            borderSide:
-                                BorderSide(color: AppColors.pomegranateColor),
-                          ),
-                          hintText: "Phone Number",
-                          hintStyle: GoogleFonts.lato(),
-                        ),
+                        decoration: MyThemeData.inputDhintPre(
+                            icon: const Icon(
+                              Icons.phone,
+                              color: Colors.grey,
+                              size: 20,
+                            ),
+                            label: "Phone Number"),
                       ),
                     ),
                   ),
@@ -185,30 +149,16 @@ class DesktopRegisterScreen extends StatelessWidget {
                       width: 280,
                       height: 40,
                       child: TextFormField(
-                        obscureText: true,
-                        onChanged: (String keySearch) {},
-                        style: const TextStyle(fontSize: 16.0),
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: AppColors.offWhiteColor,
-                          focusColor: AppColors.whiteColor,
-                          prefixIcon: const Icon(
-                            Icons.lock,
-                            color: Colors.grey,
-                            size: 20,
-                          ),
-                          enabled: true,
-                          enabledBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: AppColors.grayColor),
-                          ),
-                          focusedBorder: const UnderlineInputBorder(
-                            borderSide:
-                                BorderSide(color: AppColors.pomegranateColor),
-                          ),
-                          hintText: "Password",
-                          hintStyle: GoogleFonts.lato(),
-                        ),
-                      ),
+                          obscureText: true,
+                          onChanged: (String keySearch) {},
+                          style: const TextStyle(fontSize: 16.0),
+                          decoration: MyThemeData.inputDhintPre(
+                              icon: const Icon(
+                                Icons.lock,
+                                color: Colors.grey,
+                                size: 20,
+                              ),
+                              label: "Password")),
                     ),
                   ),
                   const SizedBox(height: 30),

@@ -26,7 +26,7 @@ class _DesktopVisaScreenState extends State<DesktopVisaScreen> {
       body: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Expanded(child: CustomDrawer(), flex: 1),
+          const Expanded(flex: 1, child: CustomDrawer()),
           Expanded(
             flex: 4,
             child: Padding(
@@ -406,10 +406,10 @@ class _DesktopVisaScreenState extends State<DesktopVisaScreen> {
                                       height: 40,
                                       child: ElevatedButton(
                                           onPressed: () {},
-                                          child: const Text("Confirm"),
                                           style: ElevatedButton.styleFrom(
                                               backgroundColor:
-                                                  AppColors.pomegranateColor))),
+                                                  AppColors.pomegranateColor),
+                                          child: const Text("Confirm"))),
                                 ],
                               )),
                         ],

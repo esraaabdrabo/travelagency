@@ -16,6 +16,7 @@ import 'package:travelagency/view_model/hotels.dart';
 import '../../Helper/Colors.dart';
 import '../Widgets/Drawer.dart';
 import '../Widgets/RoomWidget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DesktopHotelScreen extends StatefulWidget {
   const DesktopHotelScreen({Key? key}) : super(key: key);
@@ -26,10 +27,11 @@ class DesktopHotelScreen extends StatefulWidget {
 
 class _desktopHotelScreenState extends State<DesktopHotelScreen> {
   final roomController = Get.put(RoomController());
-  TextEditingController checkInDateController = new TextEditingController();
-  TextEditingController checkoutDateController = new TextEditingController();
+  TextEditingController checkInDateController = TextEditingController();
+  TextEditingController checkoutDateController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    AppLocalizations translate = AppLocalizations.of(context)!;
     var wedth = MediaQuery.of(context).size.width; //1536
     var heght = MediaQuery.of(context).size.height;
     List<Widget> roomWidgets = List.generate(
@@ -64,7 +66,8 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                             Text("HOTEL", style: red36lato),
                             sectionTitle("Discover our hotels"),
 
-                            hotelList(heght, hotelsProvider),
+                            hotelList(heght, wedth, hotelsProvider,
+                                translate: translate),
                             SizedBox(height: heght * 0.011),
                             sectionDivder,
                             sectionTitle(
@@ -138,6 +141,7 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                                                       label: "Currency")),
                                         ),
                                       ),
+                                      //from date
                                       Padding(
                                         padding: EdgeInsets.only(
                                             right: wedth * 0.005),
@@ -170,6 +174,7 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                                                       label: "Check In Date")),
                                         ),
                                       ),
+                                      //to date
                                       Padding(
                                         padding: EdgeInsets.only(
                                             right: wedth * 0.005),
@@ -278,20 +283,24 @@ sectionTitle(String title) {
   );
 }
 
-hotelList(double heght, HotelsVM hotelsProvider) {
+hotelList(double heght, double wedth, HotelsVM hotelsProvider,
+    {required AppLocalizations translate}) {
   return SizedBox(
     height: heght * .5,
     child: GridView.builder(
-      itemCount: hotelsProvider.hotels.length,
-      scrollDirection: Axis.horizontal,
-      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-          maxCrossAxisExtent: 380,
-          mainAxisExtent: 250),
-      itemBuilder: (context, index) =>
-          hotelCard(heght, hotelsProvider.hotels[index]),
-    ),
+        itemCount: hotelsProvider.hotels.length,
+        scrollDirection: Axis.horizontal,
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+            maxCrossAxisExtent: 380,
+            mainAxisExtent: 250),
+        itemBuilder: (context, index) => hotelCard(
+            height: heght,
+            context: context,
+            translate: translate,
+            width: wedth,
+            hotel: hotelsProvider.hotels[index])),
   );
 }
 
@@ -322,24 +331,236 @@ hotelPrice(String price, String num) {
   );
 }
 
-hotelCard(double heght, HotelM hotel) {
+hotelCard(
+    {required double width,
+    required BuildContext context,
+    required double height,
+    required HotelM hotel,
+    required AppLocalizations translate}) {
   return InkWell(
     onTap: () async {
-      HotelsSV().getAllHotels();
+      showDialog(
+        context: context,
+        builder: (context) => Dialog(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                flex: 3,
+                //         width: width * .7,
+                child: CustomWidgets.cachedImg(hotel.image!),
+              ),
+              Expanded(
+                //   width: width * .2,
+                child: Form(
+                  child: Stack(
+                    alignment: AlignmentDirectional.topEnd,
+                    children: [
+                      //form
+                      Container(
+                        alignment: const Alignment(0, 0),
+                        padding: const EdgeInsets.symmetric(horizontal: 25),
+                        child: SingleChildScrollView(
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                //hotel name
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 15.0, bottom: 20),
+                                  child: Text(
+                                      "${translate.welcomeIn} ${hotel.name!}",
+                                      textAlign: TextAlign.center,
+                                      style: black20LatoWShadow),
+                                ),
+                                //full name
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      right: width * 0.005,
+                                      bottom: height * 0.025),
+                                  child: TextFormField(
+                                      keyboardType: TextInputType.name,
+                                      minLines: null,
+                                      onChanged: (value) {},
+                                      style: const TextStyle(fontSize: 16.0),
+                                      decoration: MyThemeData.inputDhintPre(
+                                          icon: const Icon(
+                                            Icons.person,
+                                            color: Colors.grey,
+                                            size: 20,
+                                          ),
+                                          label: translate.fullName)),
+                                ),
+                                //phone num
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      right: width * 0.005,
+                                      bottom: height * 0.025),
+                                  child: TextFormField(
+                                      keyboardType: TextInputType.number,
+                                      minLines: null,
+                                      onChanged: (value) {},
+                                      style: const TextStyle(fontSize: 16.0),
+                                      decoration: MyThemeData.inputDhintPre(
+                                          icon: const Icon(
+                                            Icons.phone_android,
+                                            color: Colors.grey,
+                                            size: 20,
+                                          ),
+                                          label: translate.phoneNumber)),
+                                ),
+                                //email
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      right: width * 0.005,
+                                      bottom: height * 0.025),
+                                  child: TextFormField(
+                                      keyboardType: TextInputType.emailAddress,
+                                      minLines: null,
+                                      onChanged: (value) {},
+                                      style: const TextStyle(fontSize: 16.0),
+                                      decoration: MyThemeData.inputDhintPre(
+                                          icon: const Icon(
+                                            Icons.email,
+                                            color: Colors.grey,
+                                            size: 20,
+                                          ),
+                                          label: translate.email)),
+                                ),
+                                //from date
+
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      right: width * 0.005,
+                                      bottom: height * 0.025),
+                                  child: SizedBox(
+                                    height: 40,
+                                    child: TextFormField(
+                                        //controller: checkInDateController,
+                                        onTap: () async {
+                                          var date = await showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime(2000),
+                                              lastDate: DateTime(2030));
+                                          /*       checkInDateController.text =
+                                                            date
+                                                                .toString()
+                                                                .substring(0, 10);*/
+                                        },
+                                        onChanged: (String keySearch) {},
+                                        style: const TextStyle(fontSize: 16.0),
+                                        decoration: MyThemeData.inputDhintPre(
+                                            icon: const Icon(
+                                              Icons.date_range,
+                                              color: Colors.grey,
+                                              size: 20,
+                                            ),
+                                            label: translate.checkInDate)),
+                                  ),
+                                ),
+                                //to date
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      right: width * 0.005,
+                                      bottom: height * 0.025),
+                                  child: SizedBox(
+                                    height: 40,
+                                    child: TextFormField(
+                                        onChanged: (String keySearch) {},
+                                        style: const TextStyle(fontSize: 16.0),
+                                        decoration: MyThemeData.inputDhintPre(
+                                            icon: const Icon(
+                                              Icons.date_range,
+                                              color: Colors.grey,
+                                              size: 20,
+                                            ),
+                                            label: translate.checkOutDate)),
+                                  ),
+                                ),
+                                //passport img
+                                InkWell(
+                                  onTap: () {},
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 9, horizontal: 8),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        border: Border.all(
+                                            color: AppColors.grayColor
+                                                .withOpacity(.5)),
+                                        color: AppColors.offWhiteColor
+                                            .withOpacity(.8)),
+                                    child: Row(
+                                      children: [
+                                        const Icon(Icons.upload,
+                                            color: Color.fromARGB(
+                                                170, 61, 61, 61)),
+                                        const SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text(
+                                          translate.passportImage,
+                                          style: black15lato.copyWith(
+                                              color: Color.fromARGB(
+                                                  200, 61, 61, 61)),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                CustomWidgets.sizedbox15h,
+                                MaterialButton(
+                                    onPressed: () {},
+                                    minWidth: width * .2,
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: height * .03,
+                                    ),
+                                    color: AppColors.pomegranateColor,
+                                    child: Text(
+                                      "Save",
+                                      style: white15lato,
+                                    ))
+                              ]),
+                        ),
+                      ),
+
+                      //exit btn
+                      InkWell(
+                        onTap: () => Navigator.pop(context),
+                        child: const Padding(
+                          padding: EdgeInsets.all(5),
+                          child: Icon(Icons.cancel),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      );
     },
     child: Container(
-      padding: const EdgeInsets.all(15),
+      padding: const EdgeInsets.all(10),
       color: const Color.fromARGB(10, 61, 61, 61),
       child: Column(
         children: [
-          Text(hotel.name!, textAlign: TextAlign.center, style: black20LatoTS),
+          //hotel name
+          Text(hotel.name!,
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: black20LatoTS),
           CustomWidgets.sizedbox15h,
           Stack(
             alignment: AlignmentDirectional.bottomEnd,
             children: [
               //hotel img
               SizedBox(
-                  height: heght * .23,
+                  height: height * .23,
                   width: 300,
                   child: CustomWidgets.cachedImg(hotel.image!)),
               //hotel country

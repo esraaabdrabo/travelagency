@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travelagency/Controller/RoomController.dart';
 
+// ignore: must_be_immutable
 class ChildWidget extends StatelessWidget {
   double wedth , heght;
   RoomController roomcontroller;
   String text;
-  ChildWidget(this.wedth , this.heght , this.roomcontroller , this.text);
+  ChildWidget(this.wedth , this.heght , this.roomcontroller , this.text, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class ChildWidget extends StatelessWidget {
         isExpanded: true,
         decoration: InputDecoration(
           labelText: text,
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
         ),
         value: 0,
         items: [0 ,1 ,2 , 3].map((int item) =>

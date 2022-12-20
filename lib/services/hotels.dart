@@ -1,63 +1,128 @@
 // ignore: file_names
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, unused_local_variable
+
+import 'dart:convert';
+import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 import 'package:travelagency/Helper/constants.dart';
 import 'package:travelagency/models/hotels.dart';
+import 'package:uuid/uuid.dart';
 
 class HotelsSV {
   Future<List<HotelM>> getAllHotels() async {
-    // var response = await http.get(Uri.parse(Constants.allHotelsURL));
-    List<HotelM> response = [];
-    var data = [
+    /* var response = await http.get(
+      Uri.parse(Constants.allHotelsURL),
+    );*/
+    List<HotelM> hotels = [];
+    var response = [
       {
-        "guid": "20b742a9-b354-44fb-a37e-525c83923fe2",
-        "name": "Five Jumeirah Village",
-        "image":
-            "https://cf.bstatic.com/xdata/images/hotel/max1024x768/213805317.jpg?k=1d31525a3a565f11ed6f43394f9a131cee10734a150719956900b2c5fd8e2b0e&o=&hp=1",
-        "locationEn": "UAE",
-        "locationAr": "ألامارات ألعربيه ألمتحده",
-        "sngPrice": 99,
-        "dblPrice": 180,
-        "trplPrice": 220,
-        "fmlyPrice": 200,
-        "users": null
-      },
-      {
-        "guid": "fd6ef6a8-3bab-4c82-a8dc-f2d17f23799a",
-        "name": "Divan Cave Hotel",
+        "guid": "f70025c6-0f73-4a37-948c-155ebaf87af2",
+        "name": "Divan Istanbul",
         "image":
             "https://cf.bstatic.com/xdata/images/hotel/max1024x768/41087981.jpg?k=913558a5c722f6ce16a587f68e287022458bf15ab041ce6f52040a9ad69bb5d2&o=&hp=1",
         "locationEn": "Turkey",
-        "locationAr": "نركيا",
-        "sngPrice": 52,
-        "dblPrice": 87,
-        "trplPrice": 107,
-        "fmlyPrice": 168,
-        "users": null
+        "locationAr": "تركيا",
+        "sngPrice": 51,
+        "dblPrice": 79,
+        "trplPrice": 108,
+        "fmlyPrice": 200,
+        "hotelReserves": null
       },
       {
-        "guid": "07899194-d786-4a3c-b95b-f6af62f20f28",
-        "name": "Bedouin Lifestyle Camp",
+        "guid": "e4c7efa2-cefb-4be2-bcfc-5f4ec64e3d46",
+        "name": "Tilal Liwa Hotel",
         "image":
-            "https://cf.bstatic.com/xdata/images/hotel/max1024x768/347573112.jpg?k=3d6ce9c6c4967dfce7fc50d228d98878301ba51949bfa8b061953ca26c0ab543&o=&hp=1",
-        "locationEn": "Jordan",
-        "locationAr": "أردن",
-        "sngPrice": 43,
-        "dblPrice": 66,
-        "trplPrice": 114,
+            "https://cf.bstatic.com/xdata/images/hotel/max1024x768/76853227.jpg?k=2b61f85738a8405afc804602e5f217d2fb6284d1e0e0d8f73f131121fe886c46&o=&hp=1",
+        "locationEn": "UAE",
+        "locationAr": "ألامارات ألعربيه ألمتحده",
+        "sngPrice": 81,
+        "dblPrice": 190,
+        "trplPrice": 21,
+        "fmlyPrice": null,
+        "hotelReserves": null
+      },
+      {
+        "guid": "52c5fc42-0012-4cb4-8d67-6809c2de491d",
+        "name": "Crowne Plaza Antalya",
+        "image":
+            "https://cf.bstatic.com/xdata/images/hotel/max1024x768/242976733.jpg?k=07024a4a313f3fae4710ff84ff76a4db16efb472f5051a7bf5b0ae9b09b6e78f&o=&hp=1",
+        "locationEn": "Turkey",
+        "locationAr": "تركيا",
+        "sngPrice": 67,
+        "dblPrice": 100,
+        "trplPrice": 130,
         "fmlyPrice": 180,
-        "users": null
+        "hotelReserves": null
+      },
+      {
+        "guid": "ceefe876-b34c-4863-863d-9b3ceada5213",
+        "name": "CVK Park Bosphorus Hotel Istanbul\r\n",
+        "image":
+            "https://cf.bstatic.com/xdata/images/hotel/max1024x768/264603329.jpg?k=2d453049aa6ca684ab4e7fec4170dfdfa8ca1ea76647e37d2d5fce687006227e&o=&hp=1",
+        "locationEn": "Turkey",
+        "locationAr": "تركيا",
+        "sngPrice": 45,
+        "dblPrice": 89,
+        "trplPrice": 112,
+        "fmlyPrice": null,
+        "hotelReserves": null
+      },
+      {
+        "guid": "14a72518-9e1e-486a-a087-f3e34c0156e5",
+        "name": "The Ranch - Lodge & Equestrian Center\r\n",
+        "image":
+            "https://cf.bstatic.com/xdata/images/hotel/max1024x768/285051372.jpg?k=6653eb25f70c658486f9b14b8e83ace20541111a78d2b16fc4fa5502576b784a&o=&hp=1",
+        "locationEn": "Lebanon",
+        "locationAr": "لبنان",
+        "sngPrice": 80,
+        "dblPrice": 110,
+        "trplPrice": 200,
+        "fmlyPrice": 240,
+        "hotelReserves": null
       }
     ];
-    for (var hotel in data) {
-      response.add(HotelM.fromJson(hotel));
+    for (Map<String, dynamic> hotel in response) {
+      hotels.add(HotelM.fromJson(hotel));
     }
-    return response;
-    /*  if (response.statusCode == 200) {
-      print("200 all hotels");
+    /* if (response.statusCode == 200) {
+      log("succes get all hotels");
+      List<dynamic> data = jsonDecode(response.body);
+      //convert every object to hotel model
+      log(data.toString());
+      for (Map<String, dynamic> hotel in data) {
+        hotels.add(HotelM.fromJson(hotel));
+      }
     } else {
-      print("${response.statusCode} all hotels");
+      print("${response.statusCode} error in all hotels");
     }*/
+    return hotels;
+  }
+
+  Future<void> reserveHotel() async {
+    var body = {
+      "id": Uuid().v4(),
+      "hotelId": "e4c7efa2-cefb-4be2-bcfc-5f4ec64e3d46",
+      "userId": "3e4ba9aa-878e-4f2d-a780-3c734f03650a",
+      "fullName": "test ",
+      "phoneNumber": "07707654321",
+      "email": "test@Gmail.com",
+      "passportImage": " ",
+      "fromDate": "2022-12-19T00:00:00",
+      "toDate": "2022-12-22T00:00:00",
+      "isDone": false,
+      "note": "esraa",
+      "createdDate": "2022-12-19T00:00:00",
+      "cancelledDate": "0001-01-01T00:00:00",
+      "isCancelled": false
+    };
+    var headres = {
+      'Content-type': 'application/json',
+      'Accept': 'application/json'
+    };
+    log("message");
+    var response = await http.post(Uri.parse(Constants.reserveHotel),
+        body: jsonEncode(body), headers: headres);
+    log(response.statusCode.toString());
   }
 }

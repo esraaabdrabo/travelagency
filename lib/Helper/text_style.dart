@@ -26,6 +26,16 @@ var red15lato = GoogleFonts.lato(
 
 var black20LatoTS = GoogleFonts.lato(
     fontSize: 20, fontWeight: FontWeight.bold, letterSpacing: .1);
+var black20LatoWShadow = GoogleFonts.lato(
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+    letterSpacing: .1,
+    shadows: [
+      BoxShadow(
+          offset: Offset(-2, 2),
+          blurRadius: 3,
+          color: Color.fromARGB(173, 255, 255, 255))
+    ]);
 var black15lato = GoogleFonts.lato(
     fontSize: 15,
     fontWeight: FontWeight.w700,
@@ -33,3 +43,11 @@ var black15lato = GoogleFonts.lato(
       BoxShadow(
           color: AppColors.whiteColor, offset: Offset(2, 2), blurRadius: 3)
     ]));
+
+var white20LatoTS = GoogleFonts.lato(
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+    letterSpacing: .1,
+    color: AppColors.whiteColor);
+var white15lato = GoogleFonts.lato(
+    fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.whiteColor);

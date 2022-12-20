@@ -6,8 +6,8 @@ abstract class CustomWidgets {
     return CachedNetworkImage(
       imageUrl: path,
       fit: BoxFit.fill,
-      placeholder: (context, url) => CircularProgressIndicator(),
-      errorWidget: (context, url, error) => Icon(Icons.error),
+      placeholder: (context, url) => const CircularProgressIndicator(),
+      errorWidget: (context, url, error) => const Icon(Icons.error),
     );
   } ////////////////sized box
 

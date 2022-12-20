@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../Helper/Colors.dart';
 
+// ignore: must_be_immutable
 class PlaceWidget extends StatefulWidget {
   String imageLink;
   String capitalName;
@@ -16,7 +17,7 @@ class PlaceWidget extends StatefulWidget {
 class _PlaceWidgetState extends State<PlaceWidget> {
   bool isHover = false;
   bool isSelected = false;
-  Offset mousPos = new Offset(0, 0);
+  Offset mousPos = const Offset(0, 0);
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
@@ -103,7 +104,7 @@ class _PlaceWidgetState extends State<PlaceWidget> {
   }
 
   texts() {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,

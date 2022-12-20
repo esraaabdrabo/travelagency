@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:travelagency/models/hotels.dart';
-import 'package:travelagency/services/Hotels.dart';
+import 'package:travelagency/services/hotels.dart';
 
 class HotelsVM extends ChangeNotifier {
   bool isLoading = false;
@@ -22,6 +22,7 @@ class HotelsVM extends ChangeNotifier {
   }
 
   HotelsVM() {
+//reserveHotel();
     getAllHotels();
     selectedCountry = countries[0];
   }
@@ -31,7 +32,14 @@ class HotelsVM extends ChangeNotifier {
     changeIsLoading(false);
   }
 
-  /*****************search with country**************************** */
+  ///*****************reserve hotel*************************//// */
+  Future<void> reserveHotel() async {
+    changeIsLoading(true);
+    HotelsSV().reserveHotel();
+    changeIsLoading(false);
+  }
+
+  /// ***************search with country**************************** */
   //change selected country
   void changeSelectedCountry(String country) {
     selectedCountry = country;

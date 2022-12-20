@@ -1,0 +1,9 @@
+{
+  "fullName": "الاسم",
+  "phoneNumber":"رقم الهاتف",
+  "email":"البريد الالكتروني",
+"passportImage":"صورة جواز السفر",
+"checkInDate":"تاريخ الوصول",
+"checkOutDate":"تاريخ المغادرة",
+"welcomeIn":"مرحبا بك في"
+}

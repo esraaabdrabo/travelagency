@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:travelagency/Helper/text_style.dart';
+import 'package:travelagency/view_model/setting.dart';
 import '../../Helper/Colors.dart';
 import 'package:get/get.dart';
 import '../../Controller/DraweerController.dart';
@@ -10,6 +13,7 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SettingVM settingProvider = Provider.of(context);
     var wedth = MediaQuery.of(context).size.width;
     var heght = MediaQuery.of(context).size.height;
     final drawerController = Get.put(DraweerController());
@@ -203,6 +207,20 @@ class CustomDrawer extends StatelessWidget {
                 ),
               ),
             ),
+            Row(
+              children: [
+                //arabic lang
+                lang(
+                    settingProvider: settingProvider,
+                    newLang: "ar",
+                    title: "لغة عربية") //english lang
+                ,
+                lang(
+                    settingProvider: settingProvider,
+                    newLang: "en",
+                    title: "English") //english lang
+              ],
+            ),
             Expanded(
                 flex: 4,
                 child: Container(
@@ -252,6 +270,41 @@ class CustomDrawer extends StatelessWidget {
               ),
             )
           ],
+        ),
+      ),
+    );
+  }
+
+  lang(
+      {required SettingVM settingProvider,
+      required String newLang,
+      required String title}) {
+    return Expanded(
+      flex: 1,
+      child: Center(
+        child: InkWell(
+          onTap: () {
+            settingProvider.changeLang(newLang);
+          },
+          child: AnimatedContainer(
+              padding: EdgeInsets.symmetric(vertical: 25, horizontal: 20),
+              duration: const Duration(milliseconds: 150),
+              decoration: BoxDecoration(
+                color: settingProvider.currentLang == newLang
+                    ? AppColors.offWhiteColor
+                    : Colors.white,
+                border: Border(
+                    left: BorderSide(
+                  width: 4,
+                  color: settingProvider.currentLang == newLang
+                      ? AppColors.pomegranateColor
+                      : Colors.white,
+                )),
+              ),
+              child: Text(
+                title,
+                style: black15lato,
+              )),
         ),
       ),
     );
