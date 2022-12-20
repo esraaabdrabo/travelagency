@@ -280,17 +280,44 @@ sectionTitle(String title) {
 
 hotelList(double heght, HotelsVM hotelsProvider) {
   return SizedBox(
-    height: heght * .35,
+    height: heght * .5,
     child: GridView.builder(
       itemCount: hotelsProvider.hotels.length,
       scrollDirection: Axis.horizontal,
       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
-          maxCrossAxisExtent: 250,
+          maxCrossAxisExtent: 380,
           mainAxisExtent: 250),
       itemBuilder: (context, index) =>
           hotelCard(heght, hotelsProvider.hotels[index]),
+    ),
+  );
+}
+
+hotelPrice(String price, String num) {
+  return Container(
+    color: AppColors.whiteColor,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          num,
+          style: red15lato,
+        ),
+        const SizedBox(
+          width: 3,
+        ),
+        const Icon(
+          Icons.person,
+          color: AppColors.pomegranateColor,
+        ),
+        CustomWidgets.sizedbox15w,
+        Text(
+          "$price \$",
+          style: black15lato,
+        )
+      ],
     ),
   );
 }
@@ -300,37 +327,61 @@ hotelCard(double heght, HotelM hotel) {
     onTap: () async {
       HotelsSV().getAllHotels();
     },
-    child: Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(hotel.name!,
-              textAlign: TextAlign.center, style: black20LatoTS),
-        ),
-        Stack(
-          alignment: AlignmentDirectional.bottomEnd,
-          children: [
-            //hotel img
-            SizedBox(
-                height: heght * .23,
-                child: CustomWidgets.cachedImg(hotel.image!)),
-            //hotel country
-            ClipRect(
-                child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 15, sigmaY: -15),
-              child: Container(
-                color: const Color.fromARGB(0, 255, 255, 255),
-                padding: const EdgeInsets.all(15),
-                child: Text(hotel.locationEn!,
-                    textAlign: TextAlign.center,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: black15lato),
-              ),
-            ))
-          ],
-        )
-      ],
+    child: Container(
+      padding: const EdgeInsets.all(15),
+      color: const Color.fromARGB(10, 61, 61, 61),
+      child: Column(
+        children: [
+          Text(hotel.name!, textAlign: TextAlign.center, style: black20LatoTS),
+          CustomWidgets.sizedbox15h,
+          Stack(
+            alignment: AlignmentDirectional.bottomEnd,
+            children: [
+              //hotel img
+              SizedBox(
+                  height: heght * .23,
+                  width: 300,
+                  child: CustomWidgets.cachedImg(hotel.image!)),
+              //hotel country
+              ClipRect(
+                  child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 15, sigmaY: -15),
+                child: Container(
+                  color: const Color.fromARGB(0, 255, 255, 255),
+                  padding: const EdgeInsets.all(15),
+                  child: Text(hotel.locationEn!,
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: black15lato),
+                ),
+              ))
+            ],
+          ),
+          hotelPrice(hotel.sngPrice.toString(), "1"),
+          hotelPrice(hotel.dblPrice.toString(), "2"),
+          hotelPrice(hotel.trplPrice.toString(), "3"),
+          //family
+          Container(
+            color: AppColors.whiteColor,
+            padding: const EdgeInsets.all(5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "family",
+                  style: red15lato,
+                ),
+                CustomWidgets.sizedbox15w,
+                Text(
+                  "${hotel.fmlyPrice.toString()} \$",
+                  style: black15lato,
+                )
+              ],
+            ),
+          )
+        ],
+      ),
     ),
   );
 }

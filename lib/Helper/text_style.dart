@@ -13,12 +13,17 @@ var red22lato = GoogleFonts.lato(
     color: AppColors.pomegranateColor,
     fontSize: 22,
     shadows: [
-      BoxShadow(
+      const BoxShadow(
           offset: Offset(-2, 2),
           color: Color.fromARGB(70, 0, 0, 0),
           blurRadius: 2)
     ],
     fontWeight: FontWeight.w700);
+var red15lato = GoogleFonts.lato(
+    fontSize: 15,
+    fontWeight: FontWeight.w700,
+    color: AppColors.pomegranateColor);
+
 var black20LatoTS = GoogleFonts.lato(
     fontSize: 20, fontWeight: FontWeight.bold, letterSpacing: .1);
 var black15lato = GoogleFonts.lato(

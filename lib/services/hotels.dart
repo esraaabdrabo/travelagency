@@ -20,7 +20,7 @@ class HotelsSV {
         "sngPrice": 99,
         "dblPrice": 180,
         "trplPrice": 220,
-        "fmlyPrice": null,
+        "fmlyPrice": 200,
         "users": null
       },
       {
