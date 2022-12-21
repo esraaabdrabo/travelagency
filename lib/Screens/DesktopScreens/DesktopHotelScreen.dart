@@ -3,7 +3,9 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 import 'package:provider/provider.dart';
 import 'package:travelagency/Controller/RoomController.dart';
 import 'package:travelagency/Helper/my_theme.dart';
@@ -27,8 +29,24 @@ class DesktopHotelScreen extends StatefulWidget {
 
 class _desktopHotelScreenState extends State<DesktopHotelScreen> {
   final roomController = Get.put(RoomController());
+
+  final formKey1 = GlobalKey<FormState>();
+  PageController pageCont = PageController();
+  TextEditingController nameCont = TextEditingController();
+  TextEditingController phoneCont = TextEditingController();
+  TextEditingController emailCont = TextEditingController();
   TextEditingController checkInDateController = TextEditingController();
   TextEditingController checkoutDateController = TextEditingController();
+  @override
+  void dispose() {
+    super.dispose();
+    nameCont.dispose();
+    phoneCont.dispose();
+    emailCont.dispose();
+    checkInDateController.dispose();
+    checkoutDateController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     AppLocalizations translate = AppLocalizations.of(context)!;
@@ -64,14 +82,18 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                           children: [
                             CustomWidgets.sizedbox15h,
                             Text("HOTEL", style: red36lato),
-                            sectionTitle("Discover our hotels"),
 
                             hotelList(heght, wedth, hotelsProvider,
-                                translate: translate),
+                                translate: translate,
+                                pageCont: pageCont,
+                                formKey1: formKey1,
+                                nameCont: nameCont,
+                                phoneCont: phoneCont,
+                                emailCont: emailCont,
+                                fromDateCont: checkInDateController,
+                                toDateCont: checkoutDateController),
                             SizedBox(height: heght * 0.011),
                             sectionDivder,
-                            sectionTitle(
-                                "Find the hotel that suits your needs"),
 
                             //form fileds
                             Padding(
@@ -253,8 +275,6 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                             CustomWidgets.sizedbox15h,
                             sectionDivder,
                             //search with country
-                            sectionTitle(
-                                "Do you want a specific country ? select it now."),
                             countriesDropDown(hotelsProvider)
                           ],
                         ),
@@ -269,22 +289,16 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
 var sectionDivder = const Divider(
   thickness: 3,
 );
-sectionTitle(String title) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      CustomWidgets.sizedbox15h,
-      Padding(
-        padding: const EdgeInsets.only(left: 15.0),
-        child: Text(title, style: red22lato),
-      ),
-      CustomWidgets.sizedbox15h,
-    ],
-  );
-}
 
 hotelList(double heght, double wedth, HotelsVM hotelsProvider,
-    {required AppLocalizations translate}) {
+    {required AppLocalizations translate,
+    required GlobalKey<FormState> formKey1,
+    required TextEditingController nameCont,
+    required TextEditingController phoneCont,
+    required TextEditingController emailCont,
+    required TextEditingController fromDateCont,
+    required TextEditingController toDateCont,
+    required PageController pageCont}) {
   return SizedBox(
     height: heght * .5,
     child: GridView.builder(
@@ -296,11 +310,19 @@ hotelList(double heght, double wedth, HotelsVM hotelsProvider,
             maxCrossAxisExtent: 380,
             mainAxisExtent: 250),
         itemBuilder: (context, index) => hotelCard(
-            height: heght,
-            context: context,
-            translate: translate,
+            pageCont: pageCont,
             width: wedth,
-            hotel: hotelsProvider.hotels[index])),
+            context: context,
+            height: heght,
+            hotel: hotelsProvider.hotels[index],
+            translate: translate,
+            formKey1: formKey1,
+            nameCont: nameCont,
+            phoneCont: phoneCont,
+            emailCont: emailCont,
+            fromDateCont: fromDateCont,
+            toDateCont: toDateCont,
+            hotelsProvider: hotelsProvider)),
   );
 }
 
@@ -336,7 +358,15 @@ hotelCard(
     required BuildContext context,
     required double height,
     required HotelM hotel,
-    required AppLocalizations translate}) {
+    required AppLocalizations translate,
+    required GlobalKey<FormState> formKey1,
+    required TextEditingController nameCont,
+    required TextEditingController phoneCont,
+    required TextEditingController emailCont,
+    required TextEditingController fromDateCont,
+    required TextEditingController toDateCont,
+    required HotelsVM hotelsProvider,
+    required PageController pageCont}) {
   return InkWell(
     onTap: () async {
       showDialog(
@@ -345,14 +375,16 @@ hotelCard(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              //hotel img
               Expanded(
                 flex: 3,
-                //         width: width * .7,
                 child: CustomWidgets.cachedImg(hotel.image!),
               ),
+              //form
               Expanded(
-                //   width: width * .2,
                 child: Form(
+                  key: formKey1,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   child: Stack(
                     alignment: AlignmentDirectional.topEnd,
                     children: [
@@ -374,154 +406,344 @@ hotelCard(
                                       textAlign: TextAlign.center,
                                       style: black20LatoWShadow),
                                 ),
-                                //full name
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      right: width * 0.005,
-                                      bottom: height * 0.025),
-                                  child: TextFormField(
-                                      keyboardType: TextInputType.name,
-                                      minLines: null,
-                                      onChanged: (value) {},
-                                      style: const TextStyle(fontSize: 16.0),
-                                      decoration: MyThemeData.inputDhintPre(
-                                          icon: const Icon(
-                                            Icons.person,
-                                            color: Colors.grey,
-                                            size: 20,
-                                          ),
-                                          label: translate.fullName)),
-                                ),
-                                //phone num
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      right: width * 0.005,
-                                      bottom: height * 0.025),
-                                  child: TextFormField(
-                                      keyboardType: TextInputType.number,
-                                      minLines: null,
-                                      onChanged: (value) {},
-                                      style: const TextStyle(fontSize: 16.0),
-                                      decoration: MyThemeData.inputDhintPre(
-                                          icon: const Icon(
-                                            Icons.phone_android,
-                                            color: Colors.grey,
-                                            size: 20,
-                                          ),
-                                          label: translate.phoneNumber)),
-                                ),
-                                //email
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      right: width * 0.005,
-                                      bottom: height * 0.025),
-                                  child: TextFormField(
-                                      keyboardType: TextInputType.emailAddress,
-                                      minLines: null,
-                                      onChanged: (value) {},
-                                      style: const TextStyle(fontSize: 16.0),
-                                      decoration: MyThemeData.inputDhintPre(
-                                          icon: const Icon(
-                                            Icons.email,
-                                            color: Colors.grey,
-                                            size: 20,
-                                          ),
-                                          label: translate.email)),
-                                ),
-                                //from date
 
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      right: width * 0.005,
-                                      bottom: height * 0.025),
-                                  child: SizedBox(
-                                    height: 40,
-                                    child: TextFormField(
-                                        //controller: checkInDateController,
-                                        onTap: () async {
-                                          var date = await showDatePicker(
-                                              context: context,
-                                              initialDate: DateTime.now(),
-                                              firstDate: DateTime(2000),
-                                              lastDate: DateTime(2030));
-                                          /*       checkInDateController.text =
-                                                            date
-                                                                .toString()
-                                                                .substring(0, 10);*/
-                                        },
-                                        onChanged: (String keySearch) {},
-                                        style: const TextStyle(fontSize: 16.0),
-                                        decoration: MyThemeData.inputDhintPre(
-                                            icon: const Icon(
-                                              Icons.date_range,
-                                              color: Colors.grey,
-                                              size: 20,
+                                SizedBox(
+                                  height: height * .8,
+                                  child: PageView(
+                                    physics: NeverScrollableScrollPhysics(),
+                                    controller: pageCont,
+                                    children: [
+                                      //name num email from date to date
+                                      Column(
+                                        children: [
+                                          //full name
+
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                right: width * 0.005,
+                                                bottom: height * 0.025),
+                                            child: TextFormField(
+                                                controller: nameCont,
+                                                validator: (value) {
+                                                  return hotelsProvider
+                                                      .validateName(
+                                                          value!, context);
+                                                },
+                                                keyboardType:
+                                                    TextInputType.name,
+                                                minLines: null,
+                                                style: const TextStyle(
+                                                    fontSize: 16.0),
+                                                decoration:
+                                                    MyThemeData.inputDhintPre(
+                                                        icon: const Icon(
+                                                          Icons.person,
+                                                          color: Colors.grey,
+                                                          size: 20,
+                                                        ),
+                                                        label: translate
+                                                            .fullName)),
+                                          ),
+                                          //phone num
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                right: width * 0.005,
+                                                bottom: height * 0.025),
+                                            child: TextFormField(
+                                                validator: (value) {
+                                                  return hotelsProvider
+                                                      .validatePhone(
+                                                          value!, context);
+                                                },
+                                                controller: phoneCont,
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                minLines: null,
+                                                style: const TextStyle(
+                                                    fontSize: 16.0),
+                                                decoration:
+                                                    MyThemeData.inputDhintPre(
+                                                        icon: const Icon(
+                                                          Icons.phone_android,
+                                                          color: Colors.grey,
+                                                          size: 20,
+                                                        ),
+                                                        label: translate
+                                                            .phoneNumber)),
+                                          ),
+                                          //email
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                right: width * 0.005,
+                                                bottom: height * 0.025),
+                                            child: TextFormField(
+                                                validator: (value) {
+                                                  return hotelsProvider
+                                                      .validateEmail(
+                                                          value!, context);
+                                                },
+                                                controller: emailCont,
+                                                keyboardType:
+                                                    TextInputType.emailAddress,
+                                                minLines: null,
+                                                onChanged: (value) {},
+                                                style: const TextStyle(
+                                                    fontSize: 16.0),
+                                                decoration:
+                                                    MyThemeData.inputDhintPre(
+                                                        icon: const Icon(
+                                                          Icons.email,
+                                                          color: Colors.grey,
+                                                          size: 20,
+                                                        ),
+                                                        label:
+                                                            translate.email)),
+                                          ),
+                                          //from date
+
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                right: width * 0.005,
+                                                bottom: height * 0.025),
+                                            child: SizedBox(
+                                              height: 40,
+                                              child: TextFormField(
+                                                  controller: fromDateCont,
+                                                  onTap: () async {
+                                                    var date =
+                                                        await showDatePicker(
+                                                            context: context,
+                                                            initialDate:
+                                                                DateTime.now(),
+                                                            firstDate:
+                                                                DateTime(2000),
+                                                            lastDate:
+                                                                DateTime(2030));
+                                                    fromDateCont.text = date
+                                                        .toString()
+                                                        .substring(0, 10);
+                                                    log(fromDateCont.text);
+                                                  },
+                                                  style: const TextStyle(
+                                                      fontSize: 16.0),
+                                                  decoration:
+                                                      MyThemeData.inputDhintPre(
+                                                          icon: const Icon(
+                                                            Icons.date_range,
+                                                            color: Colors.grey,
+                                                            size: 20,
+                                                          ),
+                                                          label: translate
+                                                              .checkInDate)),
                                             ),
-                                            label: translate.checkInDate)),
-                                  ),
-                                ),
-                                //to date
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      right: width * 0.005,
-                                      bottom: height * 0.025),
-                                  child: SizedBox(
-                                    height: 40,
-                                    child: TextFormField(
-                                        onChanged: (String keySearch) {},
-                                        style: const TextStyle(fontSize: 16.0),
-                                        decoration: MyThemeData.inputDhintPre(
-                                            icon: const Icon(
-                                              Icons.date_range,
-                                              color: Colors.grey,
-                                              size: 20,
+                                          ),
+                                          //to date
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                right: width * 0.005,
+                                                bottom: height * 0.025),
+                                            child: SizedBox(
+                                              height: 40,
+                                              child: TextFormField(
+                                                  controller: toDateCont,
+                                                  onTap: () async {
+                                                    var date =
+                                                        await showDatePicker(
+                                                            context: context,
+                                                            initialDate:
+                                                                DateTime.now(),
+                                                            firstDate:
+                                                                DateTime(2000),
+                                                            lastDate:
+                                                                DateTime(2030));
+                                                    toDateCont.text = date
+                                                        .toString()
+                                                        .substring(0, 10);
+                                                    log(toDateCont.text);
+                                                  },
+                                                  style: const TextStyle(
+                                                      fontSize: 16.0),
+                                                  decoration:
+                                                      MyThemeData.inputDhintPre(
+                                                          icon: const Icon(
+                                                            Icons.date_range,
+                                                            color: Colors.grey,
+                                                            size: 20,
+                                                          ),
+                                                          label: translate
+                                                              .checkOutDate)),
                                             ),
-                                            label: translate.checkOutDate)),
+                                          ),
+                                          MaterialButton(
+                                              onPressed: () {
+                                                if (formKey1.currentState!
+                                                    .validate()) {
+                                                  pageCont.nextPage(
+                                                      duration: Duration(
+                                                          milliseconds: 1000),
+                                                      curve: Curves
+                                                          .easeInOutCubic);
+                                                }
+                                              },
+                                              minWidth: width * .2,
+                                              padding: EdgeInsets.symmetric(
+                                                vertical: height * .03,
+                                              ),
+                                              color: AppColors.pomegranateColor,
+                                              child: Text(
+                                                "Next",
+                                                style: white15lato,
+                                              )),
+                                        ],
+                                      ),
+                                      //passport img , adult num ,child num ,room num ,room type, book btn
+                                      Column(
+                                        children: [
+                                          InkWell(
+                                            onTap: () async {
+                                              var fromPicker =
+                                                  await ImagePickerWeb
+                                                      .getMultiImagesAsFile();
+                                              log(fromPicker![0].name);
+                                            },
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 9,
+                                                      horizontal: 8),
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                  border: Border.all(
+                                                      color: AppColors.grayColor
+                                                          .withOpacity(.5)),
+                                                  color: AppColors.offWhiteColor
+                                                      .withOpacity(.8)),
+                                              child: Row(
+                                                children: [
+                                                  const Icon(Icons.upload,
+                                                      color: Color.fromARGB(
+                                                          170, 61, 61, 61)),
+                                                  const SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Text(
+                                                    translate.passportImage,
+                                                    style: black15lato.copyWith(
+                                                        color: Color.fromARGB(
+                                                            200, 61, 61, 61)),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          CustomWidgets.sizedbox15h,
+                                          //adult num
+
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                right: width * 0.005,
+                                                bottom: height * 0.025),
+                                            child: TextFormField(
+                                                controller: nameCont,
+                                                validator: (value) {
+                                                  return hotelsProvider
+                                                      .validateName(
+                                                          value!, context);
+                                                },
+                                                keyboardType:
+                                                    TextInputType.name,
+                                                minLines: null,
+                                                style: const TextStyle(
+                                                    fontSize: 16.0),
+                                                decoration:
+                                                    MyThemeData.inputDhintPre(
+                                                        icon: const Icon(
+                                                          Icons.man,
+                                                          color: Colors.grey,
+                                                          size: 20,
+                                                        ),
+                                                        label: // translate.fullName
+                                                            "adult num")),
+                                          ),
+                                          //child num
+
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                right: width * 0.005,
+                                                bottom: height * 0.025),
+                                            child: TextFormField(
+                                                controller: nameCont,
+                                                validator: (value) {
+                                                  return hotelsProvider
+                                                      .validateName(
+                                                          value!, context);
+                                                },
+                                                keyboardType:
+                                                    TextInputType.name,
+                                                minLines: null,
+                                                style: const TextStyle(
+                                                    fontSize: 16.0),
+                                                decoration:
+                                                    MyThemeData.inputDhintPre(
+                                                        icon: const Icon(
+                                                          Icons.boy,
+                                                          color: Colors.grey,
+                                                          size: 20,
+                                                        ),
+                                                        label: // translate.fullName
+                                                            "child num")),
+                                          ),
+//room num
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                right: width * 0.005,
+                                                bottom: height * 0.025),
+                                            child: TextFormField(
+                                                controller: nameCont,
+                                                validator: (value) {
+                                                  return hotelsProvider
+                                                      .validateName(
+                                                          value!, context);
+                                                },
+                                                keyboardType:
+                                                    TextInputType.name,
+                                                minLines: null,
+                                                style: const TextStyle(
+                                                    fontSize: 16.0),
+                                                decoration:
+                                                    MyThemeData.inputDhintPre(
+                                                        icon: const Icon(
+                                                          Icons
+                                                              .house_siding_rounded,
+                                                          color: Colors.grey,
+                                                          size: 20,
+                                                        ),
+                                                        label: // translate.fullName
+                                                            "room num")),
+                                          ),
+
+                                          MaterialButton(
+                                              onPressed: () {
+                                                if (formKey1.currentState!
+                                                    .validate()) {
+                                                  print("valid");
+                                                }
+                                              },
+                                              minWidth: width * .2,
+                                              padding: EdgeInsets.symmetric(
+                                                vertical: height * .03,
+                                              ),
+                                              color: AppColors.pomegranateColor,
+                                              child: Text(
+                                                "Save",
+                                                style: white15lato,
+                                              )),
+                                        ],
+                                      )
+                                    ],
                                   ),
-                                ),
-                                //passport img
-                                InkWell(
-                                  onTap: () {},
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 9, horizontal: 8),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        border: Border.all(
-                                            color: AppColors.grayColor
-                                                .withOpacity(.5)),
-                                        color: AppColors.offWhiteColor
-                                            .withOpacity(.8)),
-                                    child: Row(
-                                      children: [
-                                        const Icon(Icons.upload,
-                                            color: Color.fromARGB(
-                                                170, 61, 61, 61)),
-                                        const SizedBox(
-                                          width: 5,
-                                        ),
-                                        Text(
-                                          translate.passportImage,
-                                          style: black15lato.copyWith(
-                                              color: Color.fromARGB(
-                                                  200, 61, 61, 61)),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                CustomWidgets.sizedbox15h,
-                                MaterialButton(
-                                    onPressed: () {},
-                                    minWidth: width * .2,
-                                    padding: EdgeInsets.symmetric(
-                                      vertical: height * .03,
-                                    ),
-                                    color: AppColors.pomegranateColor,
-                                    child: Text(
-                                      "Save",
-                                      style: white15lato,
-                                    ))
+                                )
                               ]),
                         ),
                       ),

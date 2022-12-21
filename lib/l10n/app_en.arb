@@ -5,5 +5,8 @@
 "passportImage":"Passport image",
 "checkInDate":"Check In Date",
 "checkOutDate":"Check Out Date",
-"welcomeIn":"Welcome in"
+"welcomeIn":"Welcome in",
+"nameError":"must contain letters only",
+"phoneError":"must contain 11 number",
+"emailError":"email format is wrong"
 }
