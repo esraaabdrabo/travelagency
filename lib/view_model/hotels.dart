@@ -1,7 +1,13 @@
+import 'dart:developer';
+import "dart:io";
 import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 import 'package:travelagency/models/hotels.dart';
 import 'package:travelagency/services/hotels.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 
 class HotelsVM extends ChangeNotifier {
   late AppLocalizations translate;
@@ -76,12 +82,23 @@ class HotelsVM extends ChangeNotifier {
     return translate.email;
   }
 
+//date
+  validateDate(String value, BuildContext context) {
+    if (removeSpace(value).isNotEmpty) {
+      return null;
+    }
+
+    translate = AppLocalizations.of(context)!;
+    return translate.email;
+  }
+
 //adult num + room num
   validateAdultNum(String value, BuildContext context) {
-    if (removeSpace(value).isNotEmpty &&
-        isNumber(value) &&
-        int.parse(removeSpace(value)) > 0) {
-      return null;
+    if (removeSpace(value).isNotEmpty && isNumber(value)) {
+      //only convert to num if you sure the input is number
+      if (int.parse(removeSpace(value)) > 0) {
+        return null;
+      }
     }
     return "error";
   }
@@ -91,7 +108,10 @@ class HotelsVM extends ChangeNotifier {
     if (removeSpace(value).isNotEmpty &&
         isNumber(value) &&
         int.parse(removeSpace(value)) >= 0) {
-      return null;
+      //only convert to num if you sure the input is number
+      if (int.parse(removeSpace(value)) > 0) {
+        return null;
+      }
     }
     return "error";
   }
@@ -107,5 +127,33 @@ class HotelsVM extends ChangeNotifier {
   void changeSelectedCountry(String country) {
     selectedCountry = country;
     notifyListeners();
+  }
+
+  /*** */
+  test() async {
+    var url = Uri.parse("https://dawatkurdi.com/testimg/");
+    var img = await ImagePickerWeb.getImageAsBytes();
+    MultipartFile imgFile = http.MultipartFile.fromBytes("imgFile", img!);
+    log("ssss");
+    var request = http.MultipartRequest('POST', url);
+
+    request.files.add(http.MultipartFile.fromBytes("imgFile", img,
+        contentType: MediaType('image', 'png')));
+
+    /*   bytesFromPicker.showDialog(
+          context: context,
+          builder: (context) => Image.memory(bytesFromPicker!));*/
+
+    /*request.files.add(http.MultipartFile.fromBytes(
+        "image",
+        bytesFromPicker!,
+      ));
+      log("start");
+      request.send().then((value) {
+        log(value.statusCode.toString());
+      });*/
+    request.send().then((value) {
+      log(value.statusCode.toString());
+    });
   }
 }

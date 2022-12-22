@@ -6,12 +6,12 @@ import 'Colors.dart';
 var red36lato = GoogleFonts.lato(
     letterSpacing: 4,
     color: AppColors.pomegranateColor,
-    fontSize: 36,
+    fontSize: 28,
     fontWeight: FontWeight.w900);
 var red22lato = GoogleFonts.lato(
     letterSpacing: .12,
     color: AppColors.pomegranateColor,
-    fontSize: 22,
+    fontSize: 20,
     shadows: [
       const BoxShadow(
           offset: Offset(-2, 2),
@@ -20,7 +20,7 @@ var red22lato = GoogleFonts.lato(
     ],
     fontWeight: FontWeight.w700);
 var red15lato = GoogleFonts.lato(
-    fontSize: 15,
+    fontSize: 12,
     fontWeight: FontWeight.w700,
     color: AppColors.pomegranateColor);
 
@@ -37,7 +37,7 @@ var black20LatoWShadow = GoogleFonts.lato(
           color: Color.fromARGB(173, 255, 255, 255))
     ]);
 var black15lato = GoogleFonts.lato(
-    fontSize: 15,
+    fontSize: 12,
     fontWeight: FontWeight.w700,
     textStyle: const TextStyle(shadows: [
       BoxShadow(
