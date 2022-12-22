@@ -1,10 +1,8 @@
 import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:http/http.dart';
 import 'package:image_picker_web/image_picker_web.dart';
-import 'package:travelagency/Helper/text_style.dart';
 import 'package:travelagency/Screens/Widgets/dialogs.dart';
 import 'package:travelagency/models/hotels.dart';
 import 'package:travelagency/services/hotels.dart';
@@ -13,14 +11,14 @@ import 'package:http/http.dart' as http;
 // ignore: depend_on_referenced_packages
 import 'package:http_parser/http_parser.dart';
 
-import '../Helper/Colors.dart';
-
 class HotelsVM extends ChangeNotifier {
   late AppLocalizations translate;
-
+  bool isHotelClickAct = false;
   bool isLoading = false;
   List<HotelM> hotels = [];
   List<HotelM> searchResults = [];
+  List<String> childAges = [];
+  int childNum = 0;
   //search with country
   List<String> countries = [
     "UAE", //"United States of Emirates",
@@ -134,6 +132,48 @@ class HotelsVM extends ChangeNotifier {
   void changeSelectedCountry(String country) {
     selectedCountry = country;
     notifyListeners();
+  }
+
+//to increase text form field for child age
+  void changeCildNum({required String num}) {
+    if (removeSpace(num).isNotEmpty && isNumber(num)) {
+      if (int.parse(removeSpace(num)) > 0) {
+        childNum = int.parse(num);
+        notifyListeners();
+      }
+    }
+  }
+
+//to take every child age
+  void changeCildAge({required int index, required String age}) {
+    if (removeSpace(age).isNotEmpty &&
+        isNumber(age) &&
+        int.parse(removeSpace(age)) >= 0) {
+      if (childAges.length > index) {
+        childAges.removeAt(index);
+      }
+      childAges.insert(index, age);
+      // save the value
+
+      notifyListeners();
+    }
+    log(childAges.toString());
+  }
+
+//user can not open the reserve form if he dont fill this
+
+  void checkSearchReq(
+      {required String inDate,
+      required String outDate,
+      required String nationality,
+      required String currency}) {
+    if (removeSpace(inDate).isNotEmpty &&
+        removeSpace(outDate).isNotEmpty &&
+        removeSpace(nationality).isNotEmpty &&
+        removeSpace(currency).isNotEmpty) {
+      isHotelClickAct = true;
+      notifyListeners();
+    }
   }
 
   void search(BuildContext context) {

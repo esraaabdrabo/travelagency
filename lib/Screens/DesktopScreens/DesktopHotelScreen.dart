@@ -25,6 +25,9 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
   final formKey2 = GlobalKey<FormState>();
 
   PageController pageCont = PageController();
+  //un used cont//
+  TextEditingController natCont = TextEditingController();
+  TextEditingController currCont = TextEditingController();
   //*firstform soctrollers*//
   TextEditingController nameCont = TextEditingController();
   TextEditingController phoneCont = TextEditingController();
@@ -82,7 +85,6 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                           children: [
                             CustomWidgets.sizedbox15h,
                             Text("HOTEL", style: red36lato),
-
                             //form fileds
                             Padding(
                               padding: const EdgeInsets.all(15.0),
@@ -95,90 +97,18 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                            right: wedth * 0.005),
-                                        child: SizedBox(
-                                          width: wedth * 0.19,
-                                          height: 40,
-                                          child: TextFormField(
-                                              onChanged: (String keySearch) {},
-                                              style: const TextStyle(
-                                                  fontSize: 16.0),
-                                              decoration:
-                                                  MyThemeData.inputDhintPre(
-                                                      icon: const Icon(
-                                                        Icons
-                                                            .account_circle_outlined,
-                                                        color: Colors.grey,
-                                                        size: 20,
-                                                      ),
-                                                      label: "Nationality")),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                            right: wedth * 0.005),
-                                        child: SizedBox(
-                                          width: wedth * 0.19,
-                                          height: 40,
-                                          child: TextFormField(
-                                              onChanged: (String keySearch) {},
-                                              style: const TextStyle(
-                                                  fontSize: 16.0),
-                                              decoration:
-                                                  MyThemeData.inputDhintPre(
-                                                      icon: const Icon(
-                                                        Icons.money_off,
-                                                        color: Colors.grey,
-                                                        size: 20,
-                                                      ),
-                                                      label: "Currency")),
-                                        ),
-                                      ),
+                                      searchNatTF(
+                                          wedth: wedth, natCont: natCont),
+                                      searchCurrTF(
+                                          wedth: wedth, currCont: currCont),
                                       //from date
                                       Padding(
                                         padding: EdgeInsets.only(
-                                            right: wedth * 0.005,
-                                            bottom: heght * 0.025),
-                                        child: SizedBox(
-                                          height: 40,
-                                          width: wedth * 0.19,
-                                          child: TextFormField(
-                                              // controller: fromDateCont,
-                                              validator: (value) {
-                                                return hotelsProvider
-                                                    .validateDate(
-                                                        value!, context);
-                                              },
-                                              onTap: () async {
-                                                var date = await showDatePicker(
-                                                    context: context,
-                                                    initialDate: DateTime.now(),
-                                                    firstDate: DateTime(2000),
-                                                    lastDate: DateTime(2030));
-                                                // fromDateCont.text = date.toString().substring(0, 10);
-                                              },
-                                              style: const TextStyle(
-                                                  fontSize: 16.0),
-                                              decoration:
-                                                  MyThemeData.inputDhintPre(
-                                                      icon: const Icon(
-                                                        Icons.date_range,
-                                                        color: Colors.grey,
-                                                        size: 20,
-                                                      ),
-                                                      label: translate
-                                                          .checkInDate)),
+                                          right: wedth * 0.005,
                                         ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                            right: wedth * 0.005,
-                                            bottom: heght * 0.025),
                                         child: SizedBox(
                                           height: 40,
-                                          width: wedth * 0.19,
+                                          width: wedth * 0.15,
                                           child: TextFormField(
                                               controller: checkInDateController,
                                               validator: (value) {
@@ -196,6 +126,7 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                                                     date
                                                         .toString()
                                                         .substring(0, 10);
+                                                log(checkInDateController.text);
                                               },
                                               style: const TextStyle(
                                                   fontSize: 16.0),
@@ -212,11 +143,11 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                                       ),
                                       Padding(
                                         padding: EdgeInsets.only(
-                                            right: wedth * 0.005,
-                                            bottom: heght * 0.025),
+                                          right: wedth * 0.005,
+                                        ),
                                         child: SizedBox(
                                           height: 40,
-                                          width: wedth * 0.19,
+                                          width: wedth * 0.15,
                                           child: TextFormField(
                                               controller:
                                                   checkoutDateController,
@@ -251,26 +182,70 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                                       ),
                                     ],
                                   ),
-                                  RoomWidget(
-                                    heght: heght,
-                                    wedth: wedth,
-                                  ),
-                                  ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: AppColors
-                                            .pomegranateColor
-                                            .withOpacity(0.8),
+                                  CustomWidgets.sizedbox15h,
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 100,
+                                        height: 40,
+                                        child: adultNumTF(
+                                            hotelsProvider: hotelsProvider,
+                                            context: context,
+                                            wedth: wedth,
+                                            height: heght,
+                                            adultCont: adultCont),
                                       ),
-                                      onPressed: () {
-                                        hotelsProvider.search(context);
-                                      },
-                                      child:
-                                          Text("Search", style: black15lato)),
+                                      SizedBox(
+                                          width: 100,
+                                          height: 40,
+                                          child: childNumTF(
+                                              hotelsProvider: hotelsProvider,
+                                              context: context,
+                                              wedth: wedth,
+                                              heght: heght,
+                                              childCont: childCont)),
+                                      SizedBox(
+                                        height: 40,
+                                        width: wedth * .5,
+                                        child: ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: hotelsProvider.childNum,
+                                          itemBuilder: (context, index) =>
+                                              SizedBox(
+                                            height: 40,
+                                            width: 100,
+                                            //child age
+                                            child: TextFormField(
+                                                decoration: InputDecoration(
+                                                    label: Text(
+                                                        "child ${index + 1} age"),
+                                                    border:
+                                                        OutlineInputBorder(),
+                                                    enabledBorder:
+                                                        OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide())),
+                                                onChanged: (age) {
+                                                  hotelsProvider.changeCildAge(
+                                                      index: index, age: age);
+                                                }),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
+                                  searchBtn(
+                                      hotelsProvider: hotelsProvider,
+                                      inDate: checkInDateController,
+                                      outDate: checkoutDateController,
+                                      currency: currCont,
+                                      nationality: natCont,
+                                      context: context)
                                 ],
                               ),
                             ),
                             SizedBox(height: heght * 0.02),
-
                             hotelList(heght, wedth, hotelsProvider,
                                 translate: translate,
                                 adultCont: adultCont,
@@ -319,6 +294,79 @@ priceContainer(
           style: black15lato,
         )
       ],
+    ),
+  );
+}
+
+//******search country *******/
+searchBtn(
+    {required HotelsVM hotelsProvider,
+    required TextEditingController inDate,
+    required TextEditingController outDate,
+    required TextEditingController currency,
+    required TextEditingController nationality,
+    required BuildContext context}) {
+  return Align(
+    alignment: Alignment.topRight,
+    child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.pomegranateColor.withOpacity(0.8),
+        ),
+        onPressed: () {
+          hotelsProvider.checkSearchReq(
+              inDate: inDate.text,
+              outDate: outDate.text,
+              currency: currency.text,
+              nationality: nationality.text);
+          hotelsProvider.isHotelClickAct
+              ? hotelsProvider.search(context)
+              : null;
+        },
+        child: Text("Search", style: black20LatoTS)),
+  );
+}
+
+//search text fields////
+//nationality
+Padding searchNatTF(
+    {required double wedth, required TextEditingController natCont}) {
+  return Padding(
+    padding: EdgeInsets.only(right: wedth * 0.005),
+    child: SizedBox(
+      width: wedth * 0.19,
+      height: 40,
+      child: TextFormField(
+          controller: natCont,
+          style: const TextStyle(fontSize: 16.0),
+          decoration: MyThemeData.inputDhintPre(
+              icon: const Icon(
+                Icons.account_circle_outlined,
+                color: Colors.grey,
+                size: 20,
+              ),
+              label: "Nationality")),
+    ),
+  );
+}
+
+//currency
+Padding searchCurrTF(
+    {required double wedth, required TextEditingController currCont}) {
+  return Padding(
+    padding: EdgeInsets.only(right: wedth * 0.005),
+    child: SizedBox(
+      width: wedth * 0.19,
+      height: 40,
+      child: TextFormField(
+          controller: currCont..text = "\$",
+          style: const TextStyle(fontSize: 16.0),
+          decoration: MyThemeData.inputDhintPre(
+              icon: const Icon(
+                Icons.money_off,
+                color: Colors.grey,
+                size: 20,
+              ),
+              label: "Currency")),
     ),
   );
 }
@@ -631,6 +679,7 @@ nextBtn({
       ));
 }
 
+//*******second form**** */
 passportImg(
     {required BuildContext context,
     required AppLocalizations translate,
@@ -658,6 +707,119 @@ passportImg(
           )
         ],
       ),
+    ),
+  );
+}
+
+adultNumTF({
+  required HotelsVM hotelsProvider,
+  required BuildContext context,
+  required double wedth,
+  required double height,
+  required TextEditingController adultCont,
+}) {
+  return Padding(
+    padding: EdgeInsets.only(right: wedth * 0.005, bottom: height * 0.025),
+    child: TextFormField(
+        controller: adultCont,
+        validator: (value) {
+          return hotelsProvider.validateAdultNum(value!, context);
+        },
+        keyboardType: TextInputType.name,
+        minLines: null,
+        style: const TextStyle(fontSize: 16.0),
+        decoration: MyThemeData.inputDhintPre(
+            icon: const Icon(
+              Icons.man,
+              color: Colors.grey,
+              size: 20,
+            ),
+            label: // translate.fullName
+                "adult num")),
+  );
+}
+
+childNumTF({
+  String index = "",
+  required HotelsVM hotelsProvider,
+  required BuildContext context,
+  required double wedth,
+  required double heght,
+  required TextEditingController childCont,
+}) {
+  return Padding(
+    padding: EdgeInsets.only(right: wedth * 0.005, bottom: heght * 0.025),
+    child: TextFormField(
+        controller: childCont,
+        validator: (value) {
+          return hotelsProvider.validateChildNum(value!, context);
+        },
+        onChanged: (value) => hotelsProvider.changeCildNum(num: value),
+        keyboardType: TextInputType.number,
+        minLines: 1,
+        style: const TextStyle(fontSize: 16.0),
+        decoration: MyThemeData.inputDhintPre(
+            icon: const Icon(
+              Icons.boy,
+              color: Colors.grey,
+              size: 20,
+            ),
+            label: // translate.fullName
+                "child num")),
+  );
+}
+
+secondForm({
+  required HotelsVM hotelsProvider,
+  required BuildContext context,
+  required double width,
+  required double height,
+  required TextEditingController childCont,
+  required TextEditingController adultCont,
+  required GlobalKey<FormState> formKey2,
+  required AppLocalizations translate,
+}) {
+  return Form(
+    key: formKey2,
+    child: Column(
+      children: [
+        passportImg(
+            hotelProvider: hotelsProvider,
+            translate: translate,
+            context: context),
+        CustomWidgets.sizedbox15h,
+        //adult num
+        adultNumTF(
+            hotelsProvider: hotelsProvider,
+            context: context,
+            wedth: width,
+            height: height,
+            adultCont: adultCont),
+        //child num
+        childNumTF(
+            hotelsProvider: hotelsProvider,
+            context: context,
+            wedth: width,
+            heght: height,
+            childCont: childCont),
+        //room num
+
+        MaterialButton(
+            onPressed: () {
+              if (formKey2.currentState!.validate()) {
+                print("valid");
+              }
+            },
+            minWidth: width * .2,
+            padding: EdgeInsets.symmetric(
+              vertical: height * .03,
+            ),
+            color: AppColors.pomegranateColor,
+            child: Text(
+              "Save",
+              style: white15lato,
+            )),
+      ],
     ),
   );
 }
@@ -772,158 +934,68 @@ hotelCard(
     required PageController pageCont}) {
   return InkWell(
       onTap: () async {
-        showDialog(
-          context: context,
-          builder: (context) => Dialog(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                //hotel img
-                Expanded(
-                  flex: 3,
-                  child: CustomWidgets.cachedImg(hotel.image!),
-                ),
-                //form
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    child: Column(children: [
-                      exit(context),
-                      //hotel name
-                      hotelName("${translate.welcomeIn} ${hotel.name!}"),
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        height: height * .7,
-                        child: PageView(
-                          physics: const NeverScrollableScrollPhysics(),
-                          controller: pageCont,
-                          children: [
-                            //name num email from date to date
-                            firstForm(
-                                width: width,
-                                context: context,
-                                height: height,
-                                pageCont: pageCont,
-                                translate: translate,
-                                formKey1: formKey1,
-                                nameCont: nameCont,
-                                phoneCont: phoneCont,
-                                emailCont: emailCont,
-                                fromDateCont: fromDateCont,
-                                toDateCont: toDateCont,
-                                hotelsProvider: hotelsProvider),
-                            //passport img , adult num ,child num ,room num ,room type, book btn
-                            Form(
-                              key: formKey2,
-                              child: Column(
+        !hotelsProvider.isHotelClickAct
+            ? null
+            : showDialog(
+                context: context,
+                builder: (context) => Dialog(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      //hotel img
+                      Expanded(
+                        flex: 3,
+                        child: CustomWidgets.cachedImg(hotel.image!),
+                      ),
+                      //form
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: Column(children: [
+                            exit(context),
+                            //hotel name
+                            hotelName("${translate.welcomeIn} ${hotel.name!}"),
+                            Container(
+                              padding: const EdgeInsets.all(10),
+                              height: height * .7,
+                              child: PageView(
+                                physics: const NeverScrollableScrollPhysics(),
+                                controller: pageCont,
                                 children: [
-                                  passportImg(
-                                      hotelProvider: hotelsProvider,
+                                  //name num email from date to date
+                                  firstForm(
+                                      width: width,
+                                      context: context,
+                                      height: height,
+                                      pageCont: pageCont,
                                       translate: translate,
-                                      context: context),
-                                  CustomWidgets.sizedbox15h,
-                                  //adult num
-
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                        right: width * 0.005,
-                                        bottom: height * 0.025),
-                                    child: TextFormField(
-                                        controller: adultCont,
-                                        validator: (value) {
-                                          return hotelsProvider
-                                              .validateAdultNum(
-                                                  value!, context);
-                                        },
-                                        keyboardType: TextInputType.name,
-                                        minLines: null,
-                                        style: const TextStyle(fontSize: 16.0),
-                                        decoration: MyThemeData.inputDhintPre(
-                                            icon: const Icon(
-                                              Icons.man,
-                                              color: Colors.grey,
-                                              size: 20,
-                                            ),
-                                            label: // translate.fullName
-                                                "adult num")),
-                                  ),
-                                  //child num
-
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                        right: width * 0.005,
-                                        bottom: height * 0.025),
-                                    child: TextFormField(
-                                        controller: childCont,
-                                        validator: (value) {
-                                          return hotelsProvider
-                                              .validateChildNum(
-                                                  value!, context);
-                                        },
-                                        keyboardType: TextInputType.name,
-                                        minLines: null,
-                                        style: const TextStyle(fontSize: 16.0),
-                                        decoration: MyThemeData.inputDhintPre(
-                                            icon: const Icon(
-                                              Icons.boy,
-                                              color: Colors.grey,
-                                              size: 20,
-                                            ),
-                                            label: // translate.fullName
-                                                "child num")),
-                                  ),
-                                  //room num
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                        right: width * 0.005,
-                                        bottom: height * 0.025),
-                                    child: TextFormField(
-                                        controller: roomNumCont,
-                                        validator: (value) {
-                                          return hotelsProvider.validateName(
-                                              value!, context);
-                                        },
-                                        keyboardType: TextInputType.name,
-                                        minLines: null,
-                                        style: const TextStyle(fontSize: 16.0),
-                                        decoration: MyThemeData.inputDhintPre(
-                                            icon: const Icon(
-                                              Icons.house_siding_rounded,
-                                              color: Colors.grey,
-                                              size: 20,
-                                            ),
-                                            label: // translate.fullName
-                                                "room num")),
-                                  ),
-
-                                  MaterialButton(
-                                      onPressed: () {
-                                        if (formKey1.currentState!.validate()) {
-                                          print("valid");
-                                        }
-                                      },
-                                      minWidth: width * .2,
-                                      padding: EdgeInsets.symmetric(
-                                        vertical: height * .03,
-                                      ),
-                                      color: AppColors.pomegranateColor,
-                                      child: Text(
-                                        "Save",
-                                        style: white15lato,
-                                      )),
+                                      formKey1: formKey1,
+                                      nameCont: nameCont,
+                                      phoneCont: phoneCont,
+                                      emailCont: emailCont,
+                                      fromDateCont: fromDateCont,
+                                      toDateCont: toDateCont,
+                                      hotelsProvider: hotelsProvider),
+                                  //passport img , adult num ,child num ,room num ,room type, book btn
+                                  secondForm(
+                                      hotelsProvider: hotelsProvider,
+                                      context: context,
+                                      width: width,
+                                      height: height,
+                                      childCont: childCont,
+                                      adultCont: adultCont,
+                                      formKey2: formKey2,
+                                      translate: translate)
                                 ],
                               ),
                             )
-                          ],
+                          ]),
                         ),
                       )
-                    ]),
+                    ],
                   ),
-                )
-              ],
-            ),
-          ),
-        );
+                ),
+              );
       },
       child: hotelWidget(width: width, height: height, hotel: hotel));
 }
