@@ -1,22 +1,29 @@
 import 'dart:developer';
-import "dart:io";
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:http/http.dart';
 import 'package:image_picker_web/image_picker_web.dart';
+import 'package:travelagency/Helper/text_style.dart';
+import 'package:travelagency/Screens/Widgets/dialogs.dart';
 import 'package:travelagency/models/hotels.dart';
 import 'package:travelagency/services/hotels.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
+// ignore: depend_on_referenced_packages
 import 'package:http_parser/http_parser.dart';
+
+import '../Helper/Colors.dart';
 
 class HotelsVM extends ChangeNotifier {
   late AppLocalizations translate;
 
   bool isLoading = false;
   List<HotelM> hotels = [];
+  List<HotelM> searchResults = [];
   //search with country
   List<String> countries = [
-    "United States of Emirates",
+    "UAE", //"United States of Emirates",
     "Turkey",
     "Iran",
     "Egypt",
@@ -127,6 +134,19 @@ class HotelsVM extends ChangeNotifier {
   void changeSelectedCountry(String country) {
     selectedCountry = country;
     notifyListeners();
+  }
+
+  void search(BuildContext context) {
+    changeIsLoading(true);
+    searchResults = [];
+    for (var hotel in hotels) {
+      log(hotel.locationEn!);
+      if (hotel.locationEn == selectedCountry) {
+        searchResults.add(hotel);
+      }
+    }
+    searchResults.isEmpty ? Dialogs.notFound(context) : null;
+    changeIsLoading(false);
   }
 
   /*** */

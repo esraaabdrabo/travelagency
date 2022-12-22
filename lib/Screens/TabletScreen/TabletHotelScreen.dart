@@ -25,7 +25,7 @@ class _TabletHotelScreenState extends State<TabletHotelScreen> {
     List<Widget> roomWidgets = List.generate(
         roomController.RoomCount.value.toInt(),
         (index) => RoomWidget(
-              roomindex: index + 1,
+//roomindex: index + 1,
               wedth: wedth,
               heght: heght,
             ));

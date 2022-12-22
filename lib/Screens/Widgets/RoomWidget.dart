@@ -8,10 +8,13 @@ import '../../Helper/Colors.dart';
 
 // ignore: must_be_immutable
 class RoomWidget extends StatelessWidget {
-  final int? roomindex;
+  //final int? roomindex;
   double wedth, heght;
   RoomWidget(
-      {super.key, this.roomindex, required this.heght, required this.wedth});
+      {super.key //,required this.roomindex
+      ,
+      required this.heght,
+      required this.wedth});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +32,7 @@ class RoomWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text("ROOM$roomindex",
+                  Text("ROOM",
                       style: GoogleFonts.lato(
                           fontSize: 32,
                           fontWeight: FontWeight.w900,
@@ -103,14 +106,14 @@ class RoomWidget extends StatelessWidget {
                       : Container(
                           color: Colors.white,
                         ),
-                  SizedBox(width: wedth * 0.009),
+                  /*    SizedBox(width: wedth * 0.009),
                   IconButton(
                       onPressed: () {},
                       icon: const Icon(
                         Icons.delete,
                         color: Colors.red,
                         size: 32,
-                      ))
+                      ))*/
                 ],
               )),
         ),

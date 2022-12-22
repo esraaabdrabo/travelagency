@@ -45,7 +45,7 @@ class TravelAgencyApp extends StatelessWidget {
           title: "Travel Agency",
           home: const ResponsiveLayout(
               desktopBody: DesktopHotelScreen(),
-              tabletBody: TabletHotelScreen(),
+              tabletBody: DesktopHotelScreen(),
               mobileBody: MobileHotelScreen()),
           getPages: [
             GetPage(name: "/", page: () => const DesktopRegisterScreen()),

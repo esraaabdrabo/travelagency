@@ -1,17 +1,11 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker_web/image_picker_web.dart';
 import 'package:provider/provider.dart';
-import 'package:travelagency/Controller/RoomController.dart';
 import 'package:travelagency/Helper/my_theme.dart';
 import 'package:travelagency/Helper/text_style.dart';
 import 'package:travelagency/Screens/Widgets/widgets.dart';
 import 'package:travelagency/models/hotels.dart';
 import 'package:travelagency/view_model/hotels.dart';
-import "package:http/http.dart" as http;
 import '../../Helper/Colors.dart';
 import '../Widgets/Drawer.dart';
 import '../Widgets/RoomWidget.dart';
@@ -25,7 +19,7 @@ class DesktopHotelScreen extends StatefulWidget {
 }
 
 class _desktopHotelScreenState extends State<DesktopHotelScreen> {
-  final roomController = Get.put(RoomController());
+  // final roomController = Get.put(RoomController());
 
   final formKey1 = GlobalKey<FormState>();
   final formKey2 = GlobalKey<FormState>();
@@ -59,13 +53,13 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
     AppLocalizations translate = AppLocalizations.of(context)!;
     var wedth = MediaQuery.of(context).size.width; //1536
     var heght = MediaQuery.of(context).size.height;
-    List<Widget> roomWidgets = List.generate(
+    /* List<Widget> roomWidgets = List.generate(
         roomController.RoomCount.value.toInt(),
         (index) => RoomWidget(
-              roomindex: index + 1,
+              // roomindex: index + 1,
               heght: heght,
               wedth: wedth,
-            ));
+            ));*/
 
     return ChangeNotifierProvider(
         create: (context) => HotelsVM(),
@@ -88,22 +82,6 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                           children: [
                             CustomWidgets.sizedbox15h,
                             Text("HOTEL", style: red36lato),
-
-                            hotelList(heght, wedth, hotelsProvider,
-                                translate: translate,
-                                adultCont: adultCont,
-                                childCont: childCont,
-                                formKey2: formKey2,
-                                roomNumCont: roomNumCont,
-                                pageCont: pageCont,
-                                formKey1: formKey1,
-                                nameCont: nameCont,
-                                phoneCont: phoneCont,
-                                emailCont: emailCont,
-                                fromDateCont: checkInDateController,
-                                toDateCont: checkoutDateController),
-                            SizedBox(height: heght * 0.011),
-                            sectionDivder,
 
                             //form fileds
                             Padding(
@@ -161,12 +139,53 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                                       //from date
                                       Padding(
                                         padding: EdgeInsets.only(
-                                            right: wedth * 0.005),
+                                            right: wedth * 0.005,
+                                            bottom: heght * 0.025),
                                         child: SizedBox(
-                                          width: wedth * 0.19,
                                           height: 40,
+                                          width: wedth * 0.19,
+                                          child: TextFormField(
+                                              // controller: fromDateCont,
+                                              validator: (value) {
+                                                return hotelsProvider
+                                                    .validateDate(
+                                                        value!, context);
+                                              },
+                                              onTap: () async {
+                                                var date = await showDatePicker(
+                                                    context: context,
+                                                    initialDate: DateTime.now(),
+                                                    firstDate: DateTime(2000),
+                                                    lastDate: DateTime(2030));
+                                                // fromDateCont.text = date.toString().substring(0, 10);
+                                              },
+                                              style: const TextStyle(
+                                                  fontSize: 16.0),
+                                              decoration:
+                                                  MyThemeData.inputDhintPre(
+                                                      icon: const Icon(
+                                                        Icons.date_range,
+                                                        color: Colors.grey,
+                                                        size: 20,
+                                                      ),
+                                                      label: translate
+                                                          .checkInDate)),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            right: wedth * 0.005,
+                                            bottom: heght * 0.025),
+                                        child: SizedBox(
+                                          height: 40,
+                                          width: wedth * 0.19,
                                           child: TextFormField(
                                               controller: checkInDateController,
+                                              validator: (value) {
+                                                return hotelsProvider
+                                                    .validateDate(
+                                                        value!, context);
+                                              },
                                               onTap: () async {
                                                 var date = await showDatePicker(
                                                     context: context,
@@ -178,7 +197,6 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                                                         .toString()
                                                         .substring(0, 10);
                                               },
-                                              onChanged: (String keySearch) {},
                                               style: const TextStyle(
                                                   fontSize: 16.0),
                                               decoration:
@@ -188,18 +206,36 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                                                         color: Colors.grey,
                                                         size: 20,
                                                       ),
-                                                      label: "Check In Date")),
+                                                      label: translate
+                                                          .checkOutDate)),
                                         ),
                                       ),
-                                      //to date
                                       Padding(
                                         padding: EdgeInsets.only(
-                                            right: wedth * 0.005),
+                                            right: wedth * 0.005,
+                                            bottom: heght * 0.025),
                                         child: SizedBox(
-                                          width: wedth * 0.19,
                                           height: 40,
+                                          width: wedth * 0.19,
                                           child: TextFormField(
-                                              onChanged: (String keySearch) {},
+                                              controller:
+                                                  checkoutDateController,
+                                              validator: (value) {
+                                                return hotelsProvider
+                                                    .validateDate(
+                                                        value!, context);
+                                              },
+                                              onTap: () async {
+                                                var date = await showDatePicker(
+                                                    context: context,
+                                                    initialDate: DateTime.now(),
+                                                    firstDate: DateTime(2000),
+                                                    lastDate: DateTime(2030));
+                                                checkoutDateController.text =
+                                                    date
+                                                        .toString()
+                                                        .substring(0, 10);
+                                              },
                                               style: const TextStyle(
                                                   fontSize: 16.0),
                                               decoration:
@@ -209,66 +245,45 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                                                         color: Colors.grey,
                                                         size: 20,
                                                       ),
-                                                      label: "Check Out Date")),
+                                                      label: translate
+                                                          .checkOutDate)),
                                         ),
                                       ),
                                     ],
                                   ),
+                                  RoomWidget(
+                                    heght: heght,
+                                    wedth: wedth,
+                                  ),
+                                  ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: AppColors
+                                            .pomegranateColor
+                                            .withOpacity(0.8),
+                                      ),
+                                      onPressed: () {
+                                        hotelsProvider.search(context);
+                                      },
+                                      child:
+                                          Text("Search", style: black15lato)),
                                 ],
                               ),
                             ),
                             SizedBox(height: heght * 0.02),
-                            //room1 room2
-                            SizedBox(
-                              height: heght * 0.32,
-                              child: SizedBox(
-                                height: (heght * 0.075) *
-                                    roomController.RoomCount.value.toDouble(),
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: heght * 0.006),
-                                  child: ListView(
-                                    scrollDirection: Axis.vertical,
-                                    children: roomWidgets,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            //add room
-                            Row(
-                              children: [
-                                SizedBox(
-                                  width: 160,
-                                  height: 40,
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: AppColors
-                                          .pomegranateColor
-                                          .withOpacity(0.8),
-                                    ),
-                                    onPressed: () {
-                                      roomController.RoomCount.value =
-                                          roomController.RoomCount.value + 1;
-                                      setState(() {});
-                                    },
-                                    child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          Text(
-                                            "Add Room",
-                                            style: GoogleFonts.lato(),
-                                          ),
-                                          const Icon(Icons.add)
-                                        ]),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            CustomWidgets.sizedbox15h,
-                            sectionDivder,
+
+                            hotelList(heght, wedth, hotelsProvider,
+                                translate: translate,
+                                adultCont: adultCont,
+                                childCont: childCont,
+                                formKey2: formKey2,
+                                roomNumCont: roomNumCont,
+                                pageCont: pageCont,
+                                formKey1: formKey1,
+                                nameCont: nameCont,
+                                phoneCont: phoneCont,
+                                emailCont: emailCont,
+                                fromDateCont: checkInDateController,
+                                toDateCont: checkoutDateController),
                           ],
                         ),
                       ),
@@ -395,14 +410,18 @@ hotelList(double heght, double wedth, HotelsVM hotelsProvider,
     required TextEditingController roomNumCont,
     required PageController pageCont}) {
   return SizedBox(
-      height: heght * .5,
+      height: heght * .45,
       child: ListView.builder(
-          itemCount: hotelsProvider.hotels.length,
+          itemCount: hotelsProvider.searchResults.isEmpty
+              ? hotelsProvider.hotels.length
+              : hotelsProvider.searchResults.length,
           itemBuilder: (context, index) => hotelCard(
               width: wedth,
               context: context,
               height: heght,
-              hotel: hotelsProvider.hotels[index],
+              hotel: hotelsProvider.searchResults.isEmpty
+                  ? hotelsProvider.hotels[index]
+                  : hotelsProvider.searchResults[index],
               translate: translate,
               formKey1: formKey1,
               formKey2: formKey2,
