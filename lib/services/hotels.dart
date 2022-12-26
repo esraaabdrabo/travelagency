@@ -1,13 +1,14 @@
 // ignore: file_names
 // ignore_for_file: avoid_print, unused_local_variable
 
-import 'dart:convert';
 import 'dart:developer';
-
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:travelagency/Helper/constants.dart';
-import 'package:travelagency/models/hotels.dart';
-import 'package:uuid/uuid.dart';
+
+import '../models/hotel/hotels.dart';
+import '../models/hotel/reserve_hotel.dart';
 
 class HotelsSV {
   Future<List<HotelM>> getAllHotels() async {
@@ -99,30 +100,37 @@ class HotelsSV {
     return hotels;
   }
 
-  Future<void> reserveHotel() async {
-    var body = {
-      "id": Uuid().v4(),
-      "hotelId": "e4c7efa2-cefb-4be2-bcfc-5f4ec64e3d46",
-      "userId": "3e4ba9aa-878e-4f2d-a780-3c734f03650a",
-      "fullName": "test ",
-      "phoneNumber": "07707654321",
-      "email": "test@Gmail.com",
-      "passportImage": " ",
-      "fromDate": "2022-12-19T00:00:00",
-      "toDate": "2022-12-22T00:00:00",
-      "isDone": false,
-      "note": "esraa",
-      "createdDate": "2022-12-19T00:00:00",
-      "cancelledDate": "0001-01-01T00:00:00",
-      "isCancelled": false
-    };
-    var headres = {
-      'Content-type': 'application/json',
-      'Accept': 'application/json'
-    };
-    log("message");
-    var response = await http.post(Uri.parse(Constants.reserveHotel),
-        body: jsonEncode(body), headers: headres);
-    log(response.statusCode.toString());
+  Future<bool> reserveHotel(
+    ReserveHotelM data,
+    Uint8List img,
+  ) async {
+    bool isSuccess = false;
+    log("will reserve hotel from hotelsv");
+    var response = await http.post(
+      Uri.parse(Constants.reserveHotel),
+      body: data.toJson(),
+    );
+    if (response.statusCode == 200) {
+      log("reservation in hotels done");
+      uploadImg(img, data.passportImage);
+      isSuccess = true;
+    } else {
+      log("error in reserve hotel");
+      log(response.statusCode.toString());
+    }
+    return isSuccess;
+  }
+
+  void uploadImg(Uint8List img, String name) {
+    FirebaseStorage storage = FirebaseStorage.instance;
+    var ref = storage.ref("Passports/").child("$name.jpg");
+    try {
+      ref.putData(img).then((p0) {
+        log("image uploaded");
+      });
+    } on FirebaseException catch (e) {
+      log("error in uploaing image");
+      log(e.toString());
+    }
   }
 }

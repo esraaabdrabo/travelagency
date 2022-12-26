@@ -12,13 +12,16 @@ abstract class Constants {
 
   ///********************visa************************ */
   static var allvisaURL =
-      "http://traveelagency-001-site1.ftempurl.com/travelagencyapi/Visa";
+      "http://traveelagency-001-site1.ftempurl.com/travelagencyapi/Visa/GetCountriesWithVisaType";
   static var visaTypeCountry =
       "http://traveelagency-001site1.ftempurl.com/travelagencyapi/Visa/GetVisaTypeByCountry?country=";
 
   static var visaConditionCountry =
-      "http://traveelagency-001-site1.ftempurl.com/travelagencyapi/Visa/GetVisaConditionBasedOnCountry?country=";
+      "http://traveelagency-001-site1.ftempurl.com/travelagencyapi/Visa/GetVisaCondition?";
 
   static var visaCondCountCategory =
       "http://traveelagency-001-site1.ftempurl.com/travelagencyapi/Visa/GetVisaConditionBasedOnCountryAndCategory?"; //country=Turkey&Category=requirments;
+
+  static var visaReserveURL =
+      "http://traveelagency-001-site1.ftempurl.com/travelagencyapi/VisaReserve/reservevisa";
 }

@@ -1,12 +1,14 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:travelagency/Helper/my_theme.dart';
 import 'package:travelagency/Helper/text_style.dart';
+import 'package:travelagency/Screens/Widgets/dialogs.dart';
 import 'package:travelagency/Screens/Widgets/widgets.dart';
-import 'package:travelagency/models/hotels.dart';
 import 'package:travelagency/view_model/hotels.dart';
 import '../../Helper/Colors.dart';
+import '../../models/hotel/hotels.dart';
 import '../Widgets/Drawer.dart';
 import '../Widgets/RoomWidget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -32,6 +34,8 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
   TextEditingController nameCont = TextEditingController();
   TextEditingController phoneCont = TextEditingController();
   TextEditingController emailCont = TextEditingController();
+  TextEditingController noteCont = TextEditingController();
+
   TextEditingController checkInDateController = TextEditingController();
   TextEditingController checkoutDateController = TextEditingController();
   //*second form soctrollers*//
@@ -56,13 +60,6 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
     AppLocalizations translate = AppLocalizations.of(context)!;
     var wedth = MediaQuery.of(context).size.width; //1536
     var heght = MediaQuery.of(context).size.height;
-    /* List<Widget> roomWidgets = List.generate(
-        roomController.RoomCount.value.toInt(),
-        (index) => RoomWidget(
-              // roomindex: index + 1,
-              heght: heght,
-              wedth: wedth,
-            ));*/
 
     return ChangeNotifierProvider(
         create: (context) => HotelsVM(),
@@ -82,12 +79,25 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                       Expanded(
                         flex: 4,
                         child: ListView(
+                          physics: NeverScrollableScrollPhysics(),
                           children: [
-                            CustomWidgets.sizedbox15h,
                             Text("HOTEL", style: red36lato),
                             //form fileds
-                            Padding(
-                              padding: const EdgeInsets.all(15.0),
+                            Container(
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: wedth * .009),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                boxShadow: const [
+                                  BoxShadow(
+                                      color: Color.fromARGB(118, 0, 0, 0),
+                                      offset: Offset(-2, 2),
+                                      blurRadius: 2),
+                                  BoxShadow(color: Colors.white),
+                                ],
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 15.0, vertical: 5),
                               child: Column(
                                 children: [
                                   //search with country
@@ -97,18 +107,20 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      searchNatTF(
-                                          wedth: wedth, natCont: natCont),
-                                      searchCurrTF(
-                                          wedth: wedth, currCont: currCont),
+                                      Expanded(
+                                        child: searchNatTF(
+                                            wedth: wedth, natCont: natCont),
+                                      ),
+                                      Expanded(
+                                        child: searchCurrTF(
+                                            wedth: wedth, currCont: currCont),
+                                      ),
                                       //from date
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                          right: wedth * 0.005,
-                                        ),
-                                        child: SizedBox(
-                                          height: 40,
-                                          width: wedth * 0.15,
+                                      Expanded(
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                            right: wedth * 0.005,
+                                          ),
                                           child: TextFormField(
                                               controller: checkInDateController,
                                               validator: (value) {
@@ -138,16 +150,14 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                                                         size: 20,
                                                       ),
                                                       label: translate
-                                                          .checkOutDate)),
+                                                          .checkInDate)),
                                         ),
                                       ),
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                          right: wedth * 0.005,
-                                        ),
-                                        child: SizedBox(
-                                          height: 40,
-                                          width: wedth * 0.15,
+                                      Expanded(
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                            right: wedth * 0.005,
+                                          ),
                                           child: TextFormField(
                                               controller:
                                                   checkoutDateController,
@@ -183,7 +193,7 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                                     ],
                                   ),
                                   CustomWidgets.sizedbox15h,
-                                  Row(
+                                  /*          Row(
                                     children: [
                                       SizedBox(
                                         width: 100,
@@ -234,14 +244,36 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                                       ),
                                     ],
                                   ),
-
-                                  searchBtn(
-                                      hotelsProvider: hotelsProvider,
-                                      inDate: checkInDateController,
-                                      outDate: checkoutDateController,
-                                      currency: currCont,
-                                      nationality: natCont,
-                                      context: context)
+                            */
+                                  SizedBox(
+                                      height: 100,
+                                      child: ListView.builder(
+                                        itemCount: hotelsProvider.rooms.length,
+                                        itemBuilder: (context, roomIndex) =>
+                                            RoomWidget(
+                                                index: roomIndex,
+                                                hotelsProvider: hotelsProvider,
+                                                heght: heght,
+                                                wedth: wedth),
+                                      )),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      addRoom(
+                                          hotelsProvider: hotelsProvider,
+                                          context: context),
+                                      SizedBox(
+                                        width: wedth * .005,
+                                      ),
+                                      searchBtn(
+                                          hotelsProvider: hotelsProvider,
+                                          inDate: checkInDateController,
+                                          outDate: checkoutDateController,
+                                          currency: currCont,
+                                          nationality: natCont,
+                                          context: context),
+                                    ],
+                                  )
                                 ],
                               ),
                             ),
@@ -255,6 +287,7 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                                 pageCont: pageCont,
                                 formKey1: formKey1,
                                 nameCont: nameCont,
+                                noteCont: noteCont,
                                 phoneCont: phoneCont,
                                 emailCont: emailCont,
                                 fromDateCont: checkInDateController,
@@ -276,7 +309,7 @@ var sectionDivder = const Divider(
 priceContainer(
     {required double width, required String price, required String roomType}) {
   return Container(
-    width: width * .07,
+    width: 80, // width * .07,
     margin: EdgeInsets.only(right: width * .009),
     padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
     decoration: BoxDecoration(
@@ -308,10 +341,12 @@ searchBtn(
     required BuildContext context}) {
   return Align(
     alignment: Alignment.topRight,
-    child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.pomegranateColor.withOpacity(0.8),
-        ),
+    child: MaterialButton(
+        elevation: 0,
+        hoverColor: Colors.black,
+        color: AppColors.pomegranateColor.withOpacity(0.8),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
         onPressed: () {
           hotelsProvider.checkSearchReq(
               inDate: inDate.text,
@@ -320,9 +355,26 @@ searchBtn(
               nationality: nationality.text);
           hotelsProvider.isHotelClickAct
               ? hotelsProvider.search(context)
-              : null;
+              : Dialogs.onlyTextContent(
+                  context, "Please fill the required informations");
         },
-        child: Text("Search", style: black20LatoTS)),
+        child: Text("Search", style: white15lato)),
+  );
+}
+
+addRoom({required HotelsVM hotelsProvider, required BuildContext context}) {
+  return Align(
+    alignment: Alignment.topRight,
+    child: MaterialButton(
+        elevation: 0,
+        hoverColor: Colors.black,
+        color: AppColors.grayColor.withOpacity(.4),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+        onPressed: () {
+          hotelsProvider.addRoom(context);
+        },
+        child: Text("Add Room", style: white15lato)),
   );
 }
 
@@ -332,20 +384,16 @@ Padding searchNatTF(
     {required double wedth, required TextEditingController natCont}) {
   return Padding(
     padding: EdgeInsets.only(right: wedth * 0.005),
-    child: SizedBox(
-      width: wedth * 0.19,
-      height: 40,
-      child: TextFormField(
-          controller: natCont,
-          style: const TextStyle(fontSize: 16.0),
-          decoration: MyThemeData.inputDhintPre(
-              icon: const Icon(
-                Icons.account_circle_outlined,
-                color: Colors.grey,
-                size: 20,
-              ),
-              label: "Nationality")),
-    ),
+    child: TextFormField(
+        controller: natCont,
+        style: const TextStyle(fontSize: 16.0),
+        decoration: MyThemeData.inputDhintPre(
+            icon: const Icon(
+              Icons.account_circle_outlined,
+              color: Colors.grey,
+              size: 20,
+            ),
+            label: "Nationality")),
   );
 }
 
@@ -354,20 +402,16 @@ Padding searchCurrTF(
     {required double wedth, required TextEditingController currCont}) {
   return Padding(
     padding: EdgeInsets.only(right: wedth * 0.005),
-    child: SizedBox(
-      width: wedth * 0.19,
-      height: 40,
-      child: TextFormField(
-          controller: currCont..text = "\$",
-          style: const TextStyle(fontSize: 16.0),
-          decoration: MyThemeData.inputDhintPre(
-              icon: const Icon(
-                Icons.money_off,
-                color: Colors.grey,
-                size: 20,
-              ),
-              label: "Currency")),
-    ),
+    child: TextFormField(
+        controller: currCont..text = "\$",
+        style: const TextStyle(fontSize: 16.0),
+        decoration: MyThemeData.inputDhintPre(
+            icon: const Icon(
+              Icons.money_off,
+              color: Colors.grey,
+              size: 20,
+            ),
+            label: "Currency")),
   );
 }
 
@@ -451,6 +495,7 @@ hotelList(double heght, double wedth, HotelsVM hotelsProvider,
     required TextEditingController nameCont,
     required TextEditingController phoneCont,
     required TextEditingController emailCont,
+    required TextEditingController noteCont,
     required TextEditingController fromDateCont,
     required TextEditingController toDateCont,
     required TextEditingController adultCont,
@@ -476,6 +521,7 @@ hotelList(double heght, double wedth, HotelsVM hotelsProvider,
               nameCont: nameCont,
               phoneCont: phoneCont,
               emailCont: emailCont,
+              noteCont: noteCont,
               fromDateCont: fromDateCont,
               toDateCont: toDateCont,
               adultCont: adultCont,
@@ -572,6 +618,35 @@ emailTF({
               size: 20,
             ),
             label: translate.email)),
+  );
+}
+
+//email
+noteTF({
+  required TextEditingController noteCont,
+  required HotelsVM hotelsProvider,
+  required double width,
+  required double height,
+  required BuildContext context,
+  required AppLocalizations translate,
+}) {
+  return Padding(
+    padding: EdgeInsets.only(right: width * 0.005, bottom: height * 0.025),
+    child: TextFormField(
+        /*  validator: (value) {
+          return hotelsProvider.validateEmail(value!, context);
+        },*/
+        controller: noteCont,
+        keyboardType: TextInputType.emailAddress,
+        minLines: null,
+        style: const TextStyle(fontSize: 16.0),
+        decoration: MyThemeData.inputDhintPre(
+            icon: const Icon(
+              Icons.note_outlined,
+              color: Colors.grey,
+              size: 20,
+            ),
+            label: "note")),
   );
 }
 
@@ -686,7 +761,7 @@ passportImg(
     required HotelsVM hotelProvider}) {
   return InkWell(
     onTap: () async {
-      hotelProvider.test();
+      hotelProvider.pickImg();
     },
     child: Container(
       padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 8),
@@ -710,7 +785,7 @@ passportImg(
     ),
   );
 }
-
+/*
 adultNumTF({
   required HotelsVM hotelsProvider,
   required BuildContext context,
@@ -823,9 +898,9 @@ secondForm({
     ),
   );
 }
-
+*/
 //name num email from-date to-date
-firstForm({
+/*firstForm({
   required double width,
   required BuildContext context,
   required double height,
@@ -890,26 +965,12 @@ firstForm({
     ),
   );
 }
-
+*/
 //***reserve dialog********* */
-//exit btn
-exit(BuildContext context) {
-  return Align(
-    alignment: Alignment.topRight,
-    child: //exit btn
-        InkWell(
-      onTap: () => Navigator.pop(context),
-      child: const Padding(
-        padding: EdgeInsets.all(5),
-        child: Icon(Icons.cancel),
-      ),
-    ),
-  );
-}
 
-hotelName(String title) {
+hotelName(String title, double height, double width) {
   return Padding(
-    padding: const EdgeInsets.only(left: 15.0, bottom: 20),
+    padding: EdgeInsets.only(bottom: height * .05),
     child: Text(title, textAlign: TextAlign.center, style: black20LatoWShadow),
   );
 }
@@ -930,70 +991,186 @@ hotelCard(
     required TextEditingController adultCont,
     required TextEditingController childCont,
     required TextEditingController roomNumCont,
+    required TextEditingController noteCont,
     required HotelsVM hotelsProvider,
     required PageController pageCont}) {
   return InkWell(
       onTap: () async {
         !hotelsProvider.isHotelClickAct
-            ? null
+            ? Dialogs.onlyTextContent(
+                context, "Please fill the required informations")
             : showDialog(
                 context: context,
-                builder: (context) => Dialog(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      //hotel img
-                      Expanded(
-                        flex: 3,
-                        child: CustomWidgets.cachedImg(hotel.image!),
-                      ),
-                      //form
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: Column(children: [
-                            exit(context),
-                            //hotel name
-                            hotelName("${translate.welcomeIn} ${hotel.name!}"),
-                            Container(
-                              padding: const EdgeInsets.all(10),
-                              height: height * .7,
-                              child: PageView(
-                                physics: const NeverScrollableScrollPhysics(),
-                                controller: pageCont,
-                                children: [
-                                  //name num email from date to date
-                                  firstForm(
-                                      width: width,
-                                      context: context,
-                                      height: height,
-                                      pageCont: pageCont,
-                                      translate: translate,
-                                      formKey1: formKey1,
-                                      nameCont: nameCont,
-                                      phoneCont: phoneCont,
-                                      emailCont: emailCont,
-                                      fromDateCont: fromDateCont,
-                                      toDateCont: toDateCont,
-                                      hotelsProvider: hotelsProvider),
-                                  //passport img , adult num ,child num ,room num ,room type, book btn
-                                  secondForm(
-                                      hotelsProvider: hotelsProvider,
-                                      context: context,
-                                      width: width,
-                                      height: height,
-                                      childCont: childCont,
-                                      adultCont: adultCont,
-                                      formKey2: formKey2,
-                                      translate: translate)
-                                ],
-                              ),
-                            )
-                          ]),
-                        ),
-                      )
-                    ],
-                  ),
+                builder: (context) => StatefulBuilder(
+                  builder: (BuildContext context, setState) {
+                    return hotelsProvider.isLoading
+                        ? CustomWidgets.loading
+                        : Dialog(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                //hotel img
+                                Expanded(
+                                  flex: 3,
+                                  child: CustomWidgets.cachedImg(hotel.image!),
+                                ),
+                                //form
+                                Expanded(
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: width * .025,
+                                        vertical: height * .005),
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            CustomWidgets.exit(context),
+                                            Form(
+                                              key: formKey1,
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  //hotel name
+                                                  hotelName(
+                                                      "${translate.welcomeIn} ${hotel.name!}",
+                                                      height,
+                                                      width),
+
+                                                  fullNameTf(
+                                                      nameCont: nameCont,
+                                                      hotelsProvider:
+                                                          hotelsProvider,
+                                                      width: width,
+                                                      height: height,
+                                                      context: context,
+                                                      translate:
+                                                          translate), //phone num
+                                                  phoneTF(
+                                                      phoneCont: phoneCont,
+                                                      hotelsProvider:
+                                                          hotelsProvider,
+                                                      width: width,
+                                                      height: height,
+                                                      context: context,
+                                                      translate: translate),
+                                                  emailTF(
+                                                      emailCont: emailCont,
+                                                      hotelsProvider:
+                                                          hotelsProvider,
+                                                      width: width,
+                                                      height: height,
+                                                      context: context,
+                                                      translate:
+                                                          translate), //from date
+                                                  noteTF(
+                                                      noteCont: noteCont,
+                                                      hotelsProvider:
+                                                          hotelsProvider,
+                                                      width: width,
+                                                      height: height,
+                                                      context: context,
+                                                      translate: translate),
+                                                  passportImg(
+                                                      hotelProvider:
+                                                          hotelsProvider,
+                                                      translate: translate,
+                                                      context: context),
+                                                  CustomWidgets.sizedbox15h,
+                                                  MaterialButton(
+                                                      onPressed: () async {
+                                                        if (formKey1
+                                                                .currentState!
+                                                                .validate() &&
+                                                            hotelsProvider
+                                                                    .img !=
+                                                                null) {
+                                                          var result = hotelsProvider
+                                                              .reserveHotel(
+                                                                  hotelId: hotel
+                                                                      .guid!,
+                                                                  fullName:
+                                                                      nameCont
+                                                                          .text,
+                                                                  phoneNumber:
+                                                                      phoneCont
+                                                                          .text,
+                                                                  email:
+                                                                      emailCont
+                                                                          .text,
+                                                                  fromDate:
+                                                                      fromDateCont
+                                                                          .text,
+                                                                  toDate:
+                                                                      toDateCont
+                                                                          .text,
+                                                                  note: noteCont
+                                                                      .text);
+                                                          setState(() {});
+                                                          if (await result) {
+                                                            Navigator.pop(
+                                                                context);
+                                                          }
+                                                        }
+                                                      },
+                                                      minWidth: width * .2,
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                        vertical: height * .03,
+                                                      ),
+                                                      color: AppColors
+                                                          .pomegranateColor,
+                                                      child: Text(
+                                                        "Save",
+                                                        style: white15lato,
+                                                      )),
+                                                ],
+                                              ),
+                                            )
+                                            /*      Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 15),
+                                height: height * .6,
+                                child: PageView(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  controller: pageCont,
+                                  children: [
+                                    //name num email from date to date
+                                    firstForm(
+                                        width: width,
+                                        context: context,
+                                        height: height,
+                                        pageCont: pageCont,
+                                        translate: translate,
+                                        formKey1: formKey1,
+                                        nameCont: nameCont,
+                                        phoneCont: phoneCont,
+                                        emailCont: emailCont,
+                                        fromDateCont: fromDateCont,
+                                        toDateCont: toDateCont,
+                                        hotelsProvider: hotelsProvider),
+                                    //passport img , adult num ,child num ,room num ,room type, book btn
+                                    secondForm(
+                                        hotelsProvider: hotelsProvider,
+                                        context: context,
+                                        width: width,
+                                        height: height,
+                                        childCont: childCont,
+                                        adultCont: adultCont,
+                                        formKey2: formKey2,
+                                        translate: translate)
+                                  ],
+                                ),
+                              )
+                                              */
+                                          ]),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          );
+                  },
                 ),
               );
       },

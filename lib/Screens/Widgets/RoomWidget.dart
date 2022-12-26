@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:travelagency/Controller/RoomController.dart';
 import 'package:travelagency/Screens/Widgets/ChildWidget.dart';
 
 import '../../Helper/Colors.dart';
+import '../../view_model/hotels.dart';
 
 // ignore: must_be_immutable
 class RoomWidget extends StatelessWidget {
-  //final int? roomindex;
+  HotelsVM hotelsProvider;
+  int index;
   double wedth, heght;
   RoomWidget(
-      {super.key //,required this.roomindex
-      ,
+      {super.key,
+      required this.index,
+      required this.hotelsProvider,
       required this.heght,
       required this.wedth});
 
   @override
   Widget build(BuildContext context) {
-    final roomController = Get.put(RoomController());
     return Padding(
       padding: EdgeInsets.symmetric(vertical: heght * 0.008),
       child: Container(
@@ -27,96 +28,129 @@ class RoomWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(8.0),
         ),
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: heght * 0.008),
-          child: Obx(() => Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text("ROOM",
-                      style: GoogleFonts.lato(
-                          fontSize: 32,
-                          fontWeight: FontWeight.w900,
-                          color: AppColors.grayColor)),
-                  SizedBox(width: wedth * 0.005),
-                  SizedBox(
-                    width: wedth * 0.105,
-                    height: heght * 0.05,
-                    child: DropdownButtonFormField(
-                      isExpanded: true,
-                      decoration: const InputDecoration(
-                        labelText: 'Adult',
-                        border: OutlineInputBorder(),
-                      ),
-                      value: 0,
-                      items: [0, 1, 2, 3]
-                          .map((int item) => DropdownMenuItem<int>(
-                                value: item,
-                                child: Text(item.toString(),
-                                    style: GoogleFonts.lato()),
-                              ))
-                          .toList(),
-                      onChanged: (val) {
-                        roomController.AdultCount.value = val!.toInt();
-                      },
+            padding: EdgeInsets.symmetric(vertical: heght * 0.008),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text("ROOM ${index + 1}",
+                    style: GoogleFonts.lato(
+                        fontSize: 32,
+                        fontWeight: FontWeight.w900,
+                        color: AppColors.grayColor)),
+                SizedBox(width: wedth * 0.005),
+                SizedBox(
+                  width: wedth * 0.105,
+                  height: heght * 0.06,
+                  child: DropdownButtonFormField(
+                    isExpanded: true,
+                    decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 7),
+                      labelText: 'Adult Num',
+                      border: OutlineInputBorder(),
+                    ),
+                    value: hotelsProvider.rooms[index].adultNum,
+                    items: hotelsProvider.adultNumMenu
+                        .map((int item) => DropdownMenuItem<int>(
+                              value: item,
+                              child: Text(item.toString(),
+                                  style: GoogleFonts.lato()),
+                            ))
+                        .toList(),
+                    onChanged: (val) {
+                      hotelsProvider.changeAdultNum(
+                          num: val!, roomIndex: index);
+                    },
+                  ),
+                ),
+                SizedBox(width: wedth * 0.005),
+                SizedBox(
+                  width: wedth * 0.105,
+                  height: heght * 0.06,
+                  child: DropdownButtonFormField(
+                    isExpanded: true,
+                    decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 5),
+                      labelText: 'Child Num',
+                      border: OutlineInputBorder(),
+                    ),
+                    value: hotelsProvider.rooms[index].childNum,
+                    items: hotelsProvider.childNumMenu
+                        .map((int item) => DropdownMenuItem<int>(
+                              value: item,
+                              child: Text(item.toString(),
+                                  style: GoogleFonts.lato()),
+                            ))
+                        .toList(),
+                    onChanged: (val) {
+                      hotelsProvider.changeChildNum(
+                          num: val!, roomIndex: index);
+                    },
+                  ),
+                ),
+                SizedBox(
+                  width: wedth * 0.105,
+                  height: heght * 0.06,
+                  child: DropdownButtonFormField(
+                    isExpanded: true,
+                    decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 5),
+                      labelText: 'Room Type',
+                      border: OutlineInputBorder(),
+                    ),
+                    value: hotelsProvider.rooms[index].roomType,
+                    items: hotelsProvider.roomTypeMenu
+                        .map((String item) => DropdownMenuItem<String>(
+                              value: item,
+                              child: Text(item, style: GoogleFonts.lato()),
+                            ))
+                        .toList(),
+                    onChanged: (val) {
+                      hotelsProvider.changeRoomType(
+                          newType: val!, roomIndex: index);
+                    },
+                  ),
+                ),
+                InkWell(
+                  onTap: () => hotelsProvider.deleteRoom(index),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: wedth * .01),
+                    child: const Icon(
+                      Icons.delete,
+                      color: Colors.red,
                     ),
                   ),
-                  SizedBox(width: wedth * 0.005),
-                  SizedBox(
-                    width: wedth * 0.105,
-                    height: heght * 0.05,
-                    child: DropdownButtonFormField(
-                      isExpanded: true,
-                      decoration: const InputDecoration(
-                        labelText: 'Child',
-                        border: OutlineInputBorder(),
-                      ),
-                      value: 0,
-                      items: [0, 1, 2, 3]
-                          .map((int item) => DropdownMenuItem<int>(
-                                value: item,
-                                child: Text(item.toString(),
-                                    style: GoogleFonts.lato()),
-                              ))
-                          .toList(),
-                      onChanged: (val) {
-                        roomController.ChildCount.value = val!.toInt();
-                      },
-                    ),
-                  ),
-                  SizedBox(width: wedth * 0.01),
-                  const Text(
-                    "-",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28),
-                  ),
-                  SizedBox(width: wedth * 0.01),
-                  roomController.ChildCount > 0
-                      ? ChildWidget(wedth, heght, roomController, "Child 1 Age")
-                      : Container(color: Colors.white),
-                  SizedBox(width: wedth * 0.005),
-                  roomController.ChildCount >= 2
-                      ? ChildWidget(wedth, heght, roomController, "Child 2 Age")
-                      : Container(color: Colors.white),
-                  SizedBox(width: wedth * 0.005),
-                  roomController.ChildCount >= 3
-                      ? ChildWidget(wedth, heght, roomController, "Child 3 Age")
-                      : Container(color: Colors.white),
-                  SizedBox(width: wedth * 0.005),
-                  roomController.ChildCount >= 4
-                      ? ChildWidget(wedth, heght, roomController, "Child 4 Age")
-                      : Container(
-                          color: Colors.white,
-                        ),
-                  /*    SizedBox(width: wedth * 0.009),
-                  IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.delete,
-                        color: Colors.red,
-                        size: 32,
-                      ))*/
-                ],
-              )),
-        ),
+                )
+
+                /*   SizedBox(width: wedth * 0.01),
+                const Text(
+                  "-",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28),
+                ),
+                SizedBox(width: wedth * 0.01),
+               hotelsProvider.childNum > 0
+                    ? ChildWidget(
+                        wedth, heght, hotelsProvider, "Child 1 Age", 0)
+                    : Container(color: Colors.white),
+                SizedBox(width: wedth * 0.005),
+                hotelsProvider.childNum >= 2
+                    ? ChildWidget(
+                        wedth, heght, hotelsProvider, "Child 2 Age", 1)
+                    : Container(color: Colors.white),
+                SizedBox(width: wedth * 0.005),
+                hotelsProvider.childNum >= 3
+                    ? ChildWidget(
+                        wedth, heght, hotelsProvider, "Child 3 Age", 2)
+                    : Container(color: Colors.white),
+                SizedBox(width: wedth * 0.005),
+                hotelsProvider.childNum >= 4
+                    ? ChildWidget(
+                        wedth, heght, hotelsProvider, "Child 4 Age", 3)
+                    : Container(
+                        color: Colors.white,
+                      ),*/
+              ],
+            )),
       ),
     );
   }

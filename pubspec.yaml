@@ -49,6 +49,8 @@ dependencies:
   provider: ^6.0.5
   uuid: ^3.0.7
   image_picker_web: ^3.0.0+1
+  firebase_storage: ^11.0.9
+  file_picker: ^5.2.4
 
 dev_dependencies:
   flutter_test:

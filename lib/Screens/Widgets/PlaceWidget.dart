@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:travelagency/view_model/visa.dart';
 
 import '../../Helper/Colors.dart';
 
@@ -7,7 +9,12 @@ import '../../Helper/Colors.dart';
 class PlaceWidget extends StatefulWidget {
   String imageLink;
   String capitalName;
-  PlaceWidget({Key? key, required this.imageLink, required this.capitalName})
+  int countIndex;
+  PlaceWidget(
+      {Key? key,
+      required this.imageLink,
+      required this.capitalName,
+      required this.countIndex})
       : super(key: key);
 
   @override
@@ -20,67 +27,77 @@ class _PlaceWidgetState extends State<PlaceWidget> {
   Offset mousPos = const Offset(0, 0);
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (e) {
-        setState(() {
-          isHover = true;
-        });
-      },
-      onHover: (e) {
-        setState(() {
-          mousPos += e.delta;
-          mousPos *= 0.12;
-        });
-      },
-      onExit: (e) {
-        setState(() {
-          isHover = false;
-        });
-      },
-      child: InkWell(
-        onTap: () {
-          isSelected = !isSelected;
+    double height = MediaQuery.of(context).size.height;
+    VisaVM visaProvider = Provider.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(right: 10.0),
+      child: MouseRegion(
+        onEnter: (e) {
+          setState(() {
+            isHover = true;
+          });
         },
-        child: Container(
-          height: 300,
-          width: 220,
-          decoration: BoxDecoration(color: Colors.white, boxShadow: [
-            BoxShadow(
-              blurRadius: isHover ? 15 : 2,
-              spreadRadius: isHover ? 5 : 2,
-              color: isHover ? AppColors.grayColor : AppColors.offWhiteColor,
-            )
-          ]),
-          child: Stack(
-            children: [
-              backImage(),
-              gradiant(),
-              Positioned(
-                bottom: 20.0,
-                left: 2.0,
-                width: 200,
-                child: texts(),
-              ),
-            ],
+        onHover: (e) {
+          setState(() {
+            mousPos += e.delta;
+            mousPos *= 0.12;
+          });
+        },
+        onExit: (e) {
+          setState(() {
+            isHover = false;
+          });
+        },
+        child: InkWell(
+          onTap: () async {
+            isSelected = !isSelected;
+            await visaProvider.getVisaForNewCount(
+                newCountry: widget.capitalName,
+                newCountIndex: widget.countIndex);
+          },
+          child: Container(
+            height: height * .32,
+            width: 220,
+            decoration: BoxDecoration(color: Colors.white, boxShadow: [
+              BoxShadow(
+                blurRadius: isHover ? 15 : 2,
+                spreadRadius: isHover ? 5 : 2,
+                color: isHover ? AppColors.grayColor : AppColors.offWhiteColor,
+              )
+            ]),
+            child: Stack(
+              children: [
+                backImage(height),
+                gradiant(),
+                Positioned(
+                  bottom: 20.0,
+                  left: 2.0,
+                  width: 200,
+                  child: texts(),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  backImage() {
+  backImage(double height) {
     return AnimatedPositioned(
       duration: const Duration(milliseconds: 1000),
-      top: isHover ? -40 + mousPos.dy : 0,
-      left: isHover ? -100 + mousPos.dx : -100,
-      height: isHover ? 600 : 400,
-      width: 500,
+      top: isHover ? -100 + mousPos.dy : 0,
+      left: isHover ? -80 + mousPos.dx : 0,
+      height: isHover ? 600 : height * .32,
+      width: 310,
       curve: Curves.easeOutCubic,
       child: Container(
-        width: 500,
         decoration: BoxDecoration(
             image: DecorationImage(
-          image: AssetImage(widget.imageLink),
+          image: NetworkImage(widget.imageLink), fit: BoxFit.fitWidth,
+          alignment: Alignment.center,
+
+          //repeat: ImageRepeat.repeat
         )),
       ),
     );

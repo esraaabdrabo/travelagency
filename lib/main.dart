@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
@@ -15,7 +17,21 @@ import 'Screens/MobileScreen/MobileVisaScreen.dart';
 import 'Screens/TabletScreen/TabletVisaScreen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  if (kIsWeb) {
+    await Firebase.initializeApp(
+        options: const FirebaseOptions(
+            apiKey: "AIzaSyB_obePDd0xaQ08XWSOEFsP34xN39FzgSY",
+            authDomain: "travelagency-c84fa.firebaseapp.com",
+            projectId: "travelagency-c84fa",
+            storageBucket: "travelagency-c84fa.appspot.com",
+            messagingSenderId: "918387895834",
+            appId: "1:918387895834:web:486f22ba87b021a9082ba3",
+            measurementId: "G-VP204YBJ06"));
+  } else {
+    await Firebase.initializeApp();
+  }
   runApp(const TravelAgencyApp());
 }
 
@@ -43,26 +59,16 @@ class TravelAgencyApp extends StatelessWidget {
           scrollBehavior: MyCustomScrollBehavior(),
           debugShowCheckedModeBanner: false,
           title: "Travel Agency",
-          home: const ResponsiveLayout(
-              desktopBody: DesktopHotelScreen(),
-              tabletBody: DesktopHotelScreen(),
-              mobileBody: MobileHotelScreen()),
-          getPages: [
-            GetPage(name: "/", page: () => const DesktopRegisterScreen()),
-            GetPage(
-              name: "/HotelScreen",
-              page: () => const ResponsiveLayout(
+          home: /* const ResponsiveLayout(
+                mobileBody: Scaffold(
+                  backgroundColor: Colors.white,
+                ),
+                tabletBody: DesktopVisaScreen(),
+                desktopBody: DesktopVisaScreen())*/
+              const ResponsiveLayout(
                   desktopBody: DesktopHotelScreen(),
-                  tabletBody: TabletHotelScreen(),
+                  tabletBody: DesktopHotelScreen(),
                   mobileBody: MobileHotelScreen()),
-            ),
-            GetPage(
-                name: "/VisaScreen",
-                page: () => const ResponsiveLayout(
-                    mobileBody: MobileVisaScreen(),
-                    tabletBody: TabletVisaScreen(),
-                    desktopBody: DesktopVisaScreen()))
-          ],
         );
       },
     );

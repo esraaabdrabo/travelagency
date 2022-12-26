@@ -4,12 +4,12 @@ import '../../Helper/Colors.dart';
 import '../../Helper/text_style.dart';
 
 abstract class Dialogs {
-  static notFound(BuildContext context) {
+  static onlyTextContent(BuildContext context, String content) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         content: Text(
-          "Not found",
+          content,
           textAlign: TextAlign.center,
           style: black20LatoTS,
         ),

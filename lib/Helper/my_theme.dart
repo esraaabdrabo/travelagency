@@ -12,9 +12,9 @@ abstract class MyThemeData {
         focusColor: AppColors.whiteColor,
         prefixIcon: icon,
         enabled: true,
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.grayColor, width: 0.5),
-        ),
+        /*  enabledBorder: const OutlineInputBorder(
+         borderSide: BorderSide(color: AppColors.grayColor, width: 0.5),
+        ),*/
         focusedBorder: const OutlineInputBorder(
           borderSide:
               BorderSide(width: 2, color: Color.fromARGB(208, 61, 61, 61)),
