@@ -1,6 +1,7 @@
 // ignore: file_names
 // ignore_for_file: avoid_print, unused_local_variable
 
+import 'dart:convert';
 import 'dart:developer';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
@@ -12,11 +13,11 @@ import '../models/hotel/reserve_hotel.dart';
 
 class HotelsSV {
   Future<List<HotelM>> getAllHotels() async {
-    /* var response = await http.get(
+    var response = await http.get(
       Uri.parse(Constants.allHotelsURL),
-    );*/
+    );
     List<HotelM> hotels = [];
-    var response = [
+    /*var response = [
       {
         "guid": "f70025c6-0f73-4a37-948c-155ebaf87af2",
         "name": "Divan Istanbul",
@@ -28,7 +29,7 @@ class HotelsSV {
         "dblPrice": 79,
         "trplPrice": 108,
         "fmlyPrice": 200,
-        "hotelReserves": null
+        "hotelReserves": 12
       },
       {
         "guid": "e4c7efa2-cefb-4be2-bcfc-5f4ec64e3d46",
@@ -40,8 +41,8 @@ class HotelsSV {
         "sngPrice": 81,
         "dblPrice": 190,
         "trplPrice": 21,
-        "fmlyPrice": null,
-        "hotelReserves": null
+        "fmlyPrice": 12,
+        "hotelReserves": 12
       },
       {
         "guid": "52c5fc42-0012-4cb4-8d67-6809c2de491d",
@@ -54,7 +55,7 @@ class HotelsSV {
         "dblPrice": 100,
         "trplPrice": 130,
         "fmlyPrice": 180,
-        "hotelReserves": null
+        "hotelReserves": 12
       },
       {
         "guid": "ceefe876-b34c-4863-863d-9b3ceada5213",
@@ -66,8 +67,8 @@ class HotelsSV {
         "sngPrice": 45,
         "dblPrice": 89,
         "trplPrice": 112,
-        "fmlyPrice": null,
-        "hotelReserves": null
+        "fmlyPrice": 12,
+        "hotelReserves": 12
       },
       {
         "guid": "14a72518-9e1e-486a-a087-f3e34c0156e5",
@@ -80,13 +81,13 @@ class HotelsSV {
         "dblPrice": 110,
         "trplPrice": 200,
         "fmlyPrice": 240,
-        "hotelReserves": null
+        "hotelReserves": 12
       }
-    ];
-    for (Map<String, dynamic> hotel in response) {
+    ];*/
+    for (Map<String, dynamic> hotel in jsonDecode(response.body)) {
       hotels.add(HotelM.fromJson(hotel));
     }
-    /* if (response.statusCode == 200) {
+    if (response.statusCode == 200) {
       log("succes get all hotels");
       List<dynamic> data = jsonDecode(response.body);
       //convert every object to hotel model
@@ -96,7 +97,7 @@ class HotelsSV {
       }
     } else {
       print("${response.statusCode} error in all hotels");
-    }*/
+    }
     return hotels;
   }
 
@@ -106,10 +107,8 @@ class HotelsSV {
   ) async {
     bool isSuccess = false;
     log("will reserve hotel from hotelsv");
-    var response = await http.post(
-      Uri.parse(Constants.reserveHotel),
-      body: data.toJson(),
-    );
+    var response =
+        await http.post(Uri.parse(Constants.reserveHotel), body: data.toJson());
     if (response.statusCode == 200) {
       log("reservation in hotels done");
       uploadImg(img, data.passportImage);
