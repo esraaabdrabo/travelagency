@@ -23,14 +23,18 @@ var red15lato = GoogleFonts.lato(
     fontSize: 12,
     fontWeight: FontWeight.w700,
     color: AppColors.pomegranateColor);
-
+var black22AbeezeTS = GoogleFonts.aBeeZee(
+    fontSize: 22,
+    letterSpacing: .05,
+    fontWeight: FontWeight.bold,
+    color: Colors.black);
 var black20LatoTS = GoogleFonts.lato(
     fontSize: 20, fontWeight: FontWeight.bold, letterSpacing: .1);
 var black20LatoWShadow = GoogleFonts.lato(
     fontSize: 20,
     fontWeight: FontWeight.bold,
     letterSpacing: .1,
-    shadows: [
+    shadows: const [
       BoxShadow(
           offset: Offset(-2, 2),
           blurRadius: 3,
@@ -51,3 +55,12 @@ var white20LatoTS = GoogleFonts.lato(
     color: AppColors.whiteColor);
 var white15lato = GoogleFonts.lato(
     fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.whiteColor);
+////////////************************groups sc *************** */
+groupNameTS({required bool isSelected}) {
+  print("object");
+  return GoogleFonts.aBeeZee(
+      fontSize: 22,
+      letterSpacing: .08,
+      fontWeight: FontWeight.bold,
+      color: isSelected ? Colors.white : AppColors.pomegranateColor);
+}

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:travelagency/Responsive/responsive_layout.dart';
+import 'package:travelagency/Screens/DesktopScreens/DesktopGroupScreen.dart';
 
 import '../Screens/DesktopScreens/DesktopHotelScreen.dart';
 import '../Screens/DesktopScreens/DesktopVisaScreen.dart';
@@ -18,19 +19,28 @@ class SettingVM extends ChangeNotifier {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
+              builder: (context) => const ResponsiveLayout(
+                  mobileBody: MobileVisaScreen(),
+                  tabletBody: TabletVisaScreen(),
+                  desktopBody: DesktopVisaScreen())));
+    } else if (index == 1) {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
             builder: (context) => const ResponsiveLayout(
                 desktopBody: DesktopHotelScreen(),
                 tabletBody: DesktopHotelScreen(),
                 mobileBody: MobileHotelScreen()),
           ));
-    } else if (index == 1) {
+    } else if (index == 2) {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => const ResponsiveLayout(
-                  mobileBody: MobileVisaScreen(),
-                  tabletBody: TabletVisaScreen(),
-                  desktopBody: DesktopVisaScreen())));
+            builder: (context) => const ResponsiveLayout(
+                desktopBody: DesktopGroupScreen(),
+                tabletBody: DesktopGroupScreen(),
+                mobileBody: DesktopGroupScreen()),
+          ));
     }
   }
 

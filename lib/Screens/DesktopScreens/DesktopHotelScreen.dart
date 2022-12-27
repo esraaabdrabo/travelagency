@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:travelagency/Helper/my_theme.dart';
 import 'package:travelagency/Helper/text_style.dart';
+import 'package:travelagency/Responsive/responsive_layout.dart';
 import 'package:travelagency/Screens/Widgets/dialogs.dart';
 import 'package:travelagency/Screens/Widgets/widgets.dart';
 import 'package:travelagency/view_model/hotels.dart';
@@ -79,6 +80,7 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                       Expanded(
                         flex: 4,
                         child: ListView(
+                          // ignore: prefer_const_constructors
                           physics: NeverScrollableScrollPhysics(),
                           children: [
                             Text("HOTEL", style: red36lato),
@@ -103,148 +105,46 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                                   //search with country
                                   countriesDropDown(hotelsProvider, wedth),
                                   SizedBox(height: heght * 0.003),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        child: searchNatTF(
-                                            wedth: wedth, natCont: natCont),
-                                      ),
-                                      Expanded(
-                                        child: searchCurrTF(
-                                            wedth: wedth, currCont: currCont),
-                                      ),
-                                      //from date
-                                      Expanded(
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                            right: wedth * 0.005,
-                                          ),
-                                          child: TextFormField(
-                                              controller: checkInDateController,
-                                              validator: (value) {
-                                                return hotelsProvider
-                                                    .validateDate(
-                                                        value!, context);
-                                              },
-                                              onTap: () async {
-                                                var date = await showDatePicker(
-                                                    context: context,
-                                                    initialDate: DateTime.now(),
-                                                    firstDate: DateTime(2000),
-                                                    lastDate: DateTime(2030));
-                                                checkInDateController.text =
-                                                    date
-                                                        .toString()
-                                                        .substring(0, 10);
-                                                log(checkInDateController.text);
-                                              },
-                                              style: const TextStyle(
-                                                  fontSize: 16.0),
-                                              decoration:
-                                                  MyThemeData.inputDhintPre(
-                                                      icon: const Icon(
-                                                        Icons.date_range,
-                                                        color: Colors.grey,
-                                                        size: 20,
-                                                      ),
-                                                      label: translate
-                                                          .checkInDate)),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                            right: wedth * 0.005,
-                                          ),
-                                          child: TextFormField(
-                                              controller:
-                                                  checkoutDateController,
-                                              validator: (value) {
-                                                return hotelsProvider
-                                                    .validateDate(
-                                                        value!, context);
-                                              },
-                                              onTap: () async {
-                                                var date = await showDatePicker(
-                                                    context: context,
-                                                    initialDate: DateTime.now(),
-                                                    firstDate: DateTime(2000),
-                                                    lastDate: DateTime(2030));
-                                                checkoutDateController.text =
-                                                    date
-                                                        .toString()
-                                                        .substring(0, 10);
-                                              },
-                                              style: const TextStyle(
-                                                  fontSize: 16.0),
-                                              decoration:
-                                                  MyThemeData.inputDhintPre(
-                                                      icon: const Icon(
-                                                        Icons.date_range,
-                                                        color: Colors.grey,
-                                                        size: 20,
-                                                      ),
-                                                      label: translate
-                                                          .checkOutDate)),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                  /*                  ResponsiveLayout(
+                                      mobileBody: Scaffold(),
+                                      tabletBody: tabletSearchReq(
+                                          heght: heght,
+                                          wedth: wedth,
+                                          natCont: natCont,
+                                          currCont: currCont,
+                                          checkoutDateController:
+                                              checkoutDateController,
+                                          checkInDateController:
+                                              checkInDateController,
+                                          hotelsProvider: hotelsProvider,
+                                          translate: translate,
+                                          context: context),
+                                      desktopBody: webSearchReq(
+                                          heght: heght,
+                                          wedth: wedth,
+                                          natCont: natCont,
+                                          currCont: currCont,
+                                          checkoutDateController:
+                                              checkoutDateController,
+                                          checkInDateController:
+                                              checkInDateController,
+                                          hotelsProvider: hotelsProvider,
+                                          translate: translate,
+                                          context: context)),
+              */
                                   CustomWidgets.sizedbox15h,
-                                  /*          Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 100,
-                                        height: 40,
-                                        child: adultNumTF(
-                                            hotelsProvider: hotelsProvider,
-                                            context: context,
-                                            wedth: wedth,
-                                            height: heght,
-                                            adultCont: adultCont),
-                                      ),
-                                      SizedBox(
-                                          width: 100,
-                                          height: 40,
-                                          child: childNumTF(
-                                              hotelsProvider: hotelsProvider,
-                                              context: context,
-                                              wedth: wedth,
-                                              heght: heght,
-                                              childCont: childCont)),
-                                      SizedBox(
-                                        height: 40,
-                                        width: wedth * .5,
-                                        child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount: hotelsProvider.childNum,
-                                          itemBuilder: (context, index) =>
-                                              SizedBox(
-                                            height: 40,
-                                            width: 100,
-                                            //child age
-                                            child: TextFormField(
-                                                decoration: InputDecoration(
-                                                    label: Text(
-                                                        "child ${index + 1} age"),
-                                                    border:
-                                                        OutlineInputBorder(),
-                                                    enabledBorder:
-                                                        OutlineInputBorder(
-                                                            borderSide:
-                                                                BorderSide())),
-                                                onChanged: (age) {
-                                                  hotelsProvider.changeCildAge(
-                                                      index: index, age: age);
-                                                }),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                            */
+                                  webSearchReq(
+                                      heght: heght,
+                                      wedth: wedth,
+                                      natCont: natCont,
+                                      currCont: currCont,
+                                      checkoutDateController:
+                                          checkoutDateController,
+                                      checkInDateController:
+                                          checkInDateController,
+                                      hotelsProvider: hotelsProvider,
+                                      translate: translate,
+                                      context: context),
                                   SizedBox(
                                       height: 100,
                                       child: ListView.builder(
@@ -397,6 +297,186 @@ Padding searchNatTF(
   );
 }
 
+webSearchReq(
+    {required double heght,
+    required double wedth,
+    required TextEditingController natCont,
+    required TextEditingController currCont,
+    required TextEditingController checkoutDateController,
+    required TextEditingController checkInDateController,
+    required HotelsVM hotelsProvider,
+    required AppLocalizations translate,
+    required BuildContext context}) {
+  return Wrap(
+    children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: searchNatTF(wedth: wedth, natCont: natCont),
+          ),
+          Expanded(
+            child: searchCurrTF(wedth: wedth, currCont: currCont),
+          ),
+          //from date
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.only(
+                right: wedth * 0.005,
+              ),
+              child: TextFormField(
+                  controller: checkInDateController,
+                  validator: (value) {
+                    return hotelsProvider.validateDate(value!, context);
+                  },
+                  onTap: () async {
+                    var date = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2030));
+                    checkInDateController.text =
+                        date.toString().substring(0, 10);
+                    log(checkInDateController.text);
+                  },
+                  style: const TextStyle(fontSize: 16.0),
+                  decoration: MyThemeData.inputDhintPre(
+                      icon: const Icon(
+                        Icons.date_range,
+                        color: Colors.grey,
+                        size: 20,
+                      ),
+                      label: translate.checkInDate)),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.only(
+                right: wedth * 0.005,
+              ),
+              child: TextFormField(
+                  controller: checkoutDateController,
+                  validator: (value) {
+                    return hotelsProvider.validateDate(value!, context);
+                  },
+                  onTap: () async {
+                    var date = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2030));
+                    checkoutDateController.text =
+                        date.toString().substring(0, 10);
+                  },
+                  style: const TextStyle(fontSize: 16.0),
+                  decoration: MyThemeData.inputDhintPre(
+                      icon: const Icon(
+                        Icons.date_range,
+                        color: Colors.grey,
+                        size: 20,
+                      ),
+                      label: translate.checkOutDate)),
+            ),
+          ),
+        ],
+      ),
+    ],
+  );
+}
+
+tabletSearchReq(
+    {required double heght,
+    required double wedth,
+    required TextEditingController natCont,
+    required TextEditingController currCont,
+    required TextEditingController checkoutDateController,
+    required TextEditingController checkInDateController,
+    required HotelsVM hotelsProvider,
+    required AppLocalizations translate,
+    required BuildContext context}) {
+  return SizedBox(
+    height: heght * .188,
+    child: Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: searchNatTF(wedth: wedth, natCont: natCont),
+            ),
+            Expanded(
+              child: searchCurrTF(wedth: wedth, currCont: currCont),
+            ),
+          ],
+        ),
+        //from date
+        Row(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(
+                  right: wedth * 0.005,
+                ),
+                child: TextFormField(
+                    controller: checkInDateController,
+                    validator: (value) {
+                      return hotelsProvider.validateDate(value!, context);
+                    },
+                    onTap: () async {
+                      var date = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2030));
+                      checkInDateController.text =
+                          date.toString().substring(0, 10);
+                      log(checkInDateController.text);
+                    },
+                    style: const TextStyle(fontSize: 16.0),
+                    decoration: MyThemeData.inputDhintPre(
+                        icon: const Icon(
+                          Icons.date_range,
+                          color: Colors.grey,
+                          size: 20,
+                        ),
+                        label: translate.checkInDate)),
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(
+                  right: wedth * 0.005,
+                ),
+                child: TextFormField(
+                    controller: checkoutDateController,
+                    validator: (value) {
+                      return hotelsProvider.validateDate(value!, context);
+                    },
+                    onTap: () async {
+                      var date = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2030));
+                      checkoutDateController.text =
+                          date.toString().substring(0, 10);
+                    },
+                    style: const TextStyle(fontSize: 16.0),
+                    decoration: MyThemeData.inputDhintPre(
+                        icon: const Icon(
+                          Icons.date_range,
+                          color: Colors.grey,
+                          size: 20,
+                        ),
+                        label: translate.checkOutDate)),
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
+}
+
 //currency
 Padding searchCurrTF(
     {required double wedth, required TextEditingController currCont}) {
@@ -446,7 +526,7 @@ hotelWidget(
                       style: black20LatoTS,
                     ),
                     Text(
-                      hotel.locationEn!,
+                      hotel.countryEn!,
                       maxLines: 1,
                       style: black15lato,
                     ),
@@ -1107,7 +1187,7 @@ hotelCard(
                                                                           .text,
                                                                   note: noteCont
                                                                       .text);
-                                                          setState(() {});
+                                                          // setState(() {});
                                                           if (await result) {
                                                             Navigator.pop(
                                                                 context);

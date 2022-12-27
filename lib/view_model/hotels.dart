@@ -6,7 +6,6 @@ import 'package:image_picker_web/image_picker_web.dart';
 import 'package:travelagency/Screens/Widgets/dialogs.dart';
 import 'package:travelagency/services/hotels.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:travelagency/services/visa.dart';
 
 import '../models/hotel/hotels.dart';
 import '../models/hotel/reserve_hotel.dart';
@@ -24,6 +23,8 @@ class HotelsVM extends ChangeNotifier {
 
   //search with country
   List<String> countries = [
+    "Jordan",
+    "Sudia Arabia",
     "UAE", //"United States of Emirates",
     "Turkey",
     "Iran",
@@ -167,8 +168,8 @@ class HotelsVM extends ChangeNotifier {
     changeIsLoading(true);
     searchResults = [];
     for (var hotel in hotels) {
-      log(hotel.locationEn!);
-      if (hotel.locationEn == selectedCountry) {
+      log(hotel.countryEn!);
+      if (hotel.countryEn == selectedCountry) {
         searchResults.add(hotel);
       }
     }
@@ -210,19 +211,15 @@ class HotelsVM extends ChangeNotifier {
   }*/
   }
 
-  var userId = "3e4ba9aa-878e-4f2d-a780-3c734f03650a";
+  var userId = "13b545df-f25f-4845-a446-dbc6948133b9";
   ReserveHotelM makeReserveObj({
     required String hotelId,
     required String fullName,
     required String phoneNumber,
     required String email,
-    required String adultNumber,
     required String fromDate,
     required String toDate,
     required String note,
-    required int room1ChildNumber,
-    required int room1AdultNumber,
-    required String room1Type,
   }) {
     return ReserveHotelM(
         hotelId: hotelId,
@@ -230,10 +227,10 @@ class HotelsVM extends ChangeNotifier {
         fullName: fullName,
         phoneNumber: phoneNumber,
         email: email,
-        roomsNumber: rooms.length,
-        room1ChildNumber: room1AdultNumber,
-        room1AdultNumber: room1ChildNumber,
-        room1Type: room1Type,
+        roomsNumber: rooms.length.toString(),
+        room1ChildNumber: rooms[0].childNum.toString(),
+        room1AdultNumber: rooms[0].adultNum.toString(),
+        room1Type: rooms[0].roomType!,
         fromDate: fromDate,
         toDate: toDate,
         note: note);
@@ -255,13 +252,10 @@ class HotelsVM extends ChangeNotifier {
           fullName: fullName,
           phoneNumber: phoneNumber,
           email: email,
-          room1AdultNumber: rooms[0].adultNum!,
-          room1ChildNumber: rooms[0].childNum!,
-          room1Type: rooms[0].roomType!,
-          adultNumber: adultNum.toString(),
           fromDate: fromDate,
           toDate: toDate,
           note: note);
+
       if (rooms.length > 1) {
         //convert to json (in order to asign values to room2ChildNumber dynamicly )
         Map<String, dynamic> reserveJson = reserve.toJson();
@@ -272,7 +266,6 @@ class HotelsVM extends ChangeNotifier {
               rooms[roomIndex].adultNum;
           reserveJson['room${roomIndex + 1}Type'] = rooms[roomIndex].roomType;
         }
-        log(reserveJson.toString());
         reserve = ReserveHotelM.fromJson(reserveJson);
       }
       log("will start reserve");
@@ -317,7 +310,7 @@ class HotelsVM extends ChangeNotifier {
   }
 
   void deleteRoom(int roomIndex) {
-    if (rooms.length == 1) {
+    if (rooms.length != 1) {
       rooms.removeAt(roomIndex);
       log("room deleted vm");
       notifyListeners();

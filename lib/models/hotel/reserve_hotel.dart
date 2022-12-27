@@ -6,29 +6,29 @@ class ReserveHotelM {
   late String fullName;
   late String phoneNumber;
   late String email;
-  late String passportImage;
-  late int roomsNumber;
-  late int room1ChildNumber;
-  late int room1AdultNumber;
+  String passportImage = "";
+  late String roomsNumber;
+  late String room1ChildNumber;
+  late String room1AdultNumber;
   late String room1Type;
   late String fromDate;
   late String toDate;
-  late String note;
-  int? room2ChildNumber;
-  int? room2AdultNumber;
-  String? room2Type;
-  int? room3ChildNumber;
-  int? room3AdultNumber;
-  String? room3Type;
-  int? room4ChildNumber;
-  int? room4AdultNumber;
-  String? room4Type;
-  int? room5ChildNumber;
-  int? room5AdultNumber;
-  String? room5Type;
-  int? room6ChildNumber;
-  int? room6AdultNumber;
-  String? room6Type;
+  String note = "";
+  String? room2ChildNumber = "0";
+  String? room2AdultNumber = "0";
+  String? room2Type = "";
+  String? room3ChildNumber = "0";
+  String? room3AdultNumber = "0";
+  String? room3Type = "";
+  String? room4ChildNumber = "0";
+  String? room4AdultNumber = "0";
+  String? room4Type = "";
+  String? room5ChildNumber = "0";
+  String? room5AdultNumber = "0";
+  String? room5Type = "";
+  String? room6ChildNumber = "0";
+  String? room6AdultNumber = "0";
+  String? room6Type = "";
 
   ReserveHotelM(
       {required this.hotelId,
@@ -63,6 +63,7 @@ class ReserveHotelM {
   ReserveHotelM.fromJson(Map<String, dynamic> json) {
     hotelId = json['hotelId'];
     userId = json['userId'];
+
     fullName = json['fullName'];
     phoneNumber = json['phoneNumber'];
     email = json['email'];
@@ -93,8 +94,8 @@ class ReserveHotelM {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['hotelId'] = hotelId;
-    data['userId'] = userId;
+    data['hotelId'] = "7e282d34-ce86-4628-bb12-29531d0ea92d"; // hotelId;
+    data['userId'] = "13b545df-f25f-4845-a446-dbc6948133b9"; //userId;
     data['fullName'] = fullName;
     data['phoneNumber'] = phoneNumber;
     data['email'] = email;
