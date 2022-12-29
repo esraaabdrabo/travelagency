@@ -16,25 +16,36 @@ class VisaSV {
 
     var data = [
       {
+        "visaId": "e7ab6795-7f30-49d3-9f2d-2d1c059c9390",
         "countryEn": "Turkey",
         "countryAr": "تركيا",
         "countryImage":
-            "https://images.unsplash.com/photo-1567527259232-3a7fcd490c55?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-        "visaType": ["hurra", "trade", "medical"]
+            "https://images.unsplash.com/photo-1567527259232-3a7fcd490c55?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+        "visaType": ["tourist", "trade"]
       },
       {
-        "countryEn": "UAE",
-        "countryAr": "ألامارات ألعربيه ألمتحده",
+        "visaId": "76db07b7-764d-4f06-92a0-38722e6e88ea",
+        "countryEn": "Qatar",
+        "countryAr": "قطر",
         "countryImage":
-            "https://images.unsplash.com/photo-1518684079-3c830dcef090?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-        "visaType": ["trade", "medical"]
+            "https://images.unsplash.com/photo-1550350505-553196f2a527?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=327&q=80",
+        "visaType": ["tourist"]
       },
       {
-        "countryEn": "Lebanon",
-        "countryAr": "لبنان",
+        "visaId": "635ec096-b082-40a9-9032-72db3b052aba",
+        "countryEn": "Sudia Arabia",
+        "countryAr": "ألسعوديه",
         "countryImage":
-            "https://images.unsplash.com/photo-1504281568393-f2a3fc6a1973?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-        "visaType": ["Tourist"]
+            "https://images.unsplash.com/photo-1580418827493-f2b22c0a76cb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+        "visaType": ["tourist"]
+      },
+      {
+        "visaId": "47b47d88-9d15-4ff0-9ab7-b69abcf8005f",
+        "countryEn": "Jordan",
+        "countryAr": "ألاردن",
+        "countryImage":
+            "https://images.unsplash.com/photo-1554357345-187a92a9eeab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=465&q=80",
+        "visaType": ["tourist"]
       }
     ];
     for (Map<String, dynamic> visaObj in data) {
@@ -98,10 +109,17 @@ class VisaSV {
 
     if (response.statusCode == 200) {
       await uploadImg(
-          img: pass, name: body.passportImage, path: "Passports/", ext: "jpg");
+          img: pass,
+          name: body.passportImage,
+          path: Constants.passportPath,
+          ext: "jpg");
       await uploadImg(
-          img: id, name: body.identifyImage, path: "Identifies/", ext: "jpg");
-      await uploadImg(img: form, name: body.form, path: "Forms/", ext: "pdf");
+          img: id,
+          name: body.identifyImage,
+          path: Constants.idPath,
+          ext: "jpg");
+      await uploadImg(
+          img: form, name: body.form, path: Constants.pdfPath, ext: "pdf");
 
       isSuccess = true;
       log("succes reserve visa sv");

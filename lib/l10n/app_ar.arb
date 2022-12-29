@@ -5,5 +5,7 @@
 "passportImage":"صورة جواز السفر",
 "checkInDate":"تاريخ الوصول",
 "checkOutDate":"تاريخ المغادرة",
-"welcomeIn":"مرحبا بك في"
+"welcomeIn":"مرحبا بك في",
+"availableDates":"التواريخ المتاحة",
+"availableHotels":"الفنادق المتاحة لهذا الجروب"
 }

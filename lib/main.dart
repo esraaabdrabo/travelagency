@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:travelagency/Screens/DesktopScreens/DesktopGroupScreen.dart';
 import 'package:travelagency/Screens/DesktopScreens/DesktopHotelScreen.dart';
 import 'package:travelagency/Screens/DesktopScreens/DesktopVisaScreen.dart';
 import 'package:travelagency/view_model/setting.dart';
@@ -52,7 +53,7 @@ class TravelAgencyApp extends StatelessWidget {
             scrollBehavior: MyCustomScrollBehavior(),
             debugShowCheckedModeBanner: false,
             title: "Travel Agency",
-            home: Scaffold(body: DesktopVisaScreen())
+            home: Scaffold(body: DesktopGroupScreen())
             /* const ResponsiveLayout(
                 mobileBody: Scaffold(
                   backgroundColor: Colors.white,

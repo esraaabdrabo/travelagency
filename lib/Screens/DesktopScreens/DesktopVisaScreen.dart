@@ -70,93 +70,85 @@ class _DesktopVisaScreenState extends State<DesktopVisaScreen> {
                                     Text("VISA", style: screenTitle(context))),
                             //countery img
                             Expanded(
-                              flex: 4,
+                              flex: 6,
                               child: SizedBox(
-                                  height: heght * 0.313,
                                   child: Stack(
+                                children: [
+                                  ListView.builder(
+                                    itemCount: visaProvider.visaCount.length,
+                                    controller: _scrollController,
+                                    scrollDirection: Axis.horizontal,
+                                    itemBuilder: (context, index) =>
+                                        PlaceWidget(
+                                            countIndex: index,
+                                            imageLink: visaProvider
+                                                .visaCount[index].countryImage!,
+                                            capitalName: visaProvider
+                                                .visaCount[index].countryEn!),
+                                  ),
+                                  //next and previous country
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
                                     children: [
-                                      ListView.builder(
-                                        itemCount:
-                                            visaProvider.visaCount.length,
-                                        controller: _scrollController,
-                                        scrollDirection: Axis.horizontal,
-                                        itemBuilder: (context, index) =>
-                                            PlaceWidget(
-                                                countIndex: index,
-                                                imageLink: visaProvider
-                                                    .visaCount[index]
-                                                    .countryImage!,
-                                                capitalName: visaProvider
-                                                    .visaCount[index]
-                                                    .countryEn!),
+                                      SizedBox(
+                                        height: 80,
+                                        width: 80,
+                                        child: IconButton(
+                                          onPressed: () async {
+                                            await Future.delayed(const Duration(
+                                                milliseconds: 300));
+                                            SchedulerBinding.instance
+                                                .addPostFrameCallback((_) {
+                                              _scrollController.animateTo(
+                                                  _scrollController
+                                                      .position.minScrollExtent,
+                                                  duration: const Duration(
+                                                      milliseconds: 300),
+                                                  curve: Curves.fastOutSlowIn);
+                                            });
+                                          },
+                                          icon: const CircleAvatar(
+                                            backgroundColor:
+                                                AppColors.pomegranateColor,
+                                            radius: 100,
+                                            child: Icon(
+                                                Icons.arrow_back_ios_rounded),
+                                          ),
+                                        ),
                                       ),
-                                      //next and previous country
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.stretch,
-                                        children: [
-                                          SizedBox(
-                                            height: 80,
-                                            width: 80,
-                                            child: IconButton(
-                                              onPressed: () async {
-                                                await Future.delayed(
-                                                    const Duration(
-                                                        milliseconds: 300));
-                                                SchedulerBinding.instance
-                                                    .addPostFrameCallback((_) {
-                                                  _scrollController.animateTo(
-                                                      _scrollController.position
-                                                          .minScrollExtent,
-                                                      duration: const Duration(
-                                                          milliseconds: 300),
-                                                      curve:
-                                                          Curves.fastOutSlowIn);
-                                                });
-                                              },
-                                              icon: const CircleAvatar(
-                                                backgroundColor:
-                                                    AppColors.pomegranateColor,
-                                                radius: 100,
-                                                child: Icon(Icons
-                                                    .arrow_back_ios_rounded),
-                                              ),
-                                            ),
+                                      SizedBox(
+                                        width: 70,
+                                        height: 70,
+                                        child: IconButton(
+                                          onPressed: () async {
+                                            await Future.delayed(const Duration(
+                                                milliseconds: 300));
+                                            SchedulerBinding.instance
+                                                .addPostFrameCallback((_) {
+                                              _scrollController.animateTo(
+                                                  _scrollController
+                                                      .position.maxScrollExtent,
+                                                  duration: const Duration(
+                                                      milliseconds: 300),
+                                                  curve: Curves.fastOutSlowIn);
+                                            });
+                                          },
+                                          icon: const CircleAvatar(
+                                            backgroundColor:
+                                                AppColors.pomegranateColor,
+                                            radius: 100,
+                                            child: Icon(Icons
+                                                .arrow_forward_ios_rounded),
                                           ),
-                                          SizedBox(
-                                            width: 70,
-                                            height: 70,
-                                            child: IconButton(
-                                              onPressed: () async {
-                                                await Future.delayed(
-                                                    const Duration(
-                                                        milliseconds: 300));
-                                                SchedulerBinding.instance
-                                                    .addPostFrameCallback((_) {
-                                                  _scrollController.animateTo(
-                                                      _scrollController.position
-                                                          .maxScrollExtent,
-                                                      duration: const Duration(
-                                                          milliseconds: 300),
-                                                      curve:
-                                                          Curves.fastOutSlowIn);
-                                                });
-                                              },
-                                              icon: const CircleAvatar(
-                                                backgroundColor:
-                                                    AppColors.pomegranateColor,
-                                                radius: 100,
-                                                child: Icon(Icons
-                                                    .arrow_forward_ios_rounded),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                        ),
                                       ),
                                     ],
-                                  )),
+                                  ),
+                                ],
+                              )),
                             ),
                             SizedBox(height: heght * 0.04),
                             //visa type btn => trade medical
@@ -246,13 +238,16 @@ class _DesktopVisaScreenState extends State<DesktopVisaScreen> {
       child: Padding(
         padding: EdgeInsets.only(right: width * .005),
         child: ChoiceChip(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(width * .005)),
           padding: EdgeInsets.symmetric(
               vertical: height * .005, horizontal: width * .015),
           label: Text(
               visaProvider.visaCount[visaProvider.currentCountry]
                   .visaType![visaTypeIndex],
               style: white15lato(context)),
-          selected: true,
+          labelStyle: TextStyle(color: Colors.white),
+          selected: visaProvider.currentVisaType == visaTypeIndex,
           selectedColor: AppColors.pomegranateColor,
         ),
       ),
@@ -261,17 +256,17 @@ class _DesktopVisaScreenState extends State<DesktopVisaScreen> {
 
   conditionName(
       {required double wedth,
+      required double hight,
       required String condition,
       required int conditionIndex}) {
     return SizedBox(
-        width: 150,
-        // width: wedth * 0.150,
+        width: wedth * .15,
         child: Text(
           condition,
           style: GoogleFonts.lato(
               fontWeight: FontWeight.bold,
               color: AppColors.pomegranateColor,
-              fontSize: 18),
+              fontSize: hight * .035),
         ));
   }
 
@@ -283,9 +278,11 @@ class _DesktopVisaScreenState extends State<DesktopVisaScreen> {
     return Padding(
       padding: const EdgeInsets.only(right: 10),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           //condition name
           conditionName(
+              hight: height,
               condition:
                   visaProvider.visaCondCont[conditionIndex].conditionCategory!,
               wedth: wedth,
@@ -294,17 +291,21 @@ class _DesktopVisaScreenState extends State<DesktopVisaScreen> {
             height: height * .008,
           ),
           SizedBox(
-            height: height * 0.28,
-            width: 150,
+            height: height * 0.24,
+            width: wedth * .15,
             child: ListView.separated(
               separatorBuilder: (context, index) => const Divider(),
               itemCount:
                   visaProvider.visaCondCont[conditionIndex].conditions!.length,
               itemBuilder: (context, index) {
-                log(visaProvider
-                    .visaCondCont[conditionIndex].conditions![index]);
-                log("work");
                 return conditionContent(
+                    haveDollar: visaProvider
+                                .visaCondCont[conditionIndex].conditionCategory!
+                                .toLowerCase() ==
+                            "price"
+                        ? true
+                        : false,
+                    hight: height,
                     index: index,
                     content: visaProvider
                         .visaCondCont[conditionIndex].conditions![index]);
@@ -316,12 +317,17 @@ class _DesktopVisaScreenState extends State<DesktopVisaScreen> {
     );
   }
 
-  conditionContent({required String content, required int index}) {
+  conditionContent(
+      {required String content,
+      required int index,
+      required bool haveDollar,
+      required double hight}) {
     return Padding(
       padding: const EdgeInsets.all(3.0),
       child: Text(
-        "${index + 1} - $content",
-        style: GoogleFonts.lato(color: AppColors.grayColor, fontSize: 16),
+        !haveDollar ? "- $content" : "- $content \$",
+        style:
+            GoogleFonts.lato(color: AppColors.grayColor, fontSize: hight * .03),
       ),
     );
   }
@@ -588,11 +594,12 @@ class _DesktopVisaScreenState extends State<DesktopVisaScreen> {
           child: Align(
             alignment: Alignment.centerRight,
             child: MaterialButton(
+                elevation: 0,
                 color: AppColors.pomegranateColor,
                 padding: EdgeInsets.symmetric(
-                    horizontal: width * .025, vertical: height * .02),
+                    horizontal: width * .025, vertical: height * .025),
                 shape: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(width * .01)),
+                    borderRadius: BorderRadius.circular(width * .004)),
                 onPressed: () {
                   showDialog(
                     context: context,

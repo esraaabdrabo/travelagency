@@ -14,14 +14,25 @@ abstract class Constants {
   static var allvisaURL =
       "https://traveelagency-001-site1.ftempurl.com/travelagencyapi/Visa/GetCountriesWithVisaType";
   static var visaTypeCountry =
-      "https://traveelagency-001site1.ftempurl.com/travelagencyapi/Visa/GetVisaTypeByCountry?country=";
+      "http://traveelagency-001site1.ftempurl.com/travelagencyapi/Visa/GetVisaTypeByCountry?country=";
 
   static var visaConditionCountry =
-      "https://traveelagency-001-site1.ftempurl.com/travelagencyapi/Visa/GetVisaCondition?";
+      "http://traveelagency-001-site1.ftempurl.com/travelagencyapi/Visa/GetVisaCondition?";
 
   static var visaCondCountCategory =
-      "https://traveelagency-001-site1.ftempurl.com/travelagencyapi/Visa/GetVisaConditionBasedOnCountryAndCategory?"; //country=Turkey&Category=requirments;
+      "http://traveelagency-001-site1.ftempurl.com/travelagencyapi/Visa/GetVisaConditionBasedOnCountryAndCategory?"; //country=Turkey&Category=requirments;
 
   static var visaReserveURL =
-      "https://traveelagency-001-site1.ftempurl.com/travelagencyapi/VisaReserve/reservevisa";
+      "http://traveelagency-001-site1.ftempurl.com/travelagencyapi/VisaReserve/reservevisa";
+
+//************************group*************************** */
+  static var allGroupsURL =
+      "http://traveelagency-001-site1.ftempurl.com/travelagencyapi/Group";
+  static var groupReserveURL =
+      "http://traveelagency-001-site1.ftempurl.com/travelagencyapi/Group/reserveGroup";
+
+//*****************************FIREBASE STORAGE*************************** */
+  static var passportPath = "Passports/";
+  static var idPath = "Identifies/";
+  static var pdfPath = "Forms/";
 }

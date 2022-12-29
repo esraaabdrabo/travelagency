@@ -4,8 +4,8 @@ class GroupM {
   late String groupNameAr;
   late String country;
   late String city;
-  late List<String> avilableDates;
-  late List<String> groupHotels;
+  late List<AvilableDates> avilableDates;
+  late List<GroupHotels> groupHotels;
 
   GroupM(
       {required this.id,
@@ -17,27 +17,17 @@ class GroupM {
       required this.groupHotels});
 
   GroupM.fromJson(Map<String, dynamic> json) {
-    if (json["id"] is String) {
-      id = json["id"];
-    }
-    if (json["groupNameEn"] is String) {
-      groupNameEn = json["groupNameEn"];
-    }
-    if (json["groupNameAr"] is String) {
-      groupNameAr = json["groupNameAr"];
-    }
-    if (json["country"] is String) {
-      country = json["country"];
-    }
-    if (json["city"] is String) {
-      city = json["city"];
-    }
-    if (json["avilableDates"] is List) {
-      avilableDates = List<String>.from(json["avilableDates"]);
-    }
-    if (json["groupHotels"] is List) {
-      groupHotels = List<String>.from(json["groupHotels"]);
-    }
+    id = json["id"];
+    groupNameEn = json["groupNameEn"];
+    groupNameAr = json["groupNameAr"];
+    country = json["country"];
+    city = json["city"];
+    avilableDates = (json["avilableDates"] as List)
+        .map((e) => AvilableDates.fromJson(e))
+        .toList();
+    groupHotels = (json["groupHotels"] as List)
+        .map((e) => GroupHotels.fromJson(e))
+        .toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -47,8 +37,52 @@ class GroupM {
     data["groupNameAr"] = groupNameAr;
     data["country"] = country;
     data["city"] = city;
-    data["avilableDates"] = avilableDates;
-    data["groupHotels"] = groupHotels;
+    data["avilableDates"] = avilableDates.map((e) => e.toJson()).toList();
+    data["groupHotels"] = groupHotels.map((e) => e.toJson()).toList();
+    return data;
+  }
+}
+
+class GroupHotels {
+  late String hotelId;
+  late String hotelName;
+  late String hotelImage;
+
+  GroupHotels(
+      {required this.hotelId,
+      required this.hotelName,
+      required this.hotelImage});
+
+  GroupHotels.fromJson(Map<String, dynamic> json) {
+    hotelId = json["hotelId"];
+    hotelName = json["hotelName"];
+    hotelImage = json["hotelImage"];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data["hotelId"] = hotelId;
+    data["hotelName"] = hotelName;
+    data["hotelImage"] = hotelImage;
+    return data;
+  }
+}
+
+class AvilableDates {
+  late String dateId;
+  late String avilableDate;
+
+  AvilableDates({required this.dateId, required this.avilableDate});
+
+  AvilableDates.fromJson(Map<String, dynamic> json) {
+    dateId = json["dateId"];
+    avilableDate = json["avilableDate"];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data["dateId"] = dateId;
+    data["avilableDate"] = avilableDate;
     return data;
   }
 }

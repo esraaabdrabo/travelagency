@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:travelagency/Screens/Widgets/dialogs.dart';
 import 'package:travelagency/models/groups/group.dart';
+import 'package:travelagency/models/groups/group_reserve.dart';
 import 'package:travelagency/services/groups.dart';
 import 'package:travelagency/services/hotels.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -132,52 +133,59 @@ class GroupsVM extends ChangeNotifier {
   }
 
   var userId = "13b545df-f25f-4845-a446-dbc6948133b9";
-  ReserveHotelM makeReserveObj({
+  GroupReserveM makeReserveObj({
+    required String userId,
     required String hotelId,
+    required String groupId,
+    required String dateTableId,
     required String fullName,
     required String phoneNumber,
     required String email,
-    required String fromDate,
-    required String toDate,
+    required String reserveType,
     required String note,
   }) {
-    return ReserveHotelM(
-        hotelId: hotelId,
+    return GroupReserveM(
+        note: note,
+        dateTable: null,
+        hotel: null,
+        user: null,
         userId: userId,
+        hotelId: hotelId,
+        groupId: groupId,
+        dateTableId: dateTableId,
         fullName: fullName,
         phoneNumber: phoneNumber,
         email: email,
-        roomsNumber: rooms.length.toString(),
-        room1ChildNumber: rooms[0].childNum.toString(),
-        room1AdultNumber: rooms[0].adultNum.toString(),
-        room1Type: rooms[0].roomType!,
-        fromDate: fromDate,
-        toDate: toDate,
-        note: note);
+        reserveType: reserveType);
   }
 
-  Future<bool> reserveHotel(
-      {required String hotelId,
+  Future<bool> reserveGroup(
+      {required String userId,
+      required String hotelId,
+      required String dateTableId,
+      required String reserveType,
+      required String groupId,
       required String fullName,
       required String phoneNumber,
       required String email,
-      required String fromDate,
-      required String toDate,
+      //required String fromDate,
+      //required String toDate,
       required String note}) async {
     {
       changeIsLoading(true);
       bool isSuccess = false;
-      ReserveHotelM reserve = makeReserveObj(
+      GroupReserveM reserve = makeReserveObj(
+          dateTableId: dateTableId,
+          reserveType: reserveType,
+          groupId: groupId,
+          userId: groupId,
           hotelId: hotelId,
           fullName: fullName,
           phoneNumber: phoneNumber,
           email: email,
-          fromDate: fromDate,
-          toDate: toDate,
           note: note);
       log("will start reserve");
-      reserve.toJson();
-      isSuccess = await HotelsSV().reserveHotel(reserve, img!);
+      isSuccess = await GroupsSV().reserveGroup(reserve, img!);
       changeIsLoading(false);
       return isSuccess;
     }

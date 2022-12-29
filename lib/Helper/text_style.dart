@@ -83,6 +83,7 @@ groupNameTS(BuildContext context, {required bool isSelected}) {
   return GoogleFonts.aBeeZee(
       fontSize: MediaQuery.of(context).size.height * .04,
       letterSpacing: .08,
-      fontWeight: FontWeight.bold,
-      color: isSelected ? Colors.white : AppColors.pomegranateColor);
+      fontWeight: FontWeight.w400,
+      color: Colors
+          .white); // isSelected ? Colors.white : AppColors.pomegranateColor);
 }

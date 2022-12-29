@@ -24,12 +24,12 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
   // final roomController = Get.put(RoomController());
 
   final formKey1 = GlobalKey<FormState>();
-  final formKey2 = GlobalKey<FormState>();
+  // final formKey2 = GlobalKey<FormState>();
 
   PageController pageCont = PageController();
   //un used cont//
-  TextEditingController natCont = TextEditingController();
-  TextEditingController currCont = TextEditingController();
+  //TextEditingController natCont = TextEditingController();
+  //TextEditingController currCont = TextEditingController();
   //*firstform soctrollers*//
   TextEditingController nameCont = TextEditingController();
   TextEditingController phoneCont = TextEditingController();
@@ -142,8 +142,6 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                                   webSearchReq(
                                       heght: heght,
                                       wedth: wedth,
-                                      natCont: natCont,
-                                      currCont: currCont,
                                       checkoutDateController:
                                           checkoutDateController,
                                       checkInDateController:
@@ -175,8 +173,6 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                                           hotelsProvider: hotelsProvider,
                                           inDate: checkInDateController,
                                           outDate: checkoutDateController,
-                                          currency: currCont,
-                                          nationality: natCont,
                                           context: context),
                                     ],
                                   )
@@ -188,7 +184,6 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                                 translate: translate,
                                 adultCont: adultCont,
                                 childCont: childCont,
-                                formKey2: formKey2,
                                 roomNumCont: roomNumCont,
                                 pageCont: pageCont,
                                 formKey1: formKey1,
@@ -217,9 +212,8 @@ priceContainer(BuildContext context,
   return Container(
     width: width * .07, // width * .07,
     margin: EdgeInsets.only(right: width * .009),
-    padding: EdgeInsets.symmetric(
-        vertical: width * .002,
-        horizontal: MediaQuery.of(context).size.height * .009),
+    padding:
+        EdgeInsets.symmetric(vertical: width * .004, horizontal: width * .009),
     decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(width * .004),
         color: const Color.fromARGB(24, 61, 61, 61)),
@@ -244,8 +238,6 @@ searchBtn(
     {required HotelsVM hotelsProvider,
     required TextEditingController inDate,
     required TextEditingController outDate,
-    required TextEditingController currency,
-    required TextEditingController nationality,
     required BuildContext context}) {
   return Align(
     alignment: Alignment.topRight,
@@ -262,10 +254,9 @@ searchBtn(
         )),
         onPressed: () {
           hotelsProvider.checkSearchReq(
-              inDate: inDate.text,
-              outDate: outDate.text,
-              currency: currency.text,
-              nationality: nationality.text);
+            inDate: inDate.text,
+            outDate: outDate.text,
+          );
           hotelsProvider.isHotelClickAct
               ? hotelsProvider.search(context)
               : Dialogs.onlyTextContent(
@@ -296,30 +287,9 @@ addRoom({required HotelsVM hotelsProvider, required BuildContext context}) {
   );
 }
 
-//search text fields////
-//nationality
-Padding searchNatTF(BuildContext context,
-    {required double wedth, required TextEditingController natCont}) {
-  return Padding(
-    padding: EdgeInsets.only(right: wedth * 0.005),
-    child: TextFormField(
-        controller: natCont,
-        style: const TextStyle(fontSize: 16.0),
-        decoration: MyThemeData.inputDhintPre(context,
-            icon: Icon(
-              Icons.account_circle_outlined,
-              color: Colors.grey,
-              size: wedth * .015,
-            ),
-            label: "Nationality")),
-  );
-}
-
 webSearchReq(
     {required double heght,
     required double wedth,
-    required TextEditingController natCont,
-    required TextEditingController currCont,
     required TextEditingController checkoutDateController,
     required TextEditingController checkInDateController,
     required HotelsVM hotelsProvider,
@@ -330,12 +300,6 @@ webSearchReq(
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(
-            child: searchNatTF(context, wedth: wedth, natCont: natCont),
-          ),
-          Expanded(
-            child: searchCurrTF(context, wedth: wedth, currCont: currCont),
-          ),
           //from date
           Expanded(
             child: Padding(
@@ -399,117 +363,6 @@ webSearchReq(
         ],
       ),
     ],
-  );
-}
-
-tabletSearchReq(
-    {required double heght,
-    required double wedth,
-    required TextEditingController natCont,
-    required TextEditingController currCont,
-    required TextEditingController checkoutDateController,
-    required TextEditingController checkInDateController,
-    required HotelsVM hotelsProvider,
-    required AppLocalizations translate,
-    required BuildContext context}) {
-  return SizedBox(
-    height: heght * .188,
-    child: Column(
-      children: [
-        Row(
-          children: [
-            Expanded(
-              child: searchNatTF(context, wedth: wedth, natCont: natCont),
-            ),
-            Expanded(
-              child: searchCurrTF(context, wedth: wedth, currCont: currCont),
-            ),
-          ],
-        ),
-        //from date
-        Row(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(
-                  right: wedth * 0.005,
-                ),
-                child: TextFormField(
-                    controller: checkInDateController,
-                    validator: (value) {
-                      return hotelsProvider.validateDate(value!, context);
-                    },
-                    onTap: () async {
-                      var date = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(2030));
-                      checkInDateController.text =
-                          date.toString().substring(0, 10);
-                      log(checkInDateController.text);
-                    },
-                    style: const TextStyle(fontSize: 16.0),
-                    decoration: MyThemeData.inputDhintPre(context,
-                        icon: Icon(
-                          Icons.date_range,
-                          color: Colors.grey,
-                          size: wedth * .015,
-                        ),
-                        label: translate.checkInDate)),
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(
-                  right: wedth * 0.005,
-                ),
-                child: TextFormField(
-                    controller: checkoutDateController,
-                    validator: (value) {
-                      return hotelsProvider.validateDate(value!, context);
-                    },
-                    onTap: () async {
-                      var date = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(2030));
-                      checkoutDateController.text =
-                          date.toString().substring(0, 10);
-                    },
-                    style: const TextStyle(fontSize: 16.0),
-                    decoration: MyThemeData.inputDhintPre(context,
-                        icon: Icon(
-                          Icons.date_range,
-                          color: Colors.grey,
-                          size: wedth * .015,
-                        ),
-                        label: translate.checkOutDate)),
-              ),
-            ),
-          ],
-        ),
-      ],
-    ),
-  );
-}
-
-//currency
-Padding searchCurrTF(BuildContext context,
-    {required double wedth, required TextEditingController currCont}) {
-  return Padding(
-    padding: EdgeInsets.only(right: wedth * 0.005),
-    child: TextFormField(
-        controller: currCont..text = "\$",
-        style: const TextStyle(fontSize: 16.0),
-        decoration: MyThemeData.inputDhintPre(context,
-            icon: Icon(
-              Icons.money_off,
-              color: Colors.grey,
-              size: wedth * .015,
-            ),
-            label: "Currency")),
   );
 }
 
@@ -589,7 +442,6 @@ hotelWidget(BuildContext context,
 hotelList(double heght, double wedth, HotelsVM hotelsProvider,
     {required AppLocalizations translate,
     required GlobalKey<FormState> formKey1,
-    required GlobalKey<FormState> formKey2,
     required TextEditingController nameCont,
     required TextEditingController phoneCont,
     required TextEditingController emailCont,
@@ -616,7 +468,6 @@ hotelList(double heght, double wedth, HotelsVM hotelsProvider,
                   : hotelsProvider.searchResults[index],
               translate: translate,
               formKey1: formKey1,
-              formKey2: formKey2,
               nameCont: nameCont,
               phoneCont: phoneCont,
               emailCont: emailCont,
@@ -1079,7 +930,6 @@ hotelCard(
     required HotelM hotel,
     required AppLocalizations translate,
     required GlobalKey<FormState> formKey1,
-    required GlobalKey<FormState> formKey2,
     required TextEditingController nameCont,
     required TextEditingController phoneCont,
     required TextEditingController emailCont,

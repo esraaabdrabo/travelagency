@@ -38,7 +38,6 @@ class VisaVM extends ChangeNotifier {
   Future<void> getAllVisa() async {
     changeIsLoading(true);
     visaCount = await VisaSV().getAllVisa();
-    log(visaCount[0].toString());
     visaCount.isNotEmpty
         ? onVisaTypeClicked(clickedVisaTypeIndex: 0, firstTimeCalling: true)
         : null;
@@ -72,13 +71,16 @@ class VisaVM extends ChangeNotifier {
   ///*******************click on another country***************** */
   Future<void> getVisaForNewCount(
       {required String newCountry, required int newCountIndex}) async {
-    changeIsLoading(true);
-    currentCountry = newCountIndex;
-    //call the conditions if the first visa type for new country
-    currentVisaType = 0;
-    await getCondCount(
-        country: newCountry, visaType: visaCount[newCountIndex].visaType![0]);
-    changeIsLoading(false);
+    if (currentCountry == newCountIndex) {
+    } else {
+      changeIsLoading(true);
+      currentCountry = newCountIndex;
+      //call the conditions if the first visa type for new country
+      currentVisaType = 0;
+      await getCondCount(
+          country: newCountry, visaType: visaCount[newCountIndex].visaType![0]);
+      changeIsLoading(false);
+    }
   }
 
   ///*****************reserve visa*************************//// */

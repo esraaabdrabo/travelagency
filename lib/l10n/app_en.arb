@@ -8,5 +8,7 @@
 "welcomeIn":"Welcome in",
 "nameError":"must contain letters only",
 "phoneError":"must contain 11 number",
-"emailError":"email format is wrong"
+"emailError":"email format is wrong",
+"availableDates":"Available Dates",
+"availableHotels":"Available Hotels To This Group"
 }

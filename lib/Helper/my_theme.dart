@@ -42,32 +42,25 @@ abstract class MyThemeData {
               offset: Offset(0, 4))
         ],
         borderRadius:
-            BorderRadius.circular(MediaQuery.of(context).size.width * .022),
-        gradient: isSelected
-            ? const LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Color(0xffE4E4E4), Color(0xff9F1212)])
-            : const LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Color(0xffE4E4E4), Colors.white]));
+            BorderRadius.circular(MediaQuery.of(context).size.width * .01),
+        color:
+            isSelected ? Color(0xff9F1212) : Color.fromARGB(255, 19, 102, 22));
   }
 
   static groupDateHotelDEC(context) {
     return BoxDecoration(
       boxShadow: const [
         BoxShadow(
-          color: Color.fromARGB(70, 154, 154, 154),
+          color: Color.fromARGB(20, 154, 154, 154),
           blurRadius: 2,
           offset: Offset(-4, 4),
         ),
-        BoxShadow(
+        /* BoxShadow(
           color: Color.fromARGB(255, 246, 246, 246),
-        ),
+        ),*/
       ],
-      borderRadius:
-          BorderRadius.circular(MediaQuery.of(context).size.width * .015),
+      /* borderRadius:
+          BorderRadius.circular(MediaQuery.of(context).size.width * .015),*/
     );
   }
 }

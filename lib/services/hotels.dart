@@ -123,7 +123,7 @@ class HotelsSV {
 
   void uploadImg(Uint8List img, String name) {
     FirebaseStorage storage = FirebaseStorage.instance;
-    var ref = storage.ref("Passports/").child("$name.jpg");
+    var ref = storage.ref(Constants.passportPath).child("$name.jpg");
     try {
       ref.putData(img).then((p0) {
         log("image uploaded");

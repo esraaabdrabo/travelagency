@@ -8,8 +8,6 @@ import 'package:travelagency/Helper/my_theme.dart';
 import 'package:travelagency/Helper/text_style.dart';
 import 'package:travelagency/Screens/Widgets/Drawer.dart';
 import 'package:travelagency/Screens/Widgets/widgets.dart';
-import 'package:travelagency/models/groups/group.dart';
-import 'package:travelagency/view_model/visa.dart';
 
 import '../../view_model/group.dart';
 
@@ -59,8 +57,7 @@ class _DesktopGroupScreenState extends State<DesktopGroupScreen> {
                     Expanded(
                       flex: 4,
                       child: Padding(
-                        padding: const EdgeInsets.only(
-                            right: 14.0, left: 14.0, top: 12.0, bottom: 6.0),
+                        padding: EdgeInsets.symmetric(horizontal: wedth * .01),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -69,9 +66,9 @@ class _DesktopGroupScreenState extends State<DesktopGroupScreen> {
                                 child: Text("Groups",
                                     style: screenTitle(context))),
                             Expanded(
-                              flex: 2,
+                              flex: 1,
                               child: SizedBox(
-                                  height: heght * 0.28,
+                                  height: heght * 0.5,
                                   child: Stack(
                                     children: [
                                       Container(
@@ -168,20 +165,23 @@ class _DesktopGroupScreenState extends State<DesktopGroupScreen> {
                                   )),
                             ),
                             SizedBox(
-                              height: heght * .05,
+                              height: heght * .025,
                             ),
                             Expanded(
-                              flex: 4,
+                              flex: 6,
                               child: SizedBox(
                                   child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   selectDate(
+                                      translate: translate,
                                       heght: heght,
                                       wedth: wedth,
                                       groupProvider: groupsProvider),
+                                  SizedBox(
+                                    width: wedth * .01,
+                                  ),
                                   selectHotel(context,
+                                      translate: translate,
                                       heght: heght,
                                       wedth: wedth,
                                       groupProvider: groupsProvider)
@@ -227,8 +227,8 @@ class _DesktopGroupScreenState extends State<DesktopGroupScreen> {
       required GroupsVM groupsProvider,
       required String groupId}) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15),
-      margin: const EdgeInsets.only(right: 15, bottom: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      margin: const EdgeInsets.symmetric(horizontal: 15),
       width: wedth * .15,
       decoration: MyThemeData.groupNameDEC(context,
           isSelected: groupsProvider.currentHoveredGroupID == groupId),
@@ -251,15 +251,6 @@ class _DesktopGroupScreenState extends State<DesktopGroupScreen> {
                 style: groupNameTS(context,
                     isSelected:
                         groupsProvider.currentHoveredGroupID == groupId)),
-
-            /*   groupNameTS(
-                    isSelected:
-                        groupsProvider.currentHoveredGroupID == groupId)),*/
-            const Divider(
-              endIndent: 50,
-              indent: 50,
-              color: Colors.white,
-            )
           ],
         ),
       ),
@@ -268,36 +259,38 @@ class _DesktopGroupScreenState extends State<DesktopGroupScreen> {
 
   selectDate(
       {required GroupsVM groupProvider,
+      required AppLocalizations translate,
       required double wedth,
       required double heght}) {
     return Container(
-      padding: EdgeInsets.only(top: wedth * .022, bottom: wedth * .01),
-      height: MediaQuery.of(context).size.height * .48,
-      width: wedth * .3,
+      padding:
+          EdgeInsets.symmetric(horizontal: wedth * .004, vertical: heght * .03),
+      height: MediaQuery.of(context).size.height * .5,
+      width: wedth * .15,
       decoration: MyThemeData.groupDateHotelDEC(context),
       alignment: Alignment.center,
       child: Column(
         //mainAxisAlignment: MainAxisAlignment.center,
         children: [
           FittedBox(
-            child: Text("Date",
+            child: Text(translate.availableDates,
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
-                style: black22AbeezeTS(context)),
-          ),
-          const Divider(
-            thickness: 4.2,
-            color: Color.fromARGB(25, 158, 158, 158),
+                style: GoogleFonts.lato(
+                    fontSize: heght * .04, fontWeight: FontWeight.w600)),
           ),
           Container(
-            height: MediaQuery.of(context).size.height * .27,
-            padding: EdgeInsets.symmetric(horizontal: wedth * .025)
-                .copyWith(top: heght * .03),
+            height: MediaQuery.of(context).size.height * .37,
+            padding: EdgeInsets.symmetric(horizontal: wedth * .002)
+                .copyWith(top: heght * .015),
             child: ListView.builder(
               itemBuilder: (context, dateIndex) => dateContainer(
+                  width: wedth,
+                  heght: heght,
                   groupsProvider: groupProvider,
-                  date: groupProvider.groups[0].avilableDates[dateIndex]),
+                  date: groupProvider
+                      .groups[0].avilableDates[dateIndex].avilableDate),
               itemCount: groupProvider.groups[0].avilableDates.length,
             ),
           )
@@ -306,35 +299,51 @@ class _DesktopGroupScreenState extends State<DesktopGroupScreen> {
     );
   }
 
-  dateContainer({required String date, required GroupsVM groupsProvider}) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: InkWell(
-        onTap: () {},
-        onHover: (value) {
-          value
-              ? groupsProvider.changeHoveredDate(date: date)
-              : groupsProvider.changeHoveredDate(date: "");
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            color: groupsProvider.currentHoveredDate == date
-                ? AppColors.pomegranateColor.withOpacity(.85)
-                : Color.fromARGB(33, 0, 0, 0),
-            borderRadius: BorderRadius.circular(15),
-          ),
-          padding: const EdgeInsets.symmetric(vertical: 15),
-          child: Text(
-            date,
-            textAlign: TextAlign.center,
-            style: GoogleFonts.aBeeZee(
-              fontSize: MediaQuery.of(context).size.height * .04,
-              fontWeight: FontWeight.bold,
+  dateContainer(
+      {required String date,
+      required GroupsVM groupsProvider,
+      required double width,
+      required double heght}) {
+    return InkWell(
+      onTap: () {},
+      onHover: (value) {
+        value
+            ? groupsProvider.changeHoveredDate(date: date)
+            : groupsProvider.changeHoveredDate(date: "");
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: groupsProvider.currentHoveredDate == date
+              ? AppColors.pomegranateColor.withOpacity(.85)
+              : const Color.fromARGB(0, 0, 0, 0),
+          borderRadius: BorderRadius.circular(width * .0031),
+        ),
+        padding: EdgeInsets.symmetric(
+            vertical: heght * .01, horizontal: width * .009),
+        child: Row(
+          children: [
+            Icon(
+              Icons.calendar_month_outlined,
+              size: heght * .04,
               color: groupsProvider.currentHoveredDate != date
-                  ? const Color.fromARGB(150, 0, 0, 0)
+                  ? Colors.black
                   : Colors.white,
             ),
-          ),
+            SizedBox(
+              width: width * .005,
+            ),
+            Text(
+              "03-2-2023",
+              textAlign: TextAlign.center,
+              style: GoogleFonts.aBeeZee(
+                fontSize: MediaQuery.of(context).size.height * .03,
+                fontWeight: FontWeight.bold,
+                color: groupsProvider.currentHoveredDate != date
+                    ? Colors.black
+                    : Colors.white,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -342,38 +351,42 @@ class _DesktopGroupScreenState extends State<DesktopGroupScreen> {
 
   selectHotel(BuildContext context,
       {required GroupsVM groupProvider,
+      required AppLocalizations translate,
       required double wedth,
       required double heght}) {
     return Container(
-      padding: EdgeInsets.only(top: wedth * .022, bottom: wedth * .01),
-      height: MediaQuery.of(context).size.height * .48,
-      width: wedth * .3,
+      padding:
+          EdgeInsets.symmetric(horizontal: wedth * .02, vertical: heght * .03),
+      height: MediaQuery.of(context).size.height * .5,
+      width: wedth * .6,
       decoration: MyThemeData.groupDateHotelDEC(context),
-      alignment: Alignment.center,
+      //alignment: Alignment.center,
       child: Column(
-        //mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           FittedBox(
-              child: Text(
-            "Hotel Name",
-            textAlign: TextAlign.center,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-            style: black22AbeezeTS(context),
-          )),
-          const Divider(
-            thickness: 4.2,
-            color: Color.fromARGB(25, 158, 158, 158),
+            child: Text(translate.availableHotels,
+                //   textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: GoogleFonts.lato(
+                    fontSize: heght * .04, fontWeight: FontWeight.w600)),
           ),
           Container(
-            height: MediaQuery.of(context).size.height * .27,
+            height: MediaQuery.of(context).size.height * .38,
             padding: EdgeInsets.symmetric(horizontal: wedth * .025)
                 .copyWith(top: heght * .03),
             child: ListView.builder(
+              scrollDirection: Axis.horizontal,
               itemCount: groupProvider.groups[0].groupHotels.length,
-              itemBuilder: (context, hotelNameIndex) => hotelNameContainer(
+              itemBuilder: (context, hotelIndex) => hotelNameContainer(
+                  heght: heght,
+                  hotelIndex: hotelIndex,
+                  wedth: wedth,
                   groupsProvider: groupProvider,
-                  name: groupProvider.groups[0].groupHotels[hotelNameIndex]),
+                  name: groupProvider
+                      .groups[0].groupHotels[hotelIndex].hotelName),
             ),
           )
         ],
@@ -381,9 +394,14 @@ class _DesktopGroupScreenState extends State<DesktopGroupScreen> {
     );
   }
 
-  hotelNameContainer({required String name, required GroupsVM groupsProvider}) {
+  hotelNameContainer(
+      {required String name,
+      required GroupsVM groupsProvider,
+      required double wedth,
+      required double heght,
+      required int hotelIndex}) {
     return Padding(
-        padding: const EdgeInsets.only(bottom: 10),
+        padding: EdgeInsets.symmetric(horizontal: wedth * .008),
         child: InkWell(
           onTap: () {},
           onHover: (value) {
@@ -392,23 +410,41 @@ class _DesktopGroupScreenState extends State<DesktopGroupScreen> {
                 : groupsProvider.changeHoveredHatel(date: "");
           },
           child: Container(
+            alignment: Alignment.bottomLeft,
+            width: wedth * .1,
             decoration: BoxDecoration(
-              color: groupsProvider.currentHoveredDate == name
-                  ? AppColors.pomegranateColor.withOpacity(.85)
-                  : Color.fromARGB(33, 0, 0, 0),
-              borderRadius: BorderRadius.circular(15),
-            ),
-            padding: const EdgeInsets.symmetric(vertical: 15),
-            child: Text(
-              name,
-              textAlign: TextAlign.center,
-              style: GoogleFonts.aBeeZee(
-                fontSize: MediaQuery.of(context).size.height * .04,
-                fontWeight: FontWeight.bold,
-                color: groupsProvider.currentHoveredDate != name
-                    ? const Color.fromARGB(150, 0, 0, 0)
-                    : Colors.white,
-              ),
+                color: groupsProvider.currentHoveredDate == name
+                    ? AppColors.pomegranateColor.withOpacity(.85)
+                    : const Color.fromARGB(0, 0, 0, 0),
+                borderRadius: BorderRadius.circular(15),
+                image: DecorationImage(
+                    image: NetworkImage(
+                      groupsProvider
+                          .groups[0].groupHotels[hotelIndex].hotelImage,
+                    ),
+                    fit: BoxFit.fill)),
+            child: Stack(
+              alignment: AlignmentDirectional.bottomEnd,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [Colors.transparent, Colors.black])),
+                ),
+                Padding(
+                  padding:
+                      EdgeInsets.only(left: wedth * .005, bottom: heght * .02),
+                  child: Text(
+                    name,
+                    style: GoogleFonts.aBeeZee(
+                        fontSize: MediaQuery.of(context).size.height * .03,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                ),
+              ],
             ),
           ),
         ));

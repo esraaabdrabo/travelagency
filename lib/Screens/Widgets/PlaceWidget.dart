@@ -58,8 +58,7 @@ class _PlaceWidgetState extends State<PlaceWidget> {
                 newCountIndex: widget.countIndex);
           },
           child: Container(
-            height: height * .32,
-            width: width * .25,
+            width: width * .12,
             decoration: BoxDecoration(boxShadow: [
               BoxShadow(
                 blurRadius: isHover ? 15 : 2,
@@ -71,7 +70,7 @@ class _PlaceWidgetState extends State<PlaceWidget> {
               children: [
                 backImage(height, width),
                 gradiant(),
-                texts(height),
+                texts(height, visaProvider),
               ],
             ),
           ),
@@ -85,8 +84,8 @@ class _PlaceWidgetState extends State<PlaceWidget> {
       duration: const Duration(milliseconds: 1000),
       top: isHover ? -10 + mousPos.dy : 0,
       left: isHover ? -15 + mousPos.dx : 0,
-      height: isHover ? height * .4 : height * .35,
-      width: width * .25,
+      height: isHover ? height * .45 : height * .45,
+      width: width * .15,
       curve: Curves.easeOutCubic,
       child: Container(
         decoration: BoxDecoration(
@@ -117,7 +116,8 @@ class _PlaceWidgetState extends State<PlaceWidget> {
     );
   }
 
-  texts(double height) {
+  texts(double height, VisaVM visaProvider) {
+    bool isSelected = visaProvider.currentCountry == widget.countIndex;
     return Align(
       alignment: Alignment.bottomLeft,
       child: AnimatedDefaultTextStyle(

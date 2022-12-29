@@ -150,15 +150,11 @@ class HotelsVM extends ChangeNotifier {
 
 //user can not open the reserve form if he dont fill this
 
-  void checkSearchReq(
-      {required String inDate,
-      required String outDate,
-      required String nationality,
-      required String currency}) {
-    if (removeSpace(inDate).isNotEmpty &&
-        removeSpace(outDate).isNotEmpty &&
-        removeSpace(nationality).isNotEmpty &&
-        removeSpace(currency).isNotEmpty) {
+  void checkSearchReq({
+    required String inDate,
+    required String outDate,
+  }) {
+    if (removeSpace(inDate).isNotEmpty && removeSpace(outDate).isNotEmpty) {
       isHotelClickAct = true;
       notifyListeners();
     }

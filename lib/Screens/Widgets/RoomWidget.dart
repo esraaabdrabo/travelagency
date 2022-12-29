@@ -1,9 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:travelagency/Screens/Widgets/ChildWidget.dart';
 
 import '../../Helper/Colors.dart';
 import '../../view_model/hotels.dart';
@@ -94,7 +92,7 @@ class RoomWidget extends StatelessWidget {
                     },
                   ),
                 ),
-                SizedBox(
+                /*  SizedBox(
                   width: wedth * 0.105,
                   child: DropdownButtonFormField(
                     isExpanded: true,
@@ -119,6 +117,7 @@ class RoomWidget extends StatelessWidget {
                     },
                   ),
                 ),
+            */
                 InkWell(
                   onTap: () => hotelsProvider.deleteRoom(index),
                   child: Padding(
