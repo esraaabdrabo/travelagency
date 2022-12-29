@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-var primaryColor = Color(0xFF9E0F07);
+var primaryColor = const Color(0xFF9E0F07);
 
 class AppColors {
   static const pomegranateColor = Color(0xFF9E0F07);

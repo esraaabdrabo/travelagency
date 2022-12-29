@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:travelagency/Helper/text_style.dart';
 
 import 'Colors.dart';
 
 abstract class MyThemeData {
-  static inputDhintPre({required Widget icon, required String label}) {
+  static inputDhintPre(
+    BuildContext context, {
+    required Widget icon,
+    required String label,
+  }) {
     return InputDecoration(
         filled: true,
         fillColor: AppColors.offWhiteColor.withOpacity(0.8),
@@ -23,13 +26,14 @@ abstract class MyThemeData {
           borderSide: BorderSide(color: AppColors.pomegranateColor),
         ),
         labelText: label,
-        hintStyle: black15lato,
-        helperStyle: black15lato,
-        contentPadding: EdgeInsets.all(5),
-        labelStyle: black15lato);
+        hintStyle: black15lato(context),
+        helperStyle: black15lato(context),
+        contentPadding:
+            EdgeInsets.all(MediaQuery.of(context).size.width * .005),
+        labelStyle: black15lato(context));
   }
 
-  static groupNameDEC({required bool isSelected}) {
+  static groupNameDEC(BuildContext context, {required bool isSelected}) {
     return BoxDecoration(
         boxShadow: const [
           BoxShadow(
@@ -37,7 +41,8 @@ abstract class MyThemeData {
               blurRadius: 4,
               offset: Offset(0, 4))
         ],
-        borderRadius: BorderRadius.circular(25),
+        borderRadius:
+            BorderRadius.circular(MediaQuery.of(context).size.width * .022),
         gradient: isSelected
             ? const LinearGradient(
                 begin: Alignment.topCenter,
@@ -49,7 +54,7 @@ abstract class MyThemeData {
                 colors: [Color(0xffE4E4E4), Colors.white]));
   }
 
-  static groupDateHotelDEC() {
+  static groupDateHotelDEC(context) {
     return BoxDecoration(
       boxShadow: const [
         BoxShadow(
@@ -61,7 +66,8 @@ abstract class MyThemeData {
           color: Color.fromARGB(255, 246, 246, 246),
         ),
       ],
-      borderRadius: BorderRadius.circular(25),
+      borderRadius:
+          BorderRadius.circular(MediaQuery.of(context).size.width * .015),
     );
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,12 +22,13 @@ class RoomWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
+      height: heght * .1,
       padding: EdgeInsets.symmetric(vertical: heght * 0.008),
       child: Container(
         decoration: BoxDecoration(
           color: AppColors.offWhiteColor.withOpacity(0.5),
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(wedth * .0075),
         ),
         child: Padding(
             padding: EdgeInsets.symmetric(vertical: heght * 0.008),
@@ -35,17 +38,18 @@ class RoomWidget extends StatelessWidget {
               children: [
                 Text("ROOM ${index + 1}",
                     style: GoogleFonts.lato(
-                        fontSize: 32,
+                        fontSize: heght * .035,
                         fontWeight: FontWeight.w900,
                         color: AppColors.grayColor)),
                 SizedBox(width: wedth * 0.005),
                 SizedBox(
                   width: wedth * 0.105,
-                  height: heght * 0.06,
                   child: DropdownButtonFormField(
-                    isExpanded: true,
-                    decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 7),
+                    // isExpanded: true,
+                    isDense: true,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 5),
+                      labelStyle: TextStyle(fontSize: heght * .035),
                       labelText: 'Adult Num',
                       border: OutlineInputBorder(),
                     ),
@@ -54,7 +58,8 @@ class RoomWidget extends StatelessWidget {
                         .map((int item) => DropdownMenuItem<int>(
                               value: item,
                               child: Text(item.toString(),
-                                  style: GoogleFonts.lato()),
+                                  style:
+                                      GoogleFonts.lato(fontSize: heght * .035)),
                             ))
                         .toList(),
                     onChanged: (val) {
@@ -66,12 +71,12 @@ class RoomWidget extends StatelessWidget {
                 SizedBox(width: wedth * 0.005),
                 SizedBox(
                   width: wedth * 0.105,
-                  height: heght * 0.06,
                   child: DropdownButtonFormField(
                     isExpanded: true,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(horizontal: 5),
                       labelText: 'Child Num',
+                      labelStyle: TextStyle(fontSize: heght * .035),
                       border: OutlineInputBorder(),
                     ),
                     value: hotelsProvider.rooms[index].childNum,
@@ -79,7 +84,8 @@ class RoomWidget extends StatelessWidget {
                         .map((int item) => DropdownMenuItem<int>(
                               value: item,
                               child: Text(item.toString(),
-                                  style: GoogleFonts.lato()),
+                                  style:
+                                      GoogleFonts.lato(fontSize: heght * .035)),
                             ))
                         .toList(),
                     onChanged: (val) {
@@ -90,10 +96,10 @@ class RoomWidget extends StatelessWidget {
                 ),
                 SizedBox(
                   width: wedth * 0.105,
-                  height: heght * 0.06,
                   child: DropdownButtonFormField(
                     isExpanded: true,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
+                      labelStyle: TextStyle(fontSize: heght * .035),
                       contentPadding: EdgeInsets.symmetric(horizontal: 5),
                       labelText: 'Room Type',
                       border: OutlineInputBorder(),
@@ -102,7 +108,9 @@ class RoomWidget extends StatelessWidget {
                     items: hotelsProvider.roomTypeMenu
                         .map((String item) => DropdownMenuItem<String>(
                               value: item,
-                              child: Text(item, style: GoogleFonts.lato()),
+                              child: Text(item,
+                                  style:
+                                      GoogleFonts.lato(fontSize: heght * .035)),
                             ))
                         .toList(),
                     onChanged: (val) {
@@ -115,9 +123,10 @@ class RoomWidget extends StatelessWidget {
                   onTap: () => hotelsProvider.deleteRoom(index),
                   child: Padding(
                     padding: EdgeInsets.only(left: wedth * .01),
-                    child: const Icon(
+                    child: Icon(
                       Icons.delete,
                       color: Colors.red,
+                      size: heght * .045,
                     ),
                   ),
                 )

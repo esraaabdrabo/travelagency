@@ -1,7 +1,5 @@
 import 'dart:developer';
 
-import 'package:file_picker/file_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -61,24 +59,19 @@ class _DesktopVisaScreenState extends State<DesktopVisaScreen> {
                     Expanded(
                       flex: 4,
                       child: Padding(
-                        padding: const EdgeInsets.only(
-                            right: 14.0, left: 14.0, top: 12.0, bottom: 6.0),
+                        padding: EdgeInsets.symmetric(
+                            vertical: heght * .001, horizontal: wedth * .01),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
-                              flex: 1,
-                              child: Text("VISA",
-                                  style: GoogleFonts.lato(
-                                      letterSpacing: 4,
-                                      color: AppColors.pomegranateColor,
-                                      fontSize: 36,
-                                      fontWeight: FontWeight.w900)),
-                            ),
+                                flex: 1,
+                                child:
+                                    Text("VISA", style: screenTitle(context))),
+                            //countery img
                             Expanded(
                               flex: 4,
                               child: SizedBox(
-                                  width: double.infinity,
                                   height: heght * 0.313,
                                   child: Stack(
                                     children: [
@@ -87,11 +80,7 @@ class _DesktopVisaScreenState extends State<DesktopVisaScreen> {
                                             visaProvider.visaCount.length,
                                         controller: _scrollController,
                                         scrollDirection: Axis.horizontal,
-                                        itemBuilder: (context, index) => Column(
-                                          children: [
-                                            SizedBox(
-                                              width: wedth * 0.011,
-                                            ),
+                                        itemBuilder: (context, index) =>
                                             PlaceWidget(
                                                 countIndex: index,
                                                 imageLink: visaProvider
@@ -100,8 +89,6 @@ class _DesktopVisaScreenState extends State<DesktopVisaScreen> {
                                                 capitalName: visaProvider
                                                     .visaCount[index]
                                                     .countryEn!),
-                                          ],
-                                        ),
                                       ),
                                       //next and previous country
                                       Row(
@@ -180,6 +167,7 @@ class _DesktopVisaScreenState extends State<DesktopVisaScreen> {
                                   .visaType!
                                   .length,
                               itemBuilder: (context, index) => visaType(
+                                  wedth, heght,
                                   visaProvider: visaProvider,
                                   visaTypeIndex: index),
                               shrinkWrap: true,
@@ -248,19 +236,22 @@ class _DesktopVisaScreenState extends State<DesktopVisaScreen> {
     );
   }
 
-  visaType({required VisaVM visaProvider, required int visaTypeIndex}) {
+  visaType(double width, double height,
+      {required VisaVM visaProvider, required int visaTypeIndex}) {
     return InkWell(
       onTap: () {
         visaProvider.onVisaTypeClicked(
             clickedVisaTypeIndex: visaTypeIndex, firstTimeCalling: false);
       },
       child: Padding(
-        padding: const EdgeInsets.only(right: 5.0),
+        padding: EdgeInsets.only(right: width * .005),
         child: ChoiceChip(
+          padding: EdgeInsets.symmetric(
+              vertical: height * .005, horizontal: width * .015),
           label: Text(
               visaProvider.visaCount[visaProvider.currentCountry]
                   .visaType![visaTypeIndex],
-              style: white15lato),
+              style: white15lato(context)),
           selected: true,
           selectedColor: AppColors.pomegranateColor,
         ),
@@ -355,7 +346,7 @@ class _DesktopVisaScreenState extends State<DesktopVisaScreen> {
           keyboardType: TextInputType.name,
           minLines: null,
           style: const TextStyle(fontSize: 16.0),
-          decoration: MyThemeData.inputDhintPre(
+          decoration: MyThemeData.inputDhintPre(context,
               icon: const Icon(
                 Icons.person,
                 color: Colors.grey,
@@ -384,7 +375,7 @@ class _DesktopVisaScreenState extends State<DesktopVisaScreen> {
           keyboardType: TextInputType.number,
           minLines: null,
           style: const TextStyle(fontSize: 16.0),
-          decoration: MyThemeData.inputDhintPre(
+          decoration: MyThemeData.inputDhintPre(context,
               icon: const Icon(
                 Icons.phone_android,
                 color: Colors.grey,
@@ -414,7 +405,7 @@ class _DesktopVisaScreenState extends State<DesktopVisaScreen> {
           minLines: null,
           onChanged: (value) {},
           style: const TextStyle(fontSize: 16.0),
-          decoration: MyThemeData.inputDhintPre(
+          decoration: MyThemeData.inputDhintPre(context,
               icon: const Icon(
                 Icons.email,
                 color: Colors.grey,
@@ -444,7 +435,7 @@ class _DesktopVisaScreenState extends State<DesktopVisaScreen> {
           keyboardType: TextInputType.emailAddress,
           minLines: null,
           style: const TextStyle(fontSize: 16.0),
-          decoration: MyThemeData.inputDhintPre(
+          decoration: MyThemeData.inputDhintPre(context,
               icon: const Icon(
                 Icons.note_outlined,
                 color: Colors.grey,
@@ -486,11 +477,7 @@ class _DesktopVisaScreenState extends State<DesktopVisaScreen> {
                 SizedBox(
                   width: width * .001,
                 ),
-                Text(
-                  translate.passportImage,
-                  style: black15lato.copyWith(
-                      color: const Color.fromARGB(200, 61, 61, 61)),
-                )
+                Text(translate.passportImage, style: black15lato(context))
               ],
             ),
           ),
@@ -533,8 +520,7 @@ class _DesktopVisaScreenState extends State<DesktopVisaScreen> {
                 ),
                 Text(
                   "id image",
-                  style: black15lato.copyWith(
-                      color: const Color.fromARGB(200, 61, 61, 61)),
+                  style: black15lato(context),
                 )
               ],
             ),
@@ -576,11 +562,7 @@ class _DesktopVisaScreenState extends State<DesktopVisaScreen> {
                 SizedBox(
                   width: width * .001,
                 ),
-                Text(
-                  "form image",
-                  style: black15lato.copyWith(
-                      color: const Color.fromARGB(200, 61, 61, 61)),
-                )
+                Text("form image", style: black15lato(context))
               ],
             ),
           ),
@@ -601,154 +583,152 @@ class _DesktopVisaScreenState extends State<DesktopVisaScreen> {
       required TextEditingController emailCont}) {
     return Expanded(
         flex: 1,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            SizedBox(
-                width: 100,
-                height: 40,
-                child: ElevatedButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => Dialog(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              //hotel img
-                              Expanded(
-                                flex: 3,
-                                child: CustomWidgets.cachedImg(
-                                    visaProvider.getCountIMG()),
-                              ),
-                              //form
-                              Expanded(
-                                child: Stack(
-                                  children: [
-                                    CustomWidgets.exit(context),
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: width * .025,
-                                          vertical: height * .009),
-                                      child: SingleChildScrollView(
-                                        child: Form(
-                                          key: formKey,
-                                          child: SizedBox(
-                                            height: height * .85,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                fullNameTf(
-                                                    nameCont: nameCont,
-                                                    visaProvider: visaProvider,
-                                                    width: width,
-                                                    height: height,
-                                                    context: context,
-                                                    translate:
-                                                        translate), //phone num
-                                                phoneTF(
-                                                    phoneCont: phoneCont,
-                                                    visaProvider: visaProvider,
-                                                    width: width,
-                                                    height: height,
-                                                    context: context,
-                                                    translate: translate),
-                                                emailTF(
-                                                    emailCont: emailCont,
-                                                    visaProvider: visaProvider,
-                                                    width: width,
-                                                    height: height,
-                                                    context: context,
-                                                    translate:
-                                                        translate), //from date
-                                                noteTF(
-                                                    noteCont: noteCont,
-                                                    visaProvider: visaProvider,
-                                                    width: width,
-                                                    height: height,
-                                                    context: context,
-                                                    translate: translate),
-                                                passportImg(
-                                                    height: height,
-                                                    width: width,
-                                                    visaProvider: visaProvider,
-                                                    translate: translate,
-                                                    context: context),
-                                                idImg(
-                                                    height: height,
-                                                    width: width,
-                                                    context: context,
-                                                    translate: translate,
-                                                    visaProvider: visaProvider),
-                                                pdfFile(
-                                                    context: context,
-                                                    height: height,
-                                                    width: width,
-                                                    translate: translate,
-                                                    visaProvider: visaProvider),
+        child: Padding(
+          padding: EdgeInsets.only(bottom: height * .007),
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: MaterialButton(
+                color: AppColors.pomegranateColor,
+                padding: EdgeInsets.symmetric(
+                    horizontal: width * .025, vertical: height * .02),
+                shape: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(width * .01)),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => Dialog(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          //hotel img
+                          Expanded(
+                            flex: 3,
+                            child: CustomWidgets.cachedImg(
+                                visaProvider.getCountIMG()),
+                          ),
+                          //form
+                          Expanded(
+                            child: Stack(
+                              children: [
+                                CustomWidgets.exit(context),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: width * .025,
+                                      vertical: height * .009),
+                                  child: SingleChildScrollView(
+                                    child: Form(
+                                      key: formKey,
+                                      child: SizedBox(
+                                        height: height * .85,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            fullNameTf(
+                                                nameCont: nameCont,
+                                                visaProvider: visaProvider,
+                                                width: width,
+                                                height: height,
+                                                context: context,
+                                                translate:
+                                                    translate), //phone num
+                                            phoneTF(
+                                                phoneCont: phoneCont,
+                                                visaProvider: visaProvider,
+                                                width: width,
+                                                height: height,
+                                                context: context,
+                                                translate: translate),
+                                            emailTF(
+                                                emailCont: emailCont,
+                                                visaProvider: visaProvider,
+                                                width: width,
+                                                height: height,
+                                                context: context,
+                                                translate:
+                                                    translate), //from date
+                                            noteTF(
+                                                noteCont: noteCont,
+                                                visaProvider: visaProvider,
+                                                width: width,
+                                                height: height,
+                                                context: context,
+                                                translate: translate),
+                                            passportImg(
+                                                height: height,
+                                                width: width,
+                                                visaProvider: visaProvider,
+                                                translate: translate,
+                                                context: context),
+                                            idImg(
+                                                height: height,
+                                                width: width,
+                                                context: context,
+                                                translate: translate,
+                                                visaProvider: visaProvider),
+                                            pdfFile(
+                                                context: context,
+                                                height: height,
+                                                width: width,
+                                                translate: translate,
+                                                visaProvider: visaProvider),
 
-                                                MaterialButton(
-                                                    onPressed: () {
-                                                      log(" visa form ");
+                                            MaterialButton(
+                                                onPressed: () {
+                                                  log(" visa form ");
 
-                                                      if (formKey.currentState!
-                                                              .validate() &&
-                                                          visaProvider.idImg !=
-                                                              null &&
-                                                          visaProvider
-                                                                  .passImg !=
-                                                              null &&
-                                                          visaProvider
-                                                                  .pdfFile !=
-                                                              null) {
-                                                        log("reserve visa form vaild");
-                                                        visaProvider.reserveVisa(
-                                                            visaId:
-                                                                "cf2973e2-564b-4380-bdc0-fbce5f948a91",
-                                                            userId:
-                                                                "3e4ba9aa-878e-4f2d-a780-3c734f03650a",
-                                                            fullName:
-                                                                nameCont.text,
-                                                            phoneNumber:
-                                                                phoneCont.text,
-                                                            email:
-                                                                emailCont.text,
-                                                            note:
-                                                                noteCont.text);
-                                                      }
-                                                    },
-                                                    minWidth: width * .185,
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                      vertical: height * .03,
-                                                    ),
-                                                    color: AppColors
-                                                        .pomegranateColor,
-                                                    child: Text(
-                                                      "Save",
-                                                      style: white15lato,
-                                                    )),
-                                              ],
-                                            ),
-                                          ),
+                                                  if (formKey.currentState!
+                                                          .validate() &&
+                                                      visaProvider.idImg !=
+                                                          null &&
+                                                      visaProvider.passImg !=
+                                                          null &&
+                                                      visaProvider.pdfFile !=
+                                                          null) {
+                                                    log("reserve visa form vaild");
+                                                    visaProvider.reserveVisa(
+                                                        visaId:
+                                                            "cf2973e2-564b-4380-bdc0-fbce5f948a91",
+                                                        userId:
+                                                            "3e4ba9aa-878e-4f2d-a780-3c734f03650a",
+                                                        fullName: nameCont.text,
+                                                        phoneNumber:
+                                                            phoneCont.text,
+                                                        email: emailCont.text,
+                                                        note: noteCont.text);
+                                                  }
+                                                },
+                                                minWidth: width * .185,
+                                                padding: EdgeInsets.symmetric(
+                                                  vertical: height * .03,
+                                                ),
+                                                color:
+                                                    AppColors.pomegranateColor,
+                                                child: Text(
+                                                  "Save",
+                                                  style: white15lato(context),
+                                                )),
+                                          ],
                                         ),
                                       ),
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              )
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.pomegranateColor),
-                    child: const Text("Confirm"))),
-          ],
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                },
+                child: Text(
+                  "Confirm",
+                  style: white15lato(context),
+                )),
+          ),
         ));
   }
 }

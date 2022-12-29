@@ -28,6 +28,8 @@ class _PlaceWidgetState extends State<PlaceWidget> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+
     VisaVM visaProvider = Provider.of(context);
     return Padding(
       padding: const EdgeInsets.only(right: 10.0),
@@ -57,8 +59,8 @@ class _PlaceWidgetState extends State<PlaceWidget> {
           },
           child: Container(
             height: height * .32,
-            width: 220,
-            decoration: BoxDecoration(color: Colors.white, boxShadow: [
+            width: width * .25,
+            decoration: BoxDecoration(boxShadow: [
               BoxShadow(
                 blurRadius: isHover ? 15 : 2,
                 spreadRadius: isHover ? 5 : 2,
@@ -67,14 +69,9 @@ class _PlaceWidgetState extends State<PlaceWidget> {
             ]),
             child: Stack(
               children: [
-                backImage(height),
+                backImage(height, width),
                 gradiant(),
-                Positioned(
-                  bottom: 20.0,
-                  left: 2.0,
-                  width: 200,
-                  child: texts(),
-                ),
+                texts(height),
               ],
             ),
           ),
@@ -83,18 +80,18 @@ class _PlaceWidgetState extends State<PlaceWidget> {
     );
   }
 
-  backImage(double height) {
+  backImage(double height, double width) {
     return AnimatedPositioned(
       duration: const Duration(milliseconds: 1000),
-      top: isHover ? -100 + mousPos.dy : 0,
-      left: isHover ? -80 + mousPos.dx : 0,
-      height: isHover ? 600 : height * .32,
-      width: 310,
+      top: isHover ? -10 + mousPos.dy : 0,
+      left: isHover ? -15 + mousPos.dx : 0,
+      height: isHover ? height * .4 : height * .35,
+      width: width * .25,
       curve: Curves.easeOutCubic,
       child: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
-          image: NetworkImage(widget.imageLink), fit: BoxFit.fitWidth,
+          image: NetworkImage(widget.imageLink), fit: BoxFit.fill,
           alignment: Alignment.center,
 
           //repeat: ImageRepeat.repeat
@@ -112,7 +109,7 @@ class _PlaceWidgetState extends State<PlaceWidget> {
           begin: Alignment.bottomCenter,
           end: Alignment.topRight,
           colors: [
-            AppColors.pomegranateColor.withOpacity(isHover ? 0.8 : 0),
+            AppColors.pomegranateColor.withOpacity(isHover ? 0.55 : 0),
             Colors.transparent
           ],
         ),
@@ -120,51 +117,47 @@ class _PlaceWidgetState extends State<PlaceWidget> {
     );
   }
 
-  texts() {
-    return SizedBox(
-      width: double.infinity,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AnimatedDefaultTextStyle(
-              style: GoogleFonts.lato(
-                  color: AppColors.whiteColor.withOpacity(isHover ? 1 : 0.8),
-                  fontSize: 33,
-                  fontWeight: FontWeight.w900),
-              duration: const Duration(milliseconds: 1000),
-              child: TextButton(
-                onPressed: () {},
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: isSelected
-                        ? AppColors.pomegranateColor
-                        : Colors.transparent,
-                    borderRadius: isSelected
-                        ? const BorderRadius.all(Radius.circular(5))
-                        : const BorderRadius.all(Radius.circular(2)),
-                    border: Border.all(
-                      width: 2.0,
-                      color: Colors.white,
-                      style: BorderStyle.solid,
-                    ),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: isSelected ? 20 : 10,
-                        vertical: isSelected ? 2 : 0),
-                    child: Text(
-                      widget.capitalName,
-                      style: GoogleFonts.lato(
-                          fontSize: 22,
-                          color: AppColors.whiteColor,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
+  texts(double height) {
+    return Align(
+      alignment: Alignment.bottomLeft,
+      child: AnimatedDefaultTextStyle(
+          style: GoogleFonts.lato(
+              color: AppColors.whiteColor.withOpacity(isHover ? 1 : 0.8),
+              fontSize: 33,
+              fontWeight: FontWeight.w900),
+          duration: const Duration(milliseconds: 1000),
+          child: TextButton(
+            onPressed: () {},
+            child: Container(
+              decoration: BoxDecoration(
+                color: isSelected
+                    ? AppColors.pomegranateColor
+                    : Colors.transparent,
+                borderRadius: isSelected
+                    ? const BorderRadius.all(Radius.circular(5))
+                    : const BorderRadius.all(Radius.circular(2)),
+                border: Border.all(
+                  width: 2.0,
+                  color: Colors.white,
+                  style: BorderStyle.solid,
                 ),
-              ))
-        ],
-      ),
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: isSelected ? 20 : 10,
+                    vertical: isSelected ? 2 : 0),
+                child: Text(
+                  widget.capitalName,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.lato(
+                      fontSize: height * .03,
+                      color: AppColors.whiteColor,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+          )),
     );
   }
 }

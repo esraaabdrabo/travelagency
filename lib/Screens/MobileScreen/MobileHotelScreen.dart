@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../Helper/Colors.dart';
 import '../Widgets/Drawer.dart';
-
 
 class MobileHotelScreen extends StatefulWidget {
   const MobileHotelScreen({Key? key}) : super(key: key);
@@ -18,9 +15,10 @@ class _MobileHotelScreenState extends State<MobileHotelScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
-      appBar: AppBar(backgroundColor: AppColors.pomegranateColor,),
-      drawer:CustomDrawer(),
+      appBar: AppBar(
+        backgroundColor: AppColors.pomegranateColor,
+      ),
+      drawer: const CustomDrawer(),
     );
   }
 }
-

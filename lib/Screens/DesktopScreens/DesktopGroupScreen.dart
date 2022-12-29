@@ -65,14 +65,9 @@ class _DesktopGroupScreenState extends State<DesktopGroupScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
-                              flex: 1,
-                              child: Text("Groups",
-                                  style: GoogleFonts.lato(
-                                      letterSpacing: 4,
-                                      color: AppColors.pomegranateColor,
-                                      fontSize: 36,
-                                      fontWeight: FontWeight.w900)),
-                            ),
+                                flex: 1,
+                                child: Text("Groups",
+                                    style: screenTitle(context))),
                             Expanded(
                               flex: 2,
                               child: SizedBox(
@@ -80,8 +75,8 @@ class _DesktopGroupScreenState extends State<DesktopGroupScreen> {
                                   child: Stack(
                                     children: [
                                       Container(
-                                        margin: const EdgeInsets.symmetric(
-                                            horizontal: 80),
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: wedth * .05),
                                         child: ListView.builder(
                                             itemCount:
                                                 groupsProvider.groups.length,
@@ -89,6 +84,7 @@ class _DesktopGroupScreenState extends State<DesktopGroupScreen> {
                                             scrollDirection: Axis.horizontal,
                                             itemBuilder: (context, index) {
                                               return groupName(
+                                                  wedth: wedth,
                                                   groupsProvider:
                                                       groupsProvider,
                                                   name: groupsProvider
@@ -106,8 +102,8 @@ class _DesktopGroupScreenState extends State<DesktopGroupScreen> {
                                             CrossAxisAlignment.stretch,
                                         children: [
                                           SizedBox(
-                                            height: 80,
-                                            width: 80,
+                                            height: heght * .05,
+                                            width: wedth * .05,
                                             child: IconButton(
                                               onPressed: () async {
                                                 await Future.delayed(
@@ -124,18 +120,20 @@ class _DesktopGroupScreenState extends State<DesktopGroupScreen> {
                                                           Curves.fastOutSlowIn);
                                                 });
                                               },
-                                              icon: const CircleAvatar(
+                                              icon: CircleAvatar(
                                                 backgroundColor:
                                                     AppColors.pomegranateColor,
                                                 radius: 100,
-                                                child: Icon(Icons
-                                                    .arrow_back_ios_rounded),
+                                                child: Icon(
+                                                  Icons.arrow_back_ios_rounded,
+                                                  size: wedth * .025,
+                                                ),
                                               ),
                                             ),
                                           ),
                                           SizedBox(
-                                            width: 70,
-                                            height: 70,
+                                            height: heght * .05,
+                                            width: wedth * .05,
                                             child: IconButton(
                                               onPressed: () async {
                                                 await Future.delayed(
@@ -152,12 +150,15 @@ class _DesktopGroupScreenState extends State<DesktopGroupScreen> {
                                                           Curves.fastOutSlowIn);
                                                 });
                                               },
-                                              icon: const CircleAvatar(
+                                              icon: CircleAvatar(
                                                 backgroundColor:
                                                     AppColors.pomegranateColor,
                                                 radius: 100,
-                                                child: Icon(Icons
-                                                    .arrow_forward_ios_rounded),
+                                                child: Icon(
+                                                  Icons
+                                                      .arrow_forward_ios_rounded,
+                                                  size: wedth * .025,
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -166,6 +167,9 @@ class _DesktopGroupScreenState extends State<DesktopGroupScreen> {
                                     ],
                                   )),
                             ),
+                            SizedBox(
+                              height: heght * .05,
+                            ),
                             Expanded(
                               flex: 4,
                               child: SizedBox(
@@ -173,12 +177,39 @@ class _DesktopGroupScreenState extends State<DesktopGroupScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: [
-                                  selectDate(groupProvider: groupsProvider),
-                                  selectHotel(groupProvider: groupsProvider)
+                                  selectDate(
+                                      heght: heght,
+                                      wedth: wedth,
+                                      groupProvider: groupsProvider),
+                                  selectHotel(context,
+                                      heght: heght,
+                                      wedth: wedth,
+                                      groupProvider: groupsProvider)
                                 ],
                               )),
                             ),
-                            Expanded(flex: 1, child: Text("data"))
+                            SizedBox(
+                              height: heght * .05,
+                            ),
+                            SizedBox(
+                                height: heght * .1,
+                                child: Align(
+                                  alignment: Alignment.topRight,
+                                  child: MaterialButton(
+                                    shape: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            wedth * .005)),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: wedth * .025,
+                                        vertical: heght * .025),
+                                    color: AppColors.pomegranateColor,
+                                    onPressed: () {},
+                                    child: Text(
+                                      "Confirm",
+                                      style: white15lato(context),
+                                    ),
+                                  ),
+                                ))
                           ],
                         ),
                       ),
@@ -192,13 +223,14 @@ class _DesktopGroupScreenState extends State<DesktopGroupScreen> {
 
   groupName(
       {required String name,
+      required double wedth,
       required GroupsVM groupsProvider,
       required String groupId}) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 15),
       margin: const EdgeInsets.only(right: 15, bottom: 15),
-      width: 200,
-      decoration: MyThemeData.groupNameDEC(
+      width: wedth * .15,
+      decoration: MyThemeData.groupNameDEC(context,
           isSelected: groupsProvider.currentHoveredGroupID == groupId),
       child: InkWell(
         onHover: (value) {
@@ -216,9 +248,13 @@ class _DesktopGroupScreenState extends State<DesktopGroupScreen> {
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 3,
-                style: groupNameTS(
+                style: groupNameTS(context,
                     isSelected:
                         groupsProvider.currentHoveredGroupID == groupId)),
+
+            /*   groupNameTS(
+                    isSelected:
+                        groupsProvider.currentHoveredGroupID == groupId)),*/
             const Divider(
               endIndent: 50,
               indent: 50,
@@ -230,12 +266,15 @@ class _DesktopGroupScreenState extends State<DesktopGroupScreen> {
     );
   }
 
-  selectDate({required GroupsVM groupProvider}) {
+  selectDate(
+      {required GroupsVM groupProvider,
+      required double wedth,
+      required double heght}) {
     return Container(
-      padding: const EdgeInsets.only(top: 25, bottom: 10),
-      height: 250,
-      width: 350,
-      decoration: MyThemeData.groupDateHotelDEC(),
+      padding: EdgeInsets.only(top: wedth * .022, bottom: wedth * .01),
+      height: MediaQuery.of(context).size.height * .48,
+      width: wedth * .3,
+      decoration: MyThemeData.groupDateHotelDEC(context),
       alignment: Alignment.center,
       child: Column(
         //mainAxisAlignment: MainAxisAlignment.center,
@@ -245,15 +284,16 @@ class _DesktopGroupScreenState extends State<DesktopGroupScreen> {
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
-                style: black22AbeezeTS),
+                style: black22AbeezeTS(context)),
           ),
           const Divider(
             thickness: 4.2,
             color: Color.fromARGB(25, 158, 158, 158),
           ),
           Container(
-            height: 170,
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            height: MediaQuery.of(context).size.height * .27,
+            padding: EdgeInsets.symmetric(horizontal: wedth * .025)
+                .copyWith(top: heght * .03),
             child: ListView.builder(
               itemBuilder: (context, dateIndex) => dateContainer(
                   groupsProvider: groupProvider,
@@ -288,7 +328,7 @@ class _DesktopGroupScreenState extends State<DesktopGroupScreen> {
             date,
             textAlign: TextAlign.center,
             style: GoogleFonts.aBeeZee(
-              fontSize: 18,
+              fontSize: MediaQuery.of(context).size.height * .04,
               fontWeight: FontWeight.bold,
               color: groupsProvider.currentHoveredDate != date
                   ? const Color.fromARGB(150, 0, 0, 0)
@@ -300,30 +340,35 @@ class _DesktopGroupScreenState extends State<DesktopGroupScreen> {
     );
   }
 
-  selectHotel({required GroupsVM groupProvider}) {
+  selectHotel(BuildContext context,
+      {required GroupsVM groupProvider,
+      required double wedth,
+      required double heght}) {
     return Container(
-      padding: const EdgeInsets.only(top: 25, bottom: 10),
-      height: 250,
-      width: 350,
-      decoration: MyThemeData.groupDateHotelDEC(),
+      padding: EdgeInsets.only(top: wedth * .022, bottom: wedth * .01),
+      height: MediaQuery.of(context).size.height * .48,
+      width: wedth * .3,
+      decoration: MyThemeData.groupDateHotelDEC(context),
       alignment: Alignment.center,
       child: Column(
         //mainAxisAlignment: MainAxisAlignment.center,
         children: [
           FittedBox(
-            child: Text("Hotel Name",
-                textAlign: TextAlign.center,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-                style: black22AbeezeTS),
-          ),
+              child: Text(
+            "Hotel Name",
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+            style: black22AbeezeTS(context),
+          )),
           const Divider(
             thickness: 4.2,
             color: Color.fromARGB(25, 158, 158, 158),
           ),
           Container(
-            height: 170,
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            height: MediaQuery.of(context).size.height * .27,
+            padding: EdgeInsets.symmetric(horizontal: wedth * .025)
+                .copyWith(top: heght * .03),
             child: ListView.builder(
               itemCount: groupProvider.groups[0].groupHotels.length,
               itemBuilder: (context, hotelNameIndex) => hotelNameContainer(
@@ -358,7 +403,7 @@ class _DesktopGroupScreenState extends State<DesktopGroupScreen> {
               name,
               textAlign: TextAlign.center,
               style: GoogleFonts.aBeeZee(
-                fontSize: 18,
+                fontSize: MediaQuery.of(context).size.height * .04,
                 fontWeight: FontWeight.bold,
                 color: groupsProvider.currentHoveredDate != name
                     ? const Color.fromARGB(150, 0, 0, 0)

@@ -261,9 +261,9 @@ class HotelsVM extends ChangeNotifier {
         Map<String, dynamic> reserveJson = reserve.toJson();
         for (var roomIndex = 1; roomIndex < rooms.length; roomIndex++) {
           reserveJson['room${roomIndex + 1}ChildNumber'] =
-              rooms[roomIndex].childNum;
+              rooms[roomIndex].childNum.toString();
           reserveJson['room${roomIndex + 1}AdultNumber'] =
-              rooms[roomIndex].adultNum;
+              rooms[roomIndex].adultNum.toString();
           reserveJson['room${roomIndex + 1}Type'] = rooms[roomIndex].roomType;
         }
         reserve = ReserveHotelM.fromJson(reserveJson);

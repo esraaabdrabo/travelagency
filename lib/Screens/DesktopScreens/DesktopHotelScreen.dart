@@ -1,10 +1,8 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:travelagency/Helper/my_theme.dart';
 import 'package:travelagency/Helper/text_style.dart';
-import 'package:travelagency/Responsive/responsive_layout.dart';
 import 'package:travelagency/Screens/Widgets/dialogs.dart';
 import 'package:travelagency/Screens/Widgets/widgets.dart';
 import 'package:travelagency/view_model/hotels.dart';
@@ -21,6 +19,7 @@ class DesktopHotelScreen extends StatefulWidget {
   State<DesktopHotelScreen> createState() => _desktopHotelScreenState();
 }
 
+// ignore: camel_case_types
 class _desktopHotelScreenState extends State<DesktopHotelScreen> {
   // final roomController = Get.put(RoomController());
 
@@ -80,16 +79,18 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                       Expanded(
                         flex: 4,
                         child: ListView(
-                          // ignore: prefer_const_constructors
-                          physics: NeverScrollableScrollPhysics(),
+                          // ignore: prefer__ructors
+                          physics: const NeverScrollableScrollPhysics(),
                           children: [
-                            Text("HOTEL", style: red36lato),
+                            Text("HOTEL", style: screenTitle(context)),
                             //form fileds
                             Container(
+                              height: heght * .5,
                               margin: EdgeInsets.symmetric(
                                   horizontal: wedth * .009),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
+                                borderRadius:
+                                    BorderRadius.circular(wedth * .015),
                                 boxShadow: const [
                                   BoxShadow(
                                       color: Color.fromARGB(118, 0, 0, 0),
@@ -98,12 +99,17 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                                   BoxShadow(color: Colors.white),
                                 ],
                               ),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 15.0, vertical: 5),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: wedth * .011,
+                                  vertical: heght * .015),
                               child: Column(
                                 children: [
                                   //search with country
-                                  countriesDropDown(hotelsProvider, wedth),
+                                  countriesDropDown(
+                                    hotelsProvider,
+                                    wedth,
+                                    context,
+                                  ),
                                   SizedBox(height: heght * 0.003),
                                   /*                  ResponsiveLayout(
                                       mobileBody: Scaffold(),
@@ -146,7 +152,7 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                                       translate: translate,
                                       context: context),
                                   SizedBox(
-                                      height: 100,
+                                      height: heght * .15,
                                       child: ListView.builder(
                                         itemCount: hotelsProvider.rooms.length,
                                         itemBuilder: (context, roomIndex) =>
@@ -206,25 +212,27 @@ var sectionDivder = const Divider(
   thickness: 3,
 );
 //*********hotel widget design*********** */ */
-priceContainer(
+priceContainer(BuildContext context,
     {required double width, required String price, required String roomType}) {
   return Container(
-    width: 80, // width * .07,
+    width: width * .07, // width * .07,
     margin: EdgeInsets.only(right: width * .009),
-    padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+    padding: EdgeInsets.symmetric(
+        vertical: width * .002,
+        horizontal: MediaQuery.of(context).size.height * .009),
     decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(width * .004),
         color: const Color.fromARGB(24, 61, 61, 61)),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           roomType,
-          style: black15lato,
+          style: black15lato(context),
         ),
         Text(
           price,
-          style: black15lato,
+          style: black15lato(context),
         )
       ],
     ),
@@ -245,8 +253,13 @@ searchBtn(
         elevation: 0,
         hoverColor: Colors.black,
         color: AppColors.pomegranateColor.withOpacity(0.8),
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+        padding: EdgeInsets.symmetric(
+            vertical: MediaQuery.of(context).size.height * .02,
+            horizontal: MediaQuery.of(context).size.width * .01),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+          MediaQuery.of(context).size.height * .01,
+        )),
         onPressed: () {
           hotelsProvider.checkSearchReq(
               inDate: inDate.text,
@@ -258,7 +271,7 @@ searchBtn(
               : Dialogs.onlyTextContent(
                   context, "Please fill the required informations");
         },
-        child: Text("Search", style: white15lato)),
+        child: Text("Search", style: white15lato(context))),
   );
 }
 
@@ -269,29 +282,34 @@ addRoom({required HotelsVM hotelsProvider, required BuildContext context}) {
         elevation: 0,
         hoverColor: Colors.black,
         color: AppColors.grayColor.withOpacity(.4),
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+        padding: EdgeInsets.symmetric(
+            vertical: MediaQuery.of(context).size.height * .02,
+            horizontal: MediaQuery.of(context).size.width * .015),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+          MediaQuery.of(context).size.height * .01,
+        )),
         onPressed: () {
           hotelsProvider.addRoom(context);
         },
-        child: Text("Add Room", style: white15lato)),
+        child: Text("Add Room", style: white15lato(context))),
   );
 }
 
 //search text fields////
 //nationality
-Padding searchNatTF(
+Padding searchNatTF(BuildContext context,
     {required double wedth, required TextEditingController natCont}) {
   return Padding(
     padding: EdgeInsets.only(right: wedth * 0.005),
     child: TextFormField(
         controller: natCont,
         style: const TextStyle(fontSize: 16.0),
-        decoration: MyThemeData.inputDhintPre(
-            icon: const Icon(
+        decoration: MyThemeData.inputDhintPre(context,
+            icon: Icon(
               Icons.account_circle_outlined,
               color: Colors.grey,
-              size: 20,
+              size: wedth * .015,
             ),
             label: "Nationality")),
   );
@@ -313,10 +331,10 @@ webSearchReq(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
-            child: searchNatTF(wedth: wedth, natCont: natCont),
+            child: searchNatTF(context, wedth: wedth, natCont: natCont),
           ),
           Expanded(
-            child: searchCurrTF(wedth: wedth, currCont: currCont),
+            child: searchCurrTF(context, wedth: wedth, currCont: currCont),
           ),
           //from date
           Expanded(
@@ -340,11 +358,11 @@ webSearchReq(
                     log(checkInDateController.text);
                   },
                   style: const TextStyle(fontSize: 16.0),
-                  decoration: MyThemeData.inputDhintPre(
-                      icon: const Icon(
+                  decoration: MyThemeData.inputDhintPre(context,
+                      icon: Icon(
                         Icons.date_range,
                         color: Colors.grey,
-                        size: 20,
+                        size: wedth * .015,
                       ),
                       label: translate.checkInDate)),
             ),
@@ -369,11 +387,11 @@ webSearchReq(
                         date.toString().substring(0, 10);
                   },
                   style: const TextStyle(fontSize: 16.0),
-                  decoration: MyThemeData.inputDhintPre(
-                      icon: const Icon(
+                  decoration: MyThemeData.inputDhintPre(context,
+                      icon: Icon(
                         Icons.date_range,
                         color: Colors.grey,
-                        size: 20,
+                        size: wedth * .015,
                       ),
                       label: translate.checkOutDate)),
             ),
@@ -401,10 +419,10 @@ tabletSearchReq(
         Row(
           children: [
             Expanded(
-              child: searchNatTF(wedth: wedth, natCont: natCont),
+              child: searchNatTF(context, wedth: wedth, natCont: natCont),
             ),
             Expanded(
-              child: searchCurrTF(wedth: wedth, currCont: currCont),
+              child: searchCurrTF(context, wedth: wedth, currCont: currCont),
             ),
           ],
         ),
@@ -432,11 +450,11 @@ tabletSearchReq(
                       log(checkInDateController.text);
                     },
                     style: const TextStyle(fontSize: 16.0),
-                    decoration: MyThemeData.inputDhintPre(
-                        icon: const Icon(
+                    decoration: MyThemeData.inputDhintPre(context,
+                        icon: Icon(
                           Icons.date_range,
                           color: Colors.grey,
-                          size: 20,
+                          size: wedth * .015,
                         ),
                         label: translate.checkInDate)),
               ),
@@ -461,11 +479,11 @@ tabletSearchReq(
                           date.toString().substring(0, 10);
                     },
                     style: const TextStyle(fontSize: 16.0),
-                    decoration: MyThemeData.inputDhintPre(
-                        icon: const Icon(
+                    decoration: MyThemeData.inputDhintPre(context,
+                        icon: Icon(
                           Icons.date_range,
                           color: Colors.grey,
-                          size: 20,
+                          size: wedth * .015,
                         ),
                         label: translate.checkOutDate)),
               ),
@@ -478,29 +496,29 @@ tabletSearchReq(
 }
 
 //currency
-Padding searchCurrTF(
+Padding searchCurrTF(BuildContext context,
     {required double wedth, required TextEditingController currCont}) {
   return Padding(
     padding: EdgeInsets.only(right: wedth * 0.005),
     child: TextFormField(
         controller: currCont..text = "\$",
         style: const TextStyle(fontSize: 16.0),
-        decoration: MyThemeData.inputDhintPre(
-            icon: const Icon(
+        decoration: MyThemeData.inputDhintPre(context,
+            icon: Icon(
               Icons.money_off,
               color: Colors.grey,
-              size: 20,
+              size: wedth * .015,
             ),
             label: "Currency")),
   );
 }
 
-hotelWidget(
+hotelWidget(BuildContext context,
     {required double width, required double height, required HotelM hotel}) {
   return Container(
       width: width * .5,
       height: height * .19,
-      padding: const EdgeInsets.all(10),
+      padding: EdgeInsets.all(width * .01),
       color: const Color.fromARGB(10, 61, 61, 61),
       child: Row(
         children: [
@@ -510,7 +528,7 @@ hotelWidget(
             child: CustomWidgets.cachedImg(hotel.image!),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 10.0),
+            padding: EdgeInsets.only(left: width * .017),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -523,12 +541,12 @@ hotelWidget(
                     Text(
                       hotel.name!,
                       maxLines: 1,
-                      style: black20LatoTS,
+                      style: black20LatoTS(context),
                     ),
                     Text(
                       hotel.countryEn!,
                       maxLines: 1,
-                      style: black15lato,
+                      style: black15lato(context),
                     ),
                   ],
                 ),
@@ -536,25 +554,25 @@ hotelWidget(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     hotel.sngPrice != null
-                        ? priceContainer(
+                        ? priceContainer(context,
                             width: width,
                             price: hotel.sngPrice.toString(),
                             roomType: "SNG")
                         : const SizedBox(),
                     hotel.dblPrice != null
-                        ? priceContainer(
+                        ? priceContainer(context,
                             width: width,
                             price: hotel.dblPrice.toString(),
                             roomType: "DBL")
                         : const SizedBox(),
                     hotel.trplPrice != null
-                        ? priceContainer(
+                        ? priceContainer(context,
                             width: width,
                             price: hotel.trplPrice.toString(),
                             roomType: "TRP")
                         : const SizedBox(),
                     hotel.fmlyPrice != null
-                        ? priceContainer(
+                        ? priceContainer(context,
                             width: width,
                             price: hotel.fmlyPrice.toString(),
                             roomType: "Fam")
@@ -585,6 +603,7 @@ hotelList(double heght, double wedth, HotelsVM hotelsProvider,
   return SizedBox(
       height: heght * .45,
       child: ListView.builder(
+          shrinkWrap: true,
           itemCount: hotelsProvider.searchResults.isEmpty
               ? hotelsProvider.hotels.length
               : hotelsProvider.searchResults.length,
@@ -632,11 +651,11 @@ fullNameTf({
         keyboardType: TextInputType.name,
         minLines: null,
         style: const TextStyle(fontSize: 16.0),
-        decoration: MyThemeData.inputDhintPre(
-            icon: const Icon(
+        decoration: MyThemeData.inputDhintPre(context,
+            icon: Icon(
               Icons.person,
               color: Colors.grey,
-              size: 20,
+              size: width * .015,
             ),
             label: translate.fullName)),
   );
@@ -661,11 +680,11 @@ phoneTF({
         keyboardType: TextInputType.number,
         minLines: null,
         style: const TextStyle(fontSize: 16.0),
-        decoration: MyThemeData.inputDhintPre(
-            icon: const Icon(
+        decoration: MyThemeData.inputDhintPre(context,
+            icon: Icon(
               Icons.phone_android,
               color: Colors.grey,
-              size: 20,
+              size: width * .015,
             ),
             label: translate.phoneNumber)),
   );
@@ -691,11 +710,11 @@ emailTF({
         minLines: null,
         onChanged: (value) {},
         style: const TextStyle(fontSize: 16.0),
-        decoration: MyThemeData.inputDhintPre(
-            icon: const Icon(
+        decoration: MyThemeData.inputDhintPre(context,
+            icon: Icon(
               Icons.email,
               color: Colors.grey,
-              size: 20,
+              size: width * .015,
             ),
             label: translate.email)),
   );
@@ -720,11 +739,11 @@ noteTF({
         keyboardType: TextInputType.emailAddress,
         minLines: null,
         style: const TextStyle(fontSize: 16.0),
-        decoration: MyThemeData.inputDhintPre(
-            icon: const Icon(
+        decoration: MyThemeData.inputDhintPre(context,
+            icon: Icon(
               Icons.note_outlined,
               color: Colors.grey,
-              size: 20,
+              size: width * .015,
             ),
             label: "note")),
   );
@@ -757,11 +776,11 @@ fromDateTF({
             fromDateCont.text = date.toString().substring(0, 10);
           },
           style: const TextStyle(fontSize: 16.0),
-          decoration: MyThemeData.inputDhintPre(
-              icon: const Icon(
+          decoration: MyThemeData.inputDhintPre(context,
+              icon: Icon(
                 Icons.date_range,
                 color: Colors.grey,
-                size: 20,
+                size: width * .015,
               ),
               label: translate.checkInDate)),
     ),
@@ -796,11 +815,11 @@ toDateTF({
             log(toDateCont.text);
           },
           style: const TextStyle(fontSize: 16.0),
-          decoration: MyThemeData.inputDhintPre(
-              icon: const Icon(
+          decoration: MyThemeData.inputDhintPre(context,
+              icon: Icon(
                 Icons.date_range,
                 color: Colors.grey,
-                size: 20,
+                size: width * .015,
               ),
               label: translate.checkOutDate)),
     ),
@@ -808,7 +827,8 @@ toDateTF({
 }
 
 //go next
-nextBtn({
+nextBtn(
+  context, {
   required HotelsVM hotelsProvider,
   required double width,
   required PageController pageCont,
@@ -830,7 +850,7 @@ nextBtn({
       color: AppColors.pomegranateColor,
       child: Text(
         "Next",
-        style: white15lato,
+        style: white15lato(context),
       ));
 }
 
@@ -855,11 +875,7 @@ passportImg(
           const SizedBox(
             width: 5,
           ),
-          Text(
-            translate.passportImage,
-            style: black15lato.copyWith(
-                color: const Color.fromARGB(200, 61, 61, 61)),
-          )
+          Text(translate.passportImage, style: black15lato(context)),
         ],
       ),
     ),
@@ -882,12 +898,12 @@ adultNumTF({
         },
         keyboardType: TextInputType.name,
         minLines: null,
-        style: const TextStyle(fontSize: 16.0),
-        decoration: MyThemeData.inputDhintPre(
-            icon: const Icon(
+        style:  TextStyle(fontSize: 16.0),
+        decoration: MyThemeData.inputDhintPre(context,
+            icon:  Icon(
               Icons.man,
               color: Colors.grey,
-              size: 20,
+              size: width * .015,
             ),
             label: // translate.fullName
                 "adult num")),
@@ -912,12 +928,12 @@ childNumTF({
         onChanged: (value) => hotelsProvider.changeCildNum(num: value),
         keyboardType: TextInputType.number,
         minLines: 1,
-        style: const TextStyle(fontSize: 16.0),
-        decoration: MyThemeData.inputDhintPre(
-            icon: const Icon(
+        style:  TextStyle(fontSize: 16.0),
+        decoration: MyThemeData.inputDhintPre(context,
+            icon:  Icon(
               Icons.boy,
               color: Colors.grey,
-              size: 20,
+              size: width * .015,
             ),
             label: // translate.fullName
                 "child num")),
@@ -972,7 +988,8 @@ secondForm({
             color: AppColors.pomegranateColor,
             child: Text(
               "Save",
-              style: white15lato,
+              style:  white15lato(
+                                                            context),
             )),
       ],
     ),
@@ -1144,6 +1161,7 @@ hotelCard(
                                                       context: context,
                                                       translate:
                                                           translate), //from date
+
                                                   noteTF(
                                                       noteCont: noteCont,
                                                       hotelsProvider:
@@ -1158,6 +1176,7 @@ hotelCard(
                                                       translate: translate,
                                                       context: context),
                                                   CustomWidgets.sizedbox15h,
+
                                                   MaterialButton(
                                                       onPressed: () async {
                                                         if (formKey1
@@ -1203,16 +1222,17 @@ hotelCard(
                                                           .pomegranateColor,
                                                       child: Text(
                                                         "Save",
-                                                        style: white15lato,
+                                                        style: white15lato(
+                                                            context),
                                                       )),
                                                 ],
                                               ),
                                             )
                                             /*      Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 15),
+                                padding:  EdgeInsets.symmetric(horizontal: 15),
                                 height: height * .6,
                                 child: PageView(
-                                  physics: const NeverScrollableScrollPhysics(),
+                                  physics:  NeverScrollableScrollPhysics(),
                                   controller: pageCont,
                                   children: [
                                     //name num email from date to date
@@ -1254,13 +1274,14 @@ hotelCard(
                 ),
               );
       },
-      child: hotelWidget(width: width, height: height, hotel: hotel));
+      child: hotelWidget(context, width: width, height: height, hotel: hotel));
 }
 
 ////////////////search with country//////////////////////
-countriesDropDown(HotelsVM hotelsProvider, double wedth) {
-  return Padding(
-    padding: const EdgeInsets.all(5.0),
+countriesDropDown(HotelsVM hotelsProvider, double wedth, BuildContext context) {
+  return Container(
+    height: MediaQuery.of(context).size.height * .1,
+    padding: EdgeInsets.all(wedth * .005),
     child: DropdownButton(
         isExpanded: true,
         value: hotelsProvider.selectedCountry,
@@ -1269,7 +1290,7 @@ countriesDropDown(HotelsVM hotelsProvider, double wedth) {
               value: hotelsProvider.countries[index],
               child: Text(
                 hotelsProvider.countries[index],
-                style: black15lato,
+                style: black15lato(context),
               ));
         }),
         onChanged: (country) {

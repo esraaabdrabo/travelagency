@@ -68,6 +68,7 @@ class DesktopRegisterScreen extends StatelessWidget {
                           onChanged: (String keySearch) {},
                           style: const TextStyle(fontSize: 16.0),
                           decoration: MyThemeData.inputDhintPre(
+                            context,
                             icon: const Icon(
                               Icons.person,
                               color: Colors.grey,
@@ -87,6 +88,7 @@ class DesktopRegisterScreen extends StatelessWidget {
                           onChanged: (String keySearch) {},
                           style: const TextStyle(fontSize: 16.0),
                           decoration: MyThemeData.inputDhintPre(
+                            context,
                             icon: const Icon(
                               Icons.email,
                               color: Colors.grey,
@@ -105,7 +107,7 @@ class DesktopRegisterScreen extends StatelessWidget {
                         child: TextFormField(
                           onChanged: (String keySearch) {},
                           style: const TextStyle(fontSize: 16.0),
-                          decoration: MyThemeData.inputDhintPre(
+                          decoration: MyThemeData.inputDhintPre(context,
                               icon: const Icon(
                                 Icons.phone,
                                 color: Colors.grey,
@@ -153,7 +155,7 @@ class DesktopRegisterScreen extends StatelessWidget {
                             obscureText: true,
                             onChanged: (String keySearch) {},
                             style: const TextStyle(fontSize: 16.0),
-                            decoration: MyThemeData.inputDhintPre(
+                            decoration: MyThemeData.inputDhintPre(context,
                                 icon: const Icon(
                                   Icons.lock,
                                   color: Colors.grey,

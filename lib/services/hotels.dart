@@ -109,6 +109,7 @@ class HotelsSV {
     log("will reserve hotel from hotelsv");
     var response =
         await http.post(Uri.parse(Constants.reserveHotel), body: data.toJson());
+
     if (response.statusCode == 200) {
       log("reservation in hotels done");
       uploadImg(img, data.passportImage);
