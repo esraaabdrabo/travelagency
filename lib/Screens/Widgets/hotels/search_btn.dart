@@ -1,12 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:travelagency/Helper/Colors.dart';
 import 'package:travelagency/Helper/text_style.dart';
 import 'package:travelagency/Screens/Widgets/widgets.dart';
 import 'package:travelagency/view_model/hotels.dart';
-import 'package:travelagency/view_model/visa.dart';
 import '../../../Helper/my_theme.dart';
 import '../../../models/hotel/hotels.dart';
 import '../../DesktopScreens/DesktopHotelScreen.dart';
@@ -187,7 +184,7 @@ class _HotelCardState extends State<HotelCard> {
                                                     child: Column(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
-                                                              .center,
+                                                              .start,
                                                       children: [
                                                         //hotel name
                                                         hotelName(
@@ -199,27 +196,19 @@ class _HotelCardState extends State<HotelCard> {
                                                         emailTF(),
                                                         noteTF(),
                                                         Padding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  bottom:
-                                                                      hight *
-                                                                          .007),
-                                                          child: InkWell(
-                                                            onTap: () async {
-                                                              imgName = await widget
-                                                                  .hotelProvider
-                                                                  .pickImg();
-                                                              if (imgName !=
-                                                                  "") {
-                                                                setState(() {});
-                                                              }
-                                                            },
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    bottom: hight *
+                                                                        0.009),
                                                             child: Container(
-                                                              padding: const EdgeInsets
-                                                                      .symmetric(
-                                                                  vertical: 9,
-                                                                  horizontal:
-                                                                      8),
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                      vertical:
+                                                                          hight *
+                                                                              .015,
+                                                                      horizontal:
+                                                                          width *
+                                                                              .005),
                                                               decoration: BoxDecoration(
                                                                   borderRadius:
                                                                       BorderRadius
@@ -229,30 +218,62 @@ class _HotelCardState extends State<HotelCard> {
                                                                       .offWhiteColor
                                                                       .withOpacity(
                                                                           .8)),
-                                                              child: Row(
-                                                                children: [
-                                                                  const Icon(
-                                                                      Icons
-                                                                          .upload,
-                                                                      color: Color.fromARGB(
-                                                                          170,
-                                                                          61,
-                                                                          61,
-                                                                          61)),
-                                                                  const SizedBox(
-                                                                    width: 5,
+                                                              width:
+                                                                  width * .179,
+                                                              child: InkWell(
+                                                                onTap:
+                                                                    () async {
+                                                                  imgName = await widget
+                                                                      .hotelProvider
+                                                                      .pickImg();
+                                                                  if (imgName !=
+                                                                      "") {
+                                                                    setState(
+                                                                        () {});
+                                                                  }
+                                                                },
+                                                                child:
+                                                                    Container(
+                                                                  padding: const EdgeInsets
+                                                                          .symmetric(
+                                                                      vertical:
+                                                                          9,
+                                                                      horizontal:
+                                                                          8),
+                                                                  decoration: BoxDecoration(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              5),
+                                                                      color: AppColors
+                                                                          .offWhiteColor
+                                                                          .withOpacity(
+                                                                              .8)),
+                                                                  child: Row(
+                                                                    children: [
+                                                                      const Icon(
+                                                                          Icons
+                                                                              .upload,
+                                                                          color: Color.fromARGB(
+                                                                              170,
+                                                                              61,
+                                                                              61,
+                                                                              61)),
+                                                                      const SizedBox(
+                                                                        width:
+                                                                            5,
+                                                                      ),
+                                                                      Text(
+                                                                          imgName,
+                                                                          style:
+                                                                              black15lato(context)),
+                                                                      const Spacer(),
+                                                                      const Text(
+                                                                          "*")
+                                                                    ],
                                                                   ),
-                                                                  Text(imgName,
-                                                                      style: black15lato(
-                                                                          context)),
-                                                                  const Spacer(),
-                                                                  const Text(
-                                                                      "*")
-                                                                ],
+                                                                ),
                                                               ),
-                                                            ),
-                                                          ),
-                                                        ),
+                                                            )),
                                                         CustomWidgets
                                                             .sizedbox15h,
                                                         MaterialButton(

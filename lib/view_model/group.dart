@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:math' as math;
 import 'dart:typed_data';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker_web/image_picker_web.dart';
@@ -144,8 +145,17 @@ class GroupsVM extends ChangeNotifier {
 
 //*********reserve hotel**** */ */
   Uint8List? img;
-  pickImg() async {
-    img = await ImagePickerWeb.getImageAsBytes();
+  String idName = "";
+  Future<String> pickImg() async {
+    var result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowMultiple: false,
+        allowedExtensions: ['jpg', 'png', 'jpeg', 'tiff']);
+    img = result!.files[0].bytes;
+    idName = result.files[0].name;
+
+    notifyListeners();
+    return idName;
   }
 
   var userId = "13b545df-f25f-4845-a446-dbc6948133b9";

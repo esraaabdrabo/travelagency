@@ -283,7 +283,7 @@ webSearchReq(
                         date.toString().substring(0, 10);
                     log(checkInDateController.text);
                   },
-                  style: const TextStyle(fontSize: 16.0),
+                  style: TextStyle(fontSize: heght * .029),
                   decoration: MyThemeData.inputDhintPre(context,
                       icon: Icon(
                         Icons.date_range,
@@ -442,33 +442,27 @@ fromDateTF({
   required BuildContext context,
   required AppLocalizations translate,
 }) {
-  return Padding(
-    padding: EdgeInsets.only(right: width * 0.005, bottom: height * 0.025),
-    child: SizedBox(
-      height: 40,
-      child: TextFormField(
-          controller: fromDateCont,
-          validator: (value) {
-            return hotelsProvider.validateDate(value!, context);
-          },
-          onTap: () async {
-            var date = await showDatePicker(
-                context: context,
-                initialDate: DateTime.now(),
-                firstDate: DateTime(2000),
-                lastDate: DateTime(2030));
-            fromDateCont.text = date.toString().substring(0, 10);
-          },
-          style: const TextStyle(fontSize: 16.0),
-          decoration: MyThemeData.inputDhintPre(context,
-              icon: Icon(
-                Icons.date_range,
-                color: Colors.grey,
-                size: width * .015,
-              ),
-              label: translate.checkInDate)),
-    ),
-  );
+  return TextFormField(
+      controller: fromDateCont,
+      validator: (value) {
+        return hotelsProvider.validateDate(value!, context);
+      },
+      onTap: () async {
+        var date = await showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2000),
+            lastDate: DateTime(2030));
+        fromDateCont.text = date.toString().substring(0, 10);
+      },
+      style: TextStyle(fontSize: height * .025),
+      decoration: MyThemeData.inputDhintPre(context,
+          icon: Icon(
+            Icons.date_range,
+            color: Colors.grey,
+            size: width * .015,
+          ),
+          label: translate.checkInDate));
 }
 
 //to date
@@ -525,6 +519,7 @@ countriesDropDown(HotelsVM hotelsProvider, double wedth, BuildContext context) {
     height: MediaQuery.of(context).size.height * .1,
     padding: EdgeInsets.all(wedth * .005),
     child: DropdownButton(
+        itemHeight: null,
         isExpanded: true,
         value: hotelsProvider.selectedCountry,
         items: List.generate(hotelsProvider.countries.length, (index) {

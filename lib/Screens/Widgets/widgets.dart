@@ -34,9 +34,12 @@ abstract class CustomWidgets {
       child: //exit btn
           InkWell(
         onTap: () => Navigator.pop(context),
-        child: const Padding(
+        child: Padding(
           padding: EdgeInsets.all(5),
-          child: Icon(Icons.cancel),
+          child: Icon(
+            Icons.cancel,
+            size: MediaQuery.of(context).size.width * .02,
+          ),
         ),
       ),
     );

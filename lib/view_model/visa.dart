@@ -218,23 +218,46 @@ class VisaVM extends ChangeNotifier {
 
 //*********reserve hotel**** */ */
   Uint8List? passImg;
-  Future<void> pickPassImg() async {
-    passImg = await ImagePickerWeb.getImageAsBytes();
+  String passName = "";
+  Future<String> pickPassImg() async {
+    var result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowMultiple: false,
+        allowedExtensions: ['jpg', 'png', 'jpeg', 'tiff']);
+    passImg = result!.files[0].bytes;
+    passName = result.files[0].name;
+    notifyListeners();
+    return passName;
   }
 
   Uint8List? idImg;
-  Future<void> pickIdImg() async {
-    idImg = await ImagePickerWeb.getImageAsBytes();
+  String idName = "";
+
+  Future<String> pickIdImg() async {
+    var result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowMultiple: false,
+        allowedExtensions: ['jpg', 'png', 'jpeg', 'tiff']);
+    idImg = result!.files[0].bytes;
+    idName = result.files[0].name;
+    notifyListeners();
+    return idName;
   }
 
   Uint8List? pdfFile;
-  Future<void> pickPdf() async {
+  String pdfName = "";
+
+  Future<String> pickPdf() async {
     var result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowMultiple: false,
         allowedExtensions: ['pdf']);
     pdfFile = result!.files[0].bytes;
+    pdfName = result.files[0].name;
+    log(pdfName);
+    return pdfName;
   }
+
 /*
   ReserveHotelM makeReserveObj(
       {required String hotelId,

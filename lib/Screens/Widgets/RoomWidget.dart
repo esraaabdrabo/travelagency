@@ -43,10 +43,12 @@ class RoomWidget extends StatelessWidget {
                 SizedBox(
                   width: wedth * 0.105,
                   child: DropdownButtonFormField(
-                    // isExpanded: true,
-                    isDense: true,
+                    itemHeight: null,
+                    isExpanded: true,
+                    isDense: false,
                     decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: heght * .009, horizontal: wedth * .005),
                       labelStyle: TextStyle(fontSize: heght * .035),
                       labelText: 'Adult Num',
                       border: const OutlineInputBorder(),
@@ -70,9 +72,12 @@ class RoomWidget extends StatelessWidget {
                 SizedBox(
                   width: wedth * 0.105,
                   child: DropdownButtonFormField(
+                    itemHeight: null,
                     isExpanded: true,
+                    isDense: false,
                     decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: heght * .009, horizontal: wedth * .005),
                       labelText: 'Child Num',
                       labelStyle: TextStyle(fontSize: heght * .035),
                       border: const OutlineInputBorder(),

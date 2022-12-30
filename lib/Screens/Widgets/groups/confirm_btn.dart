@@ -40,6 +40,7 @@ class _ConfirmBTNState extends State<ConfirmBTN> {
     noteCont.dispose();
   }
 
+  String idName = "Id image";
   @override
   Widget build(BuildContext context) {
     var wedth = MediaQuery.of(context).size.width;
@@ -50,7 +51,7 @@ class _ConfirmBTNState extends State<ConfirmBTN> {
     fullNameTf() {
       return //full name
           Padding(
-        padding: EdgeInsets.only(right: wedth * 0.005, bottom: heght * 0.025),
+        padding: EdgeInsets.only(right: wedth * 0.005, bottom: heght * 0.015),
         child: TextFormField(
             controller: nameCont,
             validator: (value) {
@@ -58,7 +59,7 @@ class _ConfirmBTNState extends State<ConfirmBTN> {
             },
             keyboardType: TextInputType.name,
             minLines: null,
-            style: const TextStyle(fontSize: 16.0),
+            style: TextStyle(fontSize: heght * .02),
             decoration: MyThemeData.inputDhintPre(context,
                 icon: Icon(
                   Icons.person,
@@ -72,7 +73,7 @@ class _ConfirmBTNState extends State<ConfirmBTN> {
 //phone
     phoneTF() {
       return Padding(
-        padding: EdgeInsets.only(right: wedth * 0.005, bottom: heght * 0.025),
+        padding: EdgeInsets.only(right: wedth * 0.005, bottom: heght * 0.015),
         child: TextFormField(
             validator: (value) {
               return widget.groupsProvider.validatePhone(value!, context);
@@ -80,7 +81,7 @@ class _ConfirmBTNState extends State<ConfirmBTN> {
             controller: phoneCont,
             keyboardType: TextInputType.number,
             minLines: null,
-            style: const TextStyle(fontSize: 16.0),
+            style: TextStyle(fontSize: heght * .02),
             decoration: MyThemeData.inputDhintPre(context,
                 icon: Icon(
                   Icons.phone_android,
@@ -94,7 +95,7 @@ class _ConfirmBTNState extends State<ConfirmBTN> {
 //email
     emailTF() {
       return Padding(
-        padding: EdgeInsets.only(right: wedth * 0.005, bottom: heght * 0.025),
+        padding: EdgeInsets.only(right: wedth * 0.005, bottom: heght * 0.015),
         child: TextFormField(
             validator: (value) {
               return widget.groupsProvider.validateEmail(value!, context);
@@ -103,7 +104,7 @@ class _ConfirmBTNState extends State<ConfirmBTN> {
             keyboardType: TextInputType.emailAddress,
             minLines: null,
             onChanged: (value) {},
-            style: const TextStyle(fontSize: 16.0),
+            style: TextStyle(fontSize: heght * .02),
             decoration: MyThemeData.inputDhintPre(context,
                 icon: Icon(
                   Icons.email,
@@ -117,7 +118,7 @@ class _ConfirmBTNState extends State<ConfirmBTN> {
 //note
     noteTF() {
       return Padding(
-        padding: EdgeInsets.only(right: wedth * 0.005, bottom: heght * 0.025),
+        padding: EdgeInsets.only(right: wedth * 0.005, bottom: heght * 0.015),
         child: TextFormField(
             /*  validator: (value) {
           return groupsProvider.validateEmail(value!, context);
@@ -125,7 +126,7 @@ class _ConfirmBTNState extends State<ConfirmBTN> {
             controller: noteCont,
             keyboardType: TextInputType.emailAddress,
             minLines: null,
-            style: const TextStyle(fontSize: 16.0),
+            style: TextStyle(fontSize: heght * .025),
             decoration: MyThemeData.inputDhintPre(context,
                 isRequired: false,
                 icon: Icon(
@@ -139,56 +140,33 @@ class _ConfirmBTNState extends State<ConfirmBTN> {
 
 //reserve type
     reserveTypeTF() {
-      return SizedBox(
-        child: DropdownButtonFormField(
-          // isExpanded: true,
-          isDense: true,
-          decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-            labelStyle: TextStyle(fontSize: heght * .024),
-            labelText: 'ReserveType',
-            border: const OutlineInputBorder(),
-          ),
-          value: widget.groupsProvider.clickedReserveType,
-          items: widget.groupsProvider.reserveType
-              .map((String item) => DropdownMenuItem<String>(
-                    value: item,
-                    child: Text(item.toString(),
-                        style: GoogleFonts.lato(fontSize: heght * .029)),
-                  ))
-              .toList(),
-          onChanged: (val) {},
+      return DropdownButtonFormField(
+        isExpanded: true,
+        itemHeight: null,
+        isDense: true,
+        decoration: InputDecoration(
+          contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+          labelStyle: TextStyle(fontSize: heght * .024),
+          labelText: 'ReserveType',
+          border: const OutlineInputBorder(),
         ),
+        value: widget.groupsProvider.clickedReserveType,
+        items: widget.groupsProvider.reserveType
+            .map((String item) => DropdownMenuItem<String>(
+                  value: item,
+                  child: Text(item.toString(),
+                      style: GoogleFonts.lato(fontSize: heght * .029)),
+                ))
+            .toList(),
+        onChanged: (val) {},
       );
     }
 
-//*******second form**** */
-    passportImg() {
-      return InkWell(
-        onTap: () async {
-          widget.groupsProvider.pickImg();
-        },
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 8),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              border: Border.all(color: AppColors.grayColor.withOpacity(.5)),
-              color: AppColors.offWhiteColor.withOpacity(.8)),
-          child: Row(
-            children: [
-              const Icon(Icons.upload, color: Color.fromARGB(170, 61, 61, 61)),
-              const SizedBox(
-                width: 5,
-              ),
-              Text(widget.translate.passportImage, style: black15lato(context)),
-              const Spacer(),
-              const Text("*")
-            ],
-          ),
-        ),
-      );
-    }
-
+    Padding headline = Padding(
+      padding: EdgeInsets.only(bottom: heght * .025),
+      child: Text("Fill the informations then press save.",
+          textAlign: TextAlign.center, style: black22AbeezeTS(context)),
+    );
     return SizedBox(
         height: heght * .1,
         child: Align(
@@ -228,6 +206,7 @@ class _ConfirmBTNState extends State<ConfirmBTN> {
                                                         .spaceEvenly,
                                                 children: [
                                                   CustomWidgets.exit(context),
+                                                  headline,
                                                   Form(
                                                     key: formKey,
                                                     child: Column(
@@ -239,9 +218,80 @@ class _ConfirmBTNState extends State<ConfirmBTN> {
                                                         phoneTF(),
                                                         emailTF(), //from date
 
-                                                        noteTF(), passportImg(),
+                                                        noteTF(),
+                                                        Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    bottom: heght *
+                                                                        0.009),
+                                                            child: Container(
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                      vertical:
+                                                                          heght *
+                                                                              .015,
+                                                                      horizontal:
+                                                                          wedth *
+                                                                              .005),
+                                                              color: AppColors
+                                                                  .offWhiteColor
+                                                                  .withOpacity(
+                                                                      .8),
+                                                              width:
+                                                                  wedth * .179,
+                                                              child: InkWell(
+                                                                onTap:
+                                                                    () async {
+                                                                  idName = await widget
+                                                                      .groupsProvider
+                                                                      .pickImg();
+
+                                                                  if (idName !=
+                                                                      "Id image") {
+                                                                    setState(
+                                                                        () {});
+                                                                  }
+                                                                },
+                                                                child: Row(
+                                                                  children: [
+                                                                    Icon(
+                                                                      Icons
+                                                                          .upload,
+                                                                      color: const Color
+                                                                              .fromARGB(
+                                                                          170,
+                                                                          61,
+                                                                          61,
+                                                                          61),
+                                                                      size: wedth *
+                                                                          .018,
+                                                                    ),
+                                                                    const SizedBox(
+                                                                      width: 5,
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width:
+                                                                          wedth *
+                                                                              .13,
+                                                                      child: Text(
+                                                                          idName,
+                                                                          overflow: TextOverflow
+                                                                              .ellipsis,
+                                                                          maxLines:
+                                                                              1,
+                                                                          style:
+                                                                              black15lato(context)),
+                                                                    ),
+                                                                    const Spacer(),
+                                                                    const Text(
+                                                                        "*")
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            )),
+
                                                         SizedBox(
-                                                          height: heght * .015,
+                                                          height: heght * .012,
                                                         ),
                                                         reserveTypeTF(),
 
