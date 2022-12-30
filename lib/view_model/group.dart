@@ -45,6 +45,8 @@ class GroupsVM extends ChangeNotifier {
   }
 
   void changeClickedGroup({required int groupIndex}) {
+    resetClickedValues();
+
     currentClickedGroupIndex = groupIndex;
     notifyListeners();
   }
@@ -90,7 +92,7 @@ class GroupsVM extends ChangeNotifier {
       return null;
     }
     translate = AppLocalizations.of(context)!;
-    return translate.email;
+    return "";
   }
 
 //phone
@@ -99,7 +101,7 @@ class GroupsVM extends ChangeNotifier {
       return null;
     }
     translate = AppLocalizations.of(context)!;
-    return translate.email;
+    return "";
   }
 
 //email
@@ -108,7 +110,7 @@ class GroupsVM extends ChangeNotifier {
       return null;
     }
     translate = AppLocalizations.of(context)!;
-    return translate.email;
+    return "";
   }
 
 //date
@@ -118,7 +120,7 @@ class GroupsVM extends ChangeNotifier {
     }
 
     translate = AppLocalizations.of(context)!;
-    return translate.email;
+    return "";
   }
 
 //child num
@@ -198,9 +200,7 @@ class GroupsVM extends ChangeNotifier {
       //reset clicked values
 
       if (isSuccess) {
-        currentClickedDate = "";
-        currentClickedGroupIndex = 0;
-        currentClickedHotel = "";
+        resetClickedValues();
       }
       changeIsLoading(false);
       return isSuccess;
@@ -208,6 +208,11 @@ class GroupsVM extends ChangeNotifier {
   }
 
   //********reserve group************* */
+  //*******before open the form**** */
+  bool canOpenReserveForm() {
+    return currentClickedDate != "" && currentClickedHotel != "";
+  }
+
   String getImage() {
     //search fot the clicked hotel to get its image
     int hotelIndex = groups[currentClickedGroupIndex]
@@ -222,5 +227,11 @@ class GroupsVM extends ChangeNotifier {
         .avilableDates
         .indexWhere((date) => date.avilableDate == currentClickedDate);
     return groups[currentClickedGroupIndex].avilableDates[dateIndex].dateId;
+  }
+
+  void resetClickedValues() {
+    currentClickedDate = "";
+    currentClickedGroupIndex = 0;
+    currentClickedHotel = "";
   }
 }

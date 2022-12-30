@@ -1,20 +1,14 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:travelagency/Helper/Colors.dart';
-import 'package:travelagency/Helper/my_theme.dart';
 import 'package:travelagency/Helper/text_style.dart';
 import 'package:travelagency/Screens/Widgets/Drawer.dart';
 import 'package:travelagency/Screens/Widgets/groups/confirm_btn.dart';
-import 'package:travelagency/Screens/Widgets/groups/hotel_img.dart';
 import 'package:travelagency/Screens/Widgets/groups/select_date.dart';
 import 'package:travelagency/Screens/Widgets/groups/select_hotel.dart';
 import 'package:travelagency/Screens/Widgets/widgets.dart';
-import 'package:travelagency/models/groups/group.dart';
 
 import '../../view_model/group.dart';
 import '../Widgets/groups/Group_name.dart';
@@ -95,29 +89,20 @@ class _DesktopGroupScreenState extends State<DesktopGroupScreen> {
                                             height: heght * .05,
                                             width: wedth * .05,
                                             child: IconButton(
-                                              onPressed: () async {
-                                                await Future.delayed(
-                                                    const Duration(
-                                                        milliseconds: 300));
-                                                SchedulerBinding.instance
-                                                    .addPostFrameCallback((_) {
-                                                  scrollController.animateTo(
-                                                      scrollController.position
-                                                          .minScrollExtent,
-                                                      duration: const Duration(
-                                                          milliseconds: 300),
-                                                      curve:
-                                                          Curves.fastOutSlowIn);
-                                                });
+                                              onPressed: () {
+                                                scrollController.animateTo(
+                                                    scrollController.position
+                                                        .minScrollExtent,
+                                                    duration: const Duration(
+                                                        milliseconds: 150),
+                                                    curve:
+                                                        Curves.fastOutSlowIn);
                                               },
-                                              icon: CircleAvatar(
-                                                backgroundColor:
+                                              icon: Icon(
+                                                Icons.arrow_back,
+                                                size: wedth * .025,
+                                                color:
                                                     AppColors.pomegranateColor,
-                                                radius: 100,
-                                                child: Icon(
-                                                  Icons.arrow_back_ios_rounded,
-                                                  size: wedth * .025,
-                                                ),
                                               ),
                                             ),
                                           ),
@@ -125,30 +110,20 @@ class _DesktopGroupScreenState extends State<DesktopGroupScreen> {
                                             height: heght * .05,
                                             width: wedth * .05,
                                             child: IconButton(
-                                              onPressed: () async {
-                                                await Future.delayed(
-                                                    const Duration(
-                                                        milliseconds: 300));
-                                                SchedulerBinding.instance
-                                                    .addPostFrameCallback((_) {
-                                                  scrollController.animateTo(
-                                                      scrollController.position
-                                                          .maxScrollExtent,
-                                                      duration: const Duration(
-                                                          milliseconds: 300),
-                                                      curve:
-                                                          Curves.fastOutSlowIn);
-                                                });
+                                              onPressed: () {
+                                                scrollController.animateTo(
+                                                    scrollController.position
+                                                        .maxScrollExtent,
+                                                    duration: const Duration(
+                                                        milliseconds: 150),
+                                                    curve:
+                                                        Curves.fastOutSlowIn);
                                               },
-                                              icon: CircleAvatar(
-                                                backgroundColor:
+                                              icon: Icon(
+                                                Icons.arrow_forward,
+                                                size: wedth * .025,
+                                                color:
                                                     AppColors.pomegranateColor,
-                                                radius: 100,
-                                                child: Icon(
-                                                  Icons
-                                                      .arrow_forward_ios_rounded,
-                                                  size: wedth * .025,
-                                                ),
                                               ),
                                             ),
                                           ),

@@ -139,7 +139,7 @@ class VisaVM extends ChangeNotifier {
       return null;
     }
     translate = AppLocalizations.of(context)!;
-    return translate.email;
+    return "";
   }
 
 //phone
@@ -148,7 +148,7 @@ class VisaVM extends ChangeNotifier {
       return null;
     }
     translate = AppLocalizations.of(context)!;
-    return translate.email;
+    return "";
   }
 
 //email
@@ -157,7 +157,7 @@ class VisaVM extends ChangeNotifier {
       return null;
     }
     translate = AppLocalizations.of(context)!;
-    return translate.email;
+    return "";
   }
 
 //date
@@ -167,7 +167,7 @@ class VisaVM extends ChangeNotifier {
     }
 
     translate = AppLocalizations.of(context)!;
-    return translate.email;
+    return "";
   }
 
 //adult num + room num

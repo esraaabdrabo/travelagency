@@ -6,16 +6,20 @@ import 'package:travelagency/Helper/text_style.dart';
 import 'Colors.dart';
 
 abstract class MyThemeData {
-  static inputDhintPre(
-    BuildContext context, {
-    required Widget icon,
-    required String label,
-  }) {
+  static inputDhintPre(BuildContext context,
+      {required Widget icon, required String label, bool isRequired = true}) {
     return InputDecoration(
+        errorText: null,
         filled: true,
         fillColor: AppColors.offWhiteColor.withOpacity(0.8),
         focusColor: AppColors.whiteColor,
         prefixIcon: icon,
+        suffixIcon: isRequired
+            ? const Text(
+                "*",
+                textAlign: TextAlign.center,
+              )
+            : null,
         enabled: true,
         /*  enabledBorder: const OutlineInputBorder(
          borderSide: BorderSide(color: AppColors.grayColor, width: 0.5),
@@ -46,9 +50,9 @@ abstract class MyThemeData {
         ],
         borderRadius:
             BorderRadius.circular(MediaQuery.of(context).size.width * .01),
-        color: isSelected
-            ? Color(0xff9F1212)
-            : Color.fromARGB(251, 129, 129, 210));
+        color: isSelected || isHovered
+            ? const Color(0xff9F1212)
+            : const Color.fromARGB(251, 129, 129, 210));
   }
 
 //*****************groups****************************** */
