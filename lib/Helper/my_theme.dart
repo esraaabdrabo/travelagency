@@ -52,7 +52,7 @@ abstract class MyThemeData {
             BorderRadius.circular(MediaQuery.of(context).size.width * .01),
         color: isSelected || isHovered
             ? const Color(0xff9F1212)
-            : const Color.fromARGB(251, 129, 129, 210));
+            : const Color(0xff4480c6));
   }
 
 //*****************groups****************************** */
