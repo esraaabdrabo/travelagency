@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:travelagency/Helper/Colors.dart';
@@ -170,50 +171,57 @@ class _DesktopVisaScreenState extends State<DesktopVisaScreen> {
                               scrollDirection: Axis.horizontal,
                             )),
                             //bottom sction contain visa type and conditions
-                            Expanded(
-                              flex: 5,
-                              child: Container(
-                                height: heght * 0.375,
-                                width: double.infinity,
-                                padding: EdgeInsets.symmetric(
-                                        vertical: heght * 0.003,
-                                        horizontal: wedth * .005)
-                                    .copyWith(bottom: 0),
-                                decoration: BoxDecoration(
-                                  color:
-                                      AppColors.offWhiteColor.withOpacity(0.4),
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(5)),
-                                  border: Border.all(
-                                    width: 0.05,
-                                    color: AppColors.offWhiteColor,
-                                    style: BorderStyle.solid,
+                            visaProvider.isVisaTypeLoading
+                                ? Expanded(
+                                    flex: 5,
+                                    child: CustomWidgets.loading,
+                                  )
+                                : Expanded(
+                                    flex: 5,
+                                    child: Container(
+                                      height: heght * 0.375,
+                                      width: double.infinity,
+                                      padding: EdgeInsets.symmetric(
+                                              vertical: heght * 0.003,
+                                              horizontal: wedth * .005)
+                                          .copyWith(bottom: 0),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.offWhiteColor
+                                            .withOpacity(0.4),
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(5)),
+                                        border: Border.all(
+                                          width: 0.05,
+                                          color: AppColors.offWhiteColor,
+                                          style: BorderStyle.solid,
+                                        ),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Expanded(
+                                              flex: 5,
+                                              child: ListView.builder(
+                                                itemCount: visaProvider
+                                                    .visaCondCont.length,
+                                                itemBuilder:
+                                                    (context, conditionIndex) =>
+                                                        condition(
+                                                            wedth: wedth,
+                                                            height: heght,
+                                                            visaProvider:
+                                                                visaProvider,
+                                                            conditionIndex:
+                                                                conditionIndex),
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                              )),
+                                          ConfirmBtnVisa(
+                                              visaProvider: visaProvider,
+                                              translate: translate)
+                                        ],
+                                      ),
+                                    ),
                                   ),
-                                ),
-                                child: Column(
-                                  children: [
-                                    Expanded(
-                                        flex: 5,
-                                        child: ListView.builder(
-                                          itemCount:
-                                              visaProvider.visaCondCont.length,
-                                          itemBuilder: (context,
-                                                  conditionIndex) =>
-                                              condition(
-                                                  wedth: wedth,
-                                                  height: heght,
-                                                  visaProvider: visaProvider,
-                                                  conditionIndex:
-                                                      conditionIndex),
-                                          scrollDirection: Axis.horizontal,
-                                        )),
-                                    ConfirmBtnVisa(
-                                        visaProvider: visaProvider,
-                                        translate: translate)
-                                  ],
-                                ),
-                              ),
-                            ),
                           ],
                         ),
                       ),

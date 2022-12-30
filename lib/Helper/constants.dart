@@ -12,7 +12,7 @@ abstract class Constants {
 
   ///********************visa************************ */
   static var allvisaURL =
-      "https://traveelagency-001-site1.ftempurl.com/travelagencyapi/Visa/GetCountriesWithVisaType";
+      "http://traveelagency-001-site1.ftempurl.com/travelagencyapi/Visa/GetCountriesWithVisaType";
   static var visaTypeCountry =
       "http://traveelagency-001site1.ftempurl.com/travelagencyapi/Visa/GetVisaTypeByCountry?country=";
 

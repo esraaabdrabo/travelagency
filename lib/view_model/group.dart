@@ -97,7 +97,7 @@ class GroupsVM extends ChangeNotifier {
 
 //phone
   validatePhone(String value, BuildContext context) {
-    if (isNumber(value) && removeSpace(value).length == 11) {
+    if (isNumber(value) && removeSpace(value).length == 12) {
       return null;
     }
     translate = AppLocalizations.of(context)!;

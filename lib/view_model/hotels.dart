@@ -1,7 +1,10 @@
 import 'dart:developer';
 import 'dart:typed_data';
+import 'package:file_picker/_internal/file_picker_web.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:travelagency/Screens/Widgets/dialogs.dart';
 import 'package:travelagency/services/hotels.dart';
@@ -75,7 +78,7 @@ class HotelsVM extends ChangeNotifier {
 
 //phone
   validatePhone(String value, BuildContext context) {
-    if (isNumber(value) && removeSpace(value).length == 11) {
+    if (isNumber(value) && removeSpace(value).length == 12) {
       return null;
     }
     translate = AppLocalizations.of(context)!;
@@ -177,34 +180,18 @@ class HotelsVM extends ChangeNotifier {
 
 //*********reserve hotel**** */ */
   Uint8List? img;
-  pickImg() async {
-    img = await ImagePickerWeb.getImageAsBytes();
+  String imgName = "";
+  Future<String> pickImg() async {
+    //img = await ImagePickerWeb.getImageAsBytes();
+    var result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowMultiple: false,
+        allowedExtensions: ['jpg', 'png', 'jpeg', 'tiff']);
+    img = result!.files[0].bytes;
+    imgName = result.files[0].name;
 
-    /**  var url = Uri.parse("https://dawatkurdi.com/testimg/");
-    var img = await ImagePickerWeb.getImageAsBytes();
-    MultipartFile imgFile = http.MultipartFile.fromBytes("imgFile", img!);
-    log("ssss");
-    var request = http.MultipartRequest('POST', url);
-
-    request.files.add(http.MultipartFile.fromBytes("imgFile", img,
-        contentType: MediaType('image', 'png')));
-
-    /*   bytesFromPicker.showDialog(
-          context: context,
-          builder: (context) => Image.memory(bytesFromPicker!));*/
-
-    /*request.files.add(http.MultipartFile.fromBytes(
-        "image",
-        bytesFromPicker!,
-      ));
-      log("start");
-      request.send().then((value) {
-        log(value.statusCode.toString());
-      });*/
-    request.send().then((value) {
-      log(value.statusCode.toString());
-    });
-  }*/
+    notifyListeners();
+    return imgName;
   }
 
   var userId = "13b545df-f25f-4845-a446-dbc6948133b9";

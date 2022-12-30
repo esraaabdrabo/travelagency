@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -16,6 +17,8 @@ class VisaVM extends ChangeNotifier {
   late AppLocalizations translate;
   bool isHotelClickAct = false;
   bool isLoading = false;
+  bool isVisaTypeLoading = false;
+
   List<VisaCountriesM> visaCount = [];
   List<VisaConditionCountryM> visaCondCont = [];
   // to show visa type when click on country
@@ -59,13 +62,14 @@ class VisaVM extends ChangeNotifier {
 
   Future<void> getCondCount(
       {required String country, required String visaType}) async {
-    changeIsLoading(true);
+    // changeIsLoading(true);
 
     log("start getting vis condition in vm");
     visaCondCont =
         await VisaSV().getCondForCount(country: country, visaType: visaType);
     log(visaCondCont.length.toString());
-    changeIsLoading(false);
+    notifyListeners();
+    //  changeIsLoading(false);
   }
 
   ///*******************click on another country***************** */
@@ -73,13 +77,17 @@ class VisaVM extends ChangeNotifier {
       {required String newCountry, required int newCountIndex}) async {
     if (currentCountry == newCountIndex) {
     } else {
-      changeIsLoading(true);
+      // changeIsLoading(true);
+      isVisaTypeLoading = true;
+      notifyListeners();
       currentCountry = newCountIndex;
       //call the conditions if the first visa type for new country
       currentVisaType = 0;
       await getCondCount(
           country: newCountry, visaType: visaCount[newCountIndex].visaType![0]);
-      changeIsLoading(false);
+      isVisaTypeLoading = false;
+      notifyListeners();
+      //  changeIsLoading(false);
     }
   }
 
@@ -144,7 +152,7 @@ class VisaVM extends ChangeNotifier {
 
 //phone
   validatePhone(String value, BuildContext context) {
-    if (isNumber(value) && removeSpace(value).length == 11) {
+    if (isNumber(value) && removeSpace(value).length == 12) {
       return null;
     }
     translate = AppLocalizations.of(context)!;

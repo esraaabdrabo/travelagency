@@ -2,14 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:travelagency/Helper/Colors.dart';
 import 'package:travelagency/Helper/text_style.dart';
-import 'package:travelagency/Screens/Widgets/dialogs.dart';
 import 'package:travelagency/Screens/Widgets/widgets.dart';
 import 'package:travelagency/view_model/visa.dart';
 import '../../../Helper/my_theme.dart';
-import '../../../view_model/group.dart';
 
 class ConfirmBtnVisa extends StatefulWidget {
   late VisaVM visaProvider;

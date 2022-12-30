@@ -12,7 +12,7 @@ import '../Helper/constants.dart';
 
 class VisaSV {
   Future<List<VisaCountriesM>> getAllVisa() async {
-    List<VisaCountriesM> visa = [];
+    /*List<VisaCountriesM> visa = [];
 
     var data = [
       {
@@ -50,8 +50,8 @@ class VisaSV {
     ];
     for (Map<String, dynamic> visaObj in data) {
       visa.add(VisaCountriesM.fromJson(visaObj));
-    }
-    /* var response = await http.get(
+    }*/
+    var response = await http.get(
       Uri.parse(Constants.allvisaURL),
     );
     List<VisaCountriesM> visa = [];
@@ -66,7 +66,7 @@ class VisaSV {
       }
     } else {
       log("${response.statusCode} error in all visa");
-    }*/
+    }
     return visa;
   }
 
