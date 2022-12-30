@@ -1,6 +1,7 @@
 // ignore: file_names
 // ignore_for_file: avoid_print, unused_local_variable
 
+import 'dart:convert';
 import 'dart:developer';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
@@ -13,11 +14,11 @@ import '../models/hotel/reserve_hotel.dart';
 
 class GroupsSV {
   Future<List<GroupM>> getAllGroups() async {
-    /* var response = await http.get(
+    var response = await http.get(
       Uri.parse(Constants.allGroupsURL),
-    );*/
+    );
     List<GroupM> groups = [];
-    var body = [
+    /*var body = [
       {
         "id": "041ce3ea-141c-4902-afae-2fb8879a978f",
         "groupNameEn": "Amman Group",
@@ -112,21 +113,21 @@ class GroupsSV {
         ]
       }
     ];
-    for (Map<String, dynamic> group in body) {
-      log(body.toString());
-      groups.add(GroupM.fromJson(group));
-    }
-    /* if (response.statusCode == 200) {
-      log("succes get all Groups");
+  */ /* for (Map<String, dynamic> group in body) {
+    //  log(body.toString());
+   //   groups.add(GroupM.fromJson(group));
+    }*/
+    if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
       //convert every object to hotel model
       log(data.toString());
       for (Map<String, dynamic> hotel in data) {
         groups.add(GroupM.fromJson(hotel));
       }
+      log("succes get all Groups");
     } else {
       print("${response.statusCode} error in all Groups");
-    }*/
+    }
     return groups;
   }
 

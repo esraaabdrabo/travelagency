@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:travelagency/Helper/text_style.dart';
 
@@ -33,7 +35,8 @@ abstract class MyThemeData {
         labelStyle: black15lato(context));
   }
 
-  static groupNameDEC(BuildContext context, {required bool isSelected}) {
+  static groupNameDEC(BuildContext context,
+      {required bool isSelected, required bool isHovered}) {
     return BoxDecoration(
         boxShadow: const [
           BoxShadow(
@@ -43,24 +46,16 @@ abstract class MyThemeData {
         ],
         borderRadius:
             BorderRadius.circular(MediaQuery.of(context).size.width * .01),
-        color:
-            isSelected ? Color(0xff9F1212) : Color.fromARGB(255, 19, 102, 22));
+        color: isSelected
+            ? Color(0xff9F1212)
+            : Color.fromARGB(251, 129, 129, 210));
   }
 
-  static groupDateHotelDEC(context) {
-    return BoxDecoration(
-      boxShadow: const [
-        BoxShadow(
-          color: Color.fromARGB(20, 154, 154, 154),
-          blurRadius: 2,
-          offset: Offset(-4, 4),
-        ),
-        /* BoxShadow(
-          color: Color.fromARGB(255, 246, 246, 246),
-        ),*/
-      ],
-      /* borderRadius:
-          BorderRadius.circular(MediaQuery.of(context).size.width * .015),*/
-    );
-  }
+//*****************groups****************************** */
+
+  static var blackLayer = const BoxDecoration(
+      gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Colors.transparent, Colors.black]));
 }

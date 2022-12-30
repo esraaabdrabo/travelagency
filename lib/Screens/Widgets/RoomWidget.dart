@@ -46,10 +46,10 @@ class RoomWidget extends StatelessWidget {
                     // isExpanded: true,
                     isDense: true,
                     decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 5),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 5),
                       labelStyle: TextStyle(fontSize: heght * .035),
                       labelText: 'Adult Num',
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
                     ),
                     value: hotelsProvider.rooms[index].adultNum,
                     items: hotelsProvider.adultNumMenu
@@ -72,10 +72,10 @@ class RoomWidget extends StatelessWidget {
                   child: DropdownButtonFormField(
                     isExpanded: true,
                     decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 5),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 5),
                       labelText: 'Child Num',
                       labelStyle: TextStyle(fontSize: heght * .035),
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
                     ),
                     value: hotelsProvider.rooms[index].childNum,
                     items: hotelsProvider.childNumMenu

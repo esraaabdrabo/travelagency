@@ -1,18 +1,13 @@
 import 'dart:developer';
+import 'dart:math' as math;
 import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker_web/image_picker_web.dart';
-import 'package:travelagency/Screens/Widgets/dialogs.dart';
 import 'package:travelagency/models/groups/group.dart';
 import 'package:travelagency/models/groups/group_reserve.dart';
 import 'package:travelagency/services/groups.dart';
-import 'package:travelagency/services/hotels.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import '../models/hotel/hotels.dart';
-import '../models/hotel/reserve_hotel.dart';
-import '../models/hotel/room.dart';
 
 class GroupsVM extends ChangeNotifier {
   late AppLocalizations translate;
@@ -20,7 +15,11 @@ class GroupsVM extends ChangeNotifier {
   String currentHoveredGroupID = "";
   String currentHoveredDate = "";
   String currentHoveredHotel = "";
-
+  int currentClickedGroupIndex = 0;
+  String currentClickedDate = "";
+  String currentClickedHotel = "";
+  String clickedReserveType = "One Way";
+  List<String> reserveType = ["One Way", "Two Way"];
   List<GroupM> groups = [];
 
   //////////////////////////////////////////////////////////////
@@ -45,15 +44,30 @@ class GroupsVM extends ChangeNotifier {
     notifyListeners();
   }
 
+  void changeClickedGroup({required int groupIndex}) {
+    currentClickedGroupIndex = groupIndex;
+    notifyListeners();
+  }
+
   ///*******************hovered date will take red bg************* */
   void changeHoveredDate({required String date}) {
     currentHoveredDate = date;
     notifyListeners();
   }
 
+  void changeClickedDate({required String dateId}) {
+    currentClickedDate = dateId;
+    notifyListeners();
+  }
+
   ///*******************hovered date will take red bg************* */
-  void changeHoveredHatel({required String date}) {
-    currentHoveredDate = date;
+  void changeHoveredHatel({required String hotel}) {
+    currentHoveredHotel = hotel;
+    notifyListeners();
+  }
+
+  void changeClickedHotel({required String hotelId}) {
+    currentClickedHotel = hotelId;
     notifyListeners();
   }
 
@@ -146,9 +160,9 @@ class GroupsVM extends ChangeNotifier {
   }) {
     return GroupReserveM(
         note: note,
-        dateTable: null,
-        hotel: null,
-        user: null,
+        dateTable: "null",
+        hotel: "null",
+        user: "null",
         userId: userId,
         hotelId: hotelId,
         groupId: groupId,
@@ -161,33 +175,52 @@ class GroupsVM extends ChangeNotifier {
 
   Future<bool> reserveGroup(
       {required String userId,
-      required String hotelId,
-      required String dateTableId,
-      required String reserveType,
-      required String groupId,
       required String fullName,
       required String phoneNumber,
       required String email,
-      //required String fromDate,
-      //required String toDate,
       required String note}) async {
     {
       changeIsLoading(true);
       bool isSuccess = false;
       GroupReserveM reserve = makeReserveObj(
-          dateTableId: dateTableId,
-          reserveType: reserveType,
-          groupId: groupId,
-          userId: groupId,
-          hotelId: hotelId,
+          dateTableId: getDateTableID(),
+          reserveType: clickedReserveType,
+          groupId: groups[currentClickedGroupIndex].id,
+          userId: userId,
+          hotelId: currentClickedHotel,
           fullName: fullName,
           phoneNumber: phoneNumber,
           email: email,
           note: note);
+
       log("will start reserve");
       isSuccess = await GroupsSV().reserveGroup(reserve, img!);
+      //reset clicked values
+
+      if (isSuccess) {
+        currentClickedDate = "";
+        currentClickedGroupIndex = 0;
+        currentClickedHotel = "";
+      }
       changeIsLoading(false);
       return isSuccess;
     }
+  }
+
+  //********reserve group************* */
+  String getImage() {
+    //search fot the clicked hotel to get its image
+    int hotelIndex = groups[currentClickedGroupIndex]
+        .groupHotels
+        .indexWhere((hotel) => hotel.hotelId == currentClickedHotel);
+    return groups[currentClickedGroupIndex].groupHotels[hotelIndex].hotelImage;
+  }
+
+  String getDateTableID() {
+    //search fot the clicked hotel to get its image
+    int dateIndex = groups[currentClickedGroupIndex]
+        .avilableDates
+        .indexWhere((date) => date.avilableDate == currentClickedDate);
+    return groups[currentClickedGroupIndex].avilableDates[dateIndex].dateId;
   }
 }

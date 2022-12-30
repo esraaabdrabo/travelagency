@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 class GroupReserveM {
-//  String id;
+  String id = "";
   late String userId;
   late String hotelId;
   late String groupId;
@@ -17,10 +17,10 @@ class GroupReserveM {
   String createdDate = DateTime.now().toString();
   String updatedDate = "";
   String cancelledDate = "";
-  dynamic group;
-  dynamic dateTable;
-  dynamic user;
-  dynamic hotel;
+  String group = "null";
+  String dateTable = "null";
+  String user = "null";
+  String hotel = "null";
 
   GroupReserveM(
       {required this.userId,
@@ -32,14 +32,14 @@ class GroupReserveM {
       required this.email,
       required this.reserveType,
       this.note = "",
-      this.dateTable,
-      this.user,
-      this.hotel});
+      this.dateTable = "",
+      this.user = "",
+      this.hotel = ""});
 
   GroupReserveM.fromJson(Map<String, dynamic> json) {
-    /*if (json["id"] is String) {
+    if (json["id"] is String) {
       id = json["id"];
-    }*/
+    }
     if (json["userId"] is String) {
       userId = json["userId"];
     }
@@ -84,15 +84,14 @@ class GroupReserveM {
       cancelledDate = json["cancelledDate"];
     }
 
-    //  group = json["group"];
-    //  dateTable = json["dateTable"];
-    //  user = json["user"];
-    //  hotel = json["hotel"];
+    group = json["group"];
+    dateTable = json["dateTable"];
+    user = json["user"];
+    hotel = json["hotel"];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    // _data["id"] = id;
     data["userId"] = userId;
     data["hotelId"] = hotelId;
     data["groupId"] = groupId;
@@ -108,10 +107,7 @@ class GroupReserveM {
     data["createdDate"] = createdDate;
     data["updatedDate"] = updatedDate;
     data["cancelledDate"] = cancelledDate;
-    data["group"] = group;
-    data["dateTable"] = dateTable;
-    data["user"] = user;
-    data["hotel"] = hotel;
+
     return data;
   }
 }
