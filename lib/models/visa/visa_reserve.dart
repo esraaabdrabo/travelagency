@@ -46,9 +46,9 @@ class VisaReserveM {
     data["fullName"] = fullName;
     data["phoneNumber"] = phoneNumber;
     data["email"] = email;
-    data["passportImage"] = "pass-$fullName-$userId-${DateTime.now()}";
-    data["identifyImage"] = "id-$fullName-$userId-${DateTime.now()}";
-    data["form"] = "form-$fullName-$userId-${DateTime.now()}";
+    data["passportImage"] = "$fullName-${DateTime.now()}";
+    data["identifyImage"] = "$fullName-${DateTime.now()}";
+    data["form"] = "$fullName-${DateTime.now()}";
     data["note"] = note;
     return data;
   }

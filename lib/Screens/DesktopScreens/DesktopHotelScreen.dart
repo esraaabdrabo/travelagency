@@ -516,7 +516,7 @@ hotelName(String title, double height, double width) {
 ////////////////search with country//////////////////////
 countriesDropDown(HotelsVM hotelsProvider, double wedth, BuildContext context) {
   return Container(
-    height: MediaQuery.of(context).size.height * .1,
+    height: MediaQuery.of(context).size.height * .121,
     padding: EdgeInsets.all(wedth * .005),
     child: DropdownButton(
         itemHeight: null,

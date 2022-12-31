@@ -21,7 +21,7 @@ class RoomWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: heght * .1,
+      height: heght * .108,
       padding: EdgeInsets.symmetric(vertical: heght * 0.008),
       child: Container(
         decoration: BoxDecoration(
@@ -48,8 +48,8 @@ class RoomWidget extends StatelessWidget {
                     isDense: false,
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(
-                          vertical: heght * .009, horizontal: wedth * .005),
-                      labelStyle: TextStyle(fontSize: heght * .035),
+                          vertical: heght * .000, horizontal: wedth * .005),
+                      labelStyle: TextStyle(fontSize: heght * .025),
                       labelText: 'Adult Num',
                       border: const OutlineInputBorder(),
                     ),
@@ -59,7 +59,7 @@ class RoomWidget extends StatelessWidget {
                               value: item,
                               child: Text(item.toString(),
                                   style:
-                                      GoogleFonts.lato(fontSize: heght * .035)),
+                                      GoogleFonts.lato(fontSize: heght * .025)),
                             ))
                         .toList(),
                     onChanged: (val) {
@@ -77,9 +77,9 @@ class RoomWidget extends StatelessWidget {
                     isDense: false,
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(
-                          vertical: heght * .009, horizontal: wedth * .005),
+                          vertical: heght * .000, horizontal: wedth * .005),
                       labelText: 'Child Num',
-                      labelStyle: TextStyle(fontSize: heght * .035),
+                      labelStyle: TextStyle(fontSize: heght * .025),
                       border: const OutlineInputBorder(),
                     ),
                     value: hotelsProvider.rooms[index].childNum,
@@ -88,7 +88,7 @@ class RoomWidget extends StatelessWidget {
                               value: item,
                               child: Text(item.toString(),
                                   style:
-                                      GoogleFonts.lato(fontSize: heght * .035)),
+                                      GoogleFonts.lato(fontSize: heght * .025)),
                             ))
                         .toList(),
                     onChanged: (val) {

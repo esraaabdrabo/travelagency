@@ -2,6 +2,7 @@
 import 'dart:developer';
 
 class VisaCountriesM {
+  String? visaId;
   String? countryEn;
   String? countryAr;
   String? countryImage;
@@ -9,9 +10,14 @@ class VisaCountriesM {
   List<String>? visaType;
 
   VisaCountriesM(
-      {this.countryEn, this.countryAr, this.countryImage, this.visaType});
+      {this.visaId,
+      this.countryEn,
+      this.countryAr,
+      this.countryImage,
+      this.visaType});
 
   VisaCountriesM.fromJson(Map<String, dynamic> json) {
+    visaId = json["visaId"];
     if (json["countryEn"] is String) {
       countryEn = json["countryEn"];
     }

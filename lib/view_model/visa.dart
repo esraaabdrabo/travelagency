@@ -104,15 +104,18 @@ class VisaVM extends ChangeNotifier {
       required String note}) async {
     var body = VisaReserveM(
         visaId: visaId,
-        userId: userId,
+        userId: "1a6bb561-e9a4-48b0-8e7d-100bb14d39f9",
         fullName: fullName,
         phoneNumber: phoneNumber,
         email: email,
         note: note);
 
     changeIsLoading(true);
-    var res = await VisaSV()
-        .reserveVisa(body: body, form: pdfFile!, id: idImg!, pass: passImg!);
+    var res = await VisaSV().reserveVisa(
+        body: body,
+        form: checkForm() == null ? null : pdfFile!,
+        id: idImg!,
+        pass: passImg!);
     changeIsLoading(false);
     log("from visa reserve vm the response : $res");
     return res;

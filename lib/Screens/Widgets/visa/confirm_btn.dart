@@ -2,8 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 import 'package:travelagency/Helper/Colors.dart';
 import 'package:travelagency/Helper/text_style.dart';
+import 'package:travelagency/Screens/Widgets/dialogs.dart';
 import 'package:travelagency/Screens/Widgets/widgets.dart';
 import 'package:travelagency/view_model/visa.dart';
 import '../../../Helper/my_theme.dart';
@@ -30,14 +32,14 @@ class _ConfirmBtnVisaState extends State<ConfirmBtnVisa> {
   TextEditingController emailCont = TextEditingController();
   TextEditingController noteCont = TextEditingController();
 
-  @override
-  void dispose() {
-    super.dispose();
-    nameCont.dispose();
-    phoneCont.dispose();
-    emailCont.dispose();
-    noteCont.dispose();
-  }
+//  @override
+//  void dispose() {
+//    super.dispose();
+//    nameCont.dispose();
+//    phoneCont.dispose();
+//    emailCont.dispose();
+//    noteCont.dispose();
+//  }
 
   String passName = "Passport image";
   String idName = "Id image";
@@ -374,7 +376,8 @@ class _ConfirmBtnVisaState extends State<ConfirmBtnVisa> {
                                                               ),
 
                                                         MaterialButton(
-                                                            onPressed: () {
+                                                            onPressed:
+                                                                () async {
                                                               log(" visa form ");
 
                                                               if (formKey
@@ -386,13 +389,22 @@ class _ConfirmBtnVisaState extends State<ConfirmBtnVisa> {
                                                                   widget.visaProvider
                                                                           .passImg !=
                                                                       null &&
-                                                                  widget.visaProvider
-                                                                          .pdfFile !=
-                                                                      null) {
+                                                                  (widget.visaProvider
+                                                                              .checkForm() !=
+                                                                          null
+                                                                      ? widget.visaProvider
+                                                                              .pdfFile !=
+                                                                          null
+                                                                      : true)) {
                                                                 log("reserve visa form vaild");
-                                                                widget.visaProvider.reserveVisa(
-                                                                    visaId:
-                                                                        "cf2973e2-564b-4380-bdc0-fbce5f948a91",
+
+                                                                var isSuccess = await widget.visaProvider.reserveVisa(
+                                                                    visaId: widget
+                                                                        .visaProvider
+                                                                        .visaCount[widget
+                                                                            .visaProvider
+                                                                            .currentCountry]
+                                                                        .visaId!,
                                                                     userId:
                                                                         "3e4ba9aa-878e-4f2d-a780-3c734f03650a",
                                                                     fullName:
@@ -406,6 +418,22 @@ class _ConfirmBtnVisaState extends State<ConfirmBtnVisa> {
                                                                             .text,
                                                                     note: noteCont
                                                                         .text);
+                                                                if (isSuccess) {
+                                                                  // ignore: use_build_context_synchronously
+                                                                  Dialogs.onlyTextContent(
+                                                                      context,
+                                                                      "Reservaion done");
+                                                                  Future.delayed(
+                                                                      const Duration(
+                                                                          milliseconds:
+                                                                              1000),
+                                                                      () {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  });
+                                                                }
                                                               }
                                                             },
                                                             minWidth:

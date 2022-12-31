@@ -63,8 +63,6 @@ class VisaSV {
       log(data.toString());
       for (Map<String, dynamic> visaObj in data) {
         visa.add(VisaCountriesM.fromJson(visaObj));
-        log("message");
-        log(visaObj["form"].toString());
       }
     } else {
       log("${response.statusCode} error in all visa");
@@ -102,13 +100,13 @@ class VisaSV {
     required VisaReserveM body,
     required Uint8List pass,
     required Uint8List id,
-    required Uint8List form,
+    required Uint8List? form,
   }) async {
     bool isSuccess = false;
+    log("Sss");
 
     var response = await http.post(Uri.parse(Constants.visaReserveURL),
         body: body.toJson());
-
     if (response.statusCode == 200) {
       await uploadImg(
           img: pass,
@@ -120,8 +118,10 @@ class VisaSV {
           name: body.identifyImage,
           path: Constants.idPath,
           ext: "jpg");
-      await uploadImg(
-          img: form, name: body.form, path: Constants.pdfPath, ext: "pdf");
+      form != null
+          ? await uploadImg(
+              img: form, name: body.form, path: Constants.pdfPath, ext: "pdf")
+          : null;
 
       isSuccess = true;
       log("succes reserve visa sv");
