@@ -235,26 +235,24 @@ class _DesktopVisaScreenState extends State<DesktopVisaScreen> {
 
   visaType(double width, double height,
       {required VisaVM visaProvider, required int visaTypeIndex}) {
-    return InkWell(
-      onTap: () {
-        visaProvider.onVisaTypeClicked(
-            clickedVisaTypeIndex: visaTypeIndex, firstTimeCalling: false);
-      },
-      child: Padding(
-        padding: EdgeInsets.only(right: width * .005),
-        child: ChoiceChip(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(width * .005)),
-          padding: EdgeInsets.symmetric(
-              vertical: height * .005, horizontal: width * .015),
-          label: Text(
-              visaProvider.visaCount[visaProvider.currentCountry]
-                  .visaType![visaTypeIndex],
-              style: white15lato(context)),
-          labelStyle: TextStyle(color: Colors.white),
-          selected: visaProvider.currentVisaType == visaTypeIndex,
-          selectedColor: AppColors.pomegranateColor,
-        ),
+    return Padding(
+      padding: EdgeInsets.only(right: width * .005),
+      child: ChoiceChip(
+        onSelected: (value) {
+          visaProvider.onVisaTypeClicked(
+              clickedVisaTypeIndex: visaTypeIndex, firstTimeCalling: false);
+        },
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(width * .005)),
+        padding: EdgeInsets.symmetric(
+            vertical: height * .005, horizontal: width * .015),
+        label: Text(
+            visaProvider.visaCount[visaProvider.currentCountry]
+                .visaType![visaTypeIndex],
+            style: white15lato(context)),
+        labelStyle: const TextStyle(color: Colors.white),
+        selected: visaProvider.currentVisaType == visaTypeIndex,
+        selectedColor: AppColors.pomegranateColor,
       ),
     );
   }

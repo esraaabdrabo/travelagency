@@ -41,7 +41,7 @@ class _ConfirmBtnVisaState extends State<ConfirmBtnVisa> {
 
   String passName = "Passport image";
   String idName = "Id image";
-  String pdfName = "Form PDF";
+  String pdfName = "Form";
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -149,6 +149,27 @@ class _ConfirmBtnVisaState extends State<ConfirmBtnVisa> {
           ),
           SizedBox(
             width: width * .13,
+            child: Text(name,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: black15lato(context)),
+          ),
+          const Spacer(),
+          const Text("*")
+        ],
+      );
+    }
+
+    pickerNameNoSpace(String name, Icon icon) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          icon,
+          SizedBox(
+            width: width * .001,
+          ),
+          SizedBox(
+            width: width * .05,
             child: Text(name,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
@@ -292,47 +313,65 @@ class _ConfirmBtnVisaState extends State<ConfirmBtnVisa> {
                                                           ),
                                                         ),
 //pdf
-                                                        Padding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  bottom: hight *
-                                                                      0.009),
-                                                          child: Container(
-                                                            padding: EdgeInsets
-                                                                .symmetric(
-                                                                    vertical:
-                                                                        hight *
-                                                                            .015,
-                                                                    horizontal:
-                                                                        width *
-                                                                            .005),
-                                                            decoration: BoxDecoration(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5),
-                                                                color: AppColors
-                                                                    .offWhiteColor
-                                                                    .withOpacity(
-                                                                        .8)),
-                                                            width: width * .178,
-                                                            child: InkWell(
-                                                                onTap:
-                                                                    () async {
-                                                                  pdfName = await widget
-                                                                      .visaProvider
-                                                                      .pickPdf();
-                                                                  if (pdfName !=
-                                                                      "Form PDF") {
-                                                                    log("message");
-                                                                    setState(
-                                                                        () {});
-                                                                  }
-                                                                },
-                                                                child: pickerName(
-                                                                    pdfName)),
-                                                          ),
-                                                        ),
+                                                        widget.visaProvider
+                                                                    .checkForm() ==
+                                                                null
+                                                            ? const SizedBox()
+                                                            : Row(
+                                                                children: [
+                                                                  Expanded(
+                                                                    flex: 2,
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: EdgeInsets.only(
+                                                                          bottom:
+                                                                              hight * 0.009),
+                                                                      child:
+                                                                          Container(
+                                                                        padding: EdgeInsets.symmetric(
+                                                                            vertical: hight *
+                                                                                .015,
+                                                                            horizontal:
+                                                                                width * .005),
+                                                                        decoration: BoxDecoration(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(5),
+                                                                            color: AppColors.offWhiteColor.withOpacity(.8)),
+                                                                        width: width *
+                                                                            .1,
+                                                                        child: InkWell(
+                                                                            onTap: () async {
+                                                                              pdfName = await widget.visaProvider.pickPdf();
+                                                                              if (pdfName != "Form") {
+                                                                                log("message");
+                                                                                setState(() {});
+                                                                              }
+                                                                            },
+                                                                            child: pickerNameNoSpace(
+                                                                              pdfName,
+                                                                              const Icon(Icons.upload, color: Color.fromARGB(170, 61, 61, 61)),
+                                                                            )),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  Expanded(
+                                                                    child:
+                                                                        IconButton(
+                                                                      onPressed:
+                                                                          () async {
+                                                                        widget.visaProvider.downloadPdf(
+                                                                            widget.visaProvider.checkForm(),
+                                                                            context);
+                                                                      },
+                                                                      icon: const Icon(
+                                                                          Icons
+                                                                              .download,
+                                                                          color:
+                                                                              AppColors.pomegranateColor),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
 
                                                         MaterialButton(
                                                             onPressed: () {

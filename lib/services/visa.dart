@@ -63,6 +63,8 @@ class VisaSV {
       log(data.toString());
       for (Map<String, dynamic> visaObj in data) {
         visa.add(VisaCountriesM.fromJson(visaObj));
+        log("message");
+        log(visaObj["form"].toString());
       }
     } else {
       log("${response.statusCode} error in all visa");
@@ -138,11 +140,11 @@ class VisaSV {
     var ref = storage.ref(path).child("$name.$ext");
     bool isSuccess = false;
     try {
-      ref.putData(img).then((p0) {
+      ref.putData(img).then((p0) async {
         log("$path image uploaded");
         isSuccess = true;
+        log(await ref.getDownloadURL());
       });
-      log(await ref.getDownloadURL());
     } on FirebaseException catch (e) {
       log("error in uploaing image");
       log(e.toString());

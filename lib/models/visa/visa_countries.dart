@@ -1,8 +1,11 @@
 //get all vis count
+import 'dart:developer';
+
 class VisaCountriesM {
   String? countryEn;
   String? countryAr;
   String? countryImage;
+  String? form;
   List<String>? visaType;
 
   VisaCountriesM(
@@ -18,6 +21,10 @@ class VisaCountriesM {
     if (json["countryImage"] is String) {
       countryImage = json["countryImage"];
     }
+    if (json["form"] is String) {
+      form = json["form"];
+    }
+
     if (json["visaType"] is List) {
       visaType =
           json["visaType"] == null ? null : List<String>.from(json["visaType"]);

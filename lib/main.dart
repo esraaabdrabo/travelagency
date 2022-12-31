@@ -53,18 +53,7 @@ class TravelAgencyApp extends StatelessWidget {
             scrollBehavior: MyCustomScrollBehavior(),
             debugShowCheckedModeBanner: false,
             title: "Travel Agency",
-            home: Scaffold(body: DesktopVisaScreen())
-            /* const ResponsiveLayout(
-                mobileBody: Scaffold(
-                  backgroundColor: Colors.white,
-                ),
-                tabletBody: DesktopVisaScreen(),
-                desktopBody: DesktopVisaScreen())
-              const ResponsiveLayout(
-                  desktopBody: DesktopHotelScreen(),
-                  tabletBody: DesktopHotelScreen(),
-                  mobileBody: MobileHotelScreen()),*/
-            );
+            home: Scaffold(body: DesktopVisaScreen()));
       },
     );
   }

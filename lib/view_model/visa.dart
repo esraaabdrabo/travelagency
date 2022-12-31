@@ -1,12 +1,13 @@
 import 'dart:developer';
 import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
+import 'package:file_saver/file_saver.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
-import 'package:image_picker_web/image_picker_web.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:travelagency/Screens/Widgets/dialogs.dart';
 import 'package:travelagency/models/visa/visa_cond_count.dart';
 import 'package:travelagency/models/visa/visa_countries.dart';
 import 'package:travelagency/models/visa/visa_reserve.dart';
@@ -34,7 +35,6 @@ class VisaVM extends ChangeNotifier {
   }
 
   VisaVM() {
-    // reserveVisa();
     getAllVisa();
   }
 
@@ -63,7 +63,6 @@ class VisaVM extends ChangeNotifier {
   Future<void> getCondCount(
       {required String country, required String visaType}) async {
     // changeIsLoading(true);
-
     log("start getting vis condition in vm");
     visaCondCont =
         await VisaSV().getCondForCount(country: country, visaType: visaType);
@@ -110,17 +109,7 @@ class VisaVM extends ChangeNotifier {
         phoneNumber: phoneNumber,
         email: email,
         note: note);
-    /*var body = {
-      "visaId": "cf2973e2-564b-4380-bdc0-fbce5f948a91",
-      "userId": "3e4ba9aa-878e-4f2d-a780-3c734f03650a",
-      "fullName": "esraa",
-      "phoneNumber": "07709876543",
-      "email": "majdi@Gmail.com",
-      "passportImage": "hjgjj",
-      "identifyImage": "ghhjh",
-      "form": "ffghghh",
-      "note": "check  reserve api"
-    };*/
+
     changeIsLoading(true);
     var res = await VisaSV()
         .reserveVisa(body: body, form: pdfFile!, id: idImg!, pass: passImg!);
@@ -258,54 +247,23 @@ class VisaVM extends ChangeNotifier {
     return pdfName;
   }
 
-/*
-  ReserveHotelM makeReserveObj(
-      {required String hotelId,
-      required String fullName,
-      required String phoneNumber,
-      required String email,
-      required String adultNumber,
-      required String fromDate,
-      required String toDate,
-      required String note}) {
-    return ReserveHotelM(
-        hotelId: hotelId,
-        userId: "",
-        fullName: fullName,
-        phoneNumber: phoneNumber,
-        email: email,
-        passportImage: "",
-        adultNumber: adultNum.toString(),
-        childNumber: childNum.toString(),
-        fromDate: fromDate,
-        toDate: toDate,
-        note: note);
-  }*/
+  checkForm() {
+    return visaCount[currentCountry].form;
+  }
 
-  Future<bool> reserveHotel(
-      {required String hotelId,
-      required String fullName,
-      required String phoneNumber,
-      required String email,
-      required String fromDate,
-      required String toDate,
-      required String note}) async {
-    {
-      changeIsLoading(true);
-      bool isSuccess = false;
-      /* ReserveHotelM reserve = makeReserveObj(
-          hotelId: hotelId,
-          fullName: fullName,
-          phoneNumber: phoneNumber,
-          email: email,
-          adultNumber: adultNum.toString(),
-          fromDate: fromDate,
-          toDate: toDate,
-          note: note);*/
-      log("will start reserve");
-      //s  isSuccess = await HotelsSV().reserveHotel(reserve, img!);
-      changeIsLoading(false);
-      return isSuccess;
-    }
+  Future<void> downloadPdf(String url, BuildContext context) async {
+    MimeType type = MimeType.PDF;
+    var bytes = await FirebaseStorage.instance
+        .refFromURL(
+          url,
+        )
+        .getData();
+    await FileSaver.instance
+        .saveFile('form', bytes!, "pdf", mimeType: type)
+        .then((value) {
+      Dialogs.onlyTextContent(context,
+          "Form Pdf has been downloaded , please fill the required information then upload it");
+    });
+    print('downloaded');
   }
 }
