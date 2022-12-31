@@ -70,7 +70,8 @@ class _PlaceWidgetState extends State<PlaceWidget> {
               children: [
                 backImage(height, width),
                 gradiant(),
-                texts(height, visaProvider),
+                //TODO : Needs To Be Responsive
+                Padding(padding: EdgeInsets.symmetric(vertical: 10),child:texts(height, visaProvider),),
               ],
             ),
           ),
@@ -90,9 +91,8 @@ class _PlaceWidgetState extends State<PlaceWidget> {
       child: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
-          image: NetworkImage(widget.imageLink), fit: BoxFit.fill,
+          image: NetworkImage(widget.imageLink), fit: BoxFit.cover,
           alignment: Alignment.center,
-
           //repeat: ImageRepeat.repeat
         )),
       ),
@@ -108,7 +108,7 @@ class _PlaceWidgetState extends State<PlaceWidget> {
           begin: Alignment.bottomCenter,
           end: Alignment.topRight,
           colors: [
-            AppColors.pomegranateColor.withOpacity(isHover ? 0.55 : 0),
+            isHover? AppColors.pomegranateColor.withOpacity(0.55) :isSelected? Colors.black : Colors.black45.withOpacity(0.8),
             Colors.transparent
           ],
         ),
@@ -116,10 +116,10 @@ class _PlaceWidgetState extends State<PlaceWidget> {
     );
   }
 
-  texts(double height, VisaVM visaProvider) {
+   texts(double height, VisaVM visaProvider) {
     bool isSelected = visaProvider.currentCountry == widget.countIndex;
     return Align(
-      alignment: Alignment.bottomLeft,
+      alignment: Alignment.bottomCenter,
       child: AnimatedDefaultTextStyle(
           style: GoogleFonts.lato(
               color: AppColors.whiteColor.withOpacity(isHover ? 1 : 0.8),
@@ -128,8 +128,7 @@ class _PlaceWidgetState extends State<PlaceWidget> {
           duration: const Duration(milliseconds: 1000),
           child: TextButton(
             onPressed: () {},
-            child: Container(
-              decoration: BoxDecoration(
+            child: Container(decoration: BoxDecoration(
                 color: isSelected
                     ? AppColors.pomegranateColor
                     : Colors.transparent,

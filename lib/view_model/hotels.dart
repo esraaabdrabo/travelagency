@@ -25,12 +25,8 @@ class HotelsVM extends ChangeNotifier {
   List<String> countries = [
     "Jordan",
     "Sudia Arabia",
-    "UAE", //"United States of Emirates",
     "Turkey",
-    "Iran",
-    "Egypt",
-    "Syria",
-    "Lebanon"
+    "Greece",
   ];
   String selectedCountry = '';
   //////////////////////////////////////////////////////////////

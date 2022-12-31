@@ -465,9 +465,9 @@ class _ConfirmBtnVisaState extends State<ConfirmBtnVisa> {
                   child: Container(
                     decoration: BoxDecoration(
                         color: AppColors.pomegranateColor,
-                        borderRadius: BorderRadius.circular(width * .005)),
+                        borderRadius: BorderRadius.circular(5)),
                     padding: EdgeInsets.symmetric(
-                        horizontal: width * .045, vertical: hight * .02),
+                        horizontal: width * .015, vertical: hight * .015),
                     child: Text(
                       "Confirm",
                       style: white15lato(context),

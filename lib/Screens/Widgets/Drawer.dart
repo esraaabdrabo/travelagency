@@ -19,24 +19,22 @@ class CustomDrawer extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Expanded(
-              flex: 3,
-              child: DrawerHeader(
+
+          //Darwer Header - Logo
+          Expanded(flex: 3, child: DrawerHeader(
                   child: SvgPicture.asset('assets/images/logo.svg',
                       width: hight * 0.13,
                       height: hight * 0.13,
                       fit: BoxFit.contain))),
-          drawerRow(context,
-              settingProvider: settingProvider,
+
+
+          drawerRow(
+              context, settingProvider: settingProvider,
               num: 0,
-              icon: Icon(
-                Icons.airplane_ticket_outlined,
-                color: settingProvider.checkIfSelected(0)
-                    ? AppColors.pomegranateColor
-                    : AppColors.grayColor,
-                size: width * .018,
+              icon: Icon(Icons.airplane_ticket_outlined, color: settingProvider.checkIfSelected(0) ? AppColors.pomegranateColor : AppColors.grayColor, size: width * .018,
               ),
               title: 'VISA'),
+
           drawerRow(context,
               settingProvider: settingProvider,
               num: 1,
@@ -48,6 +46,7 @@ class CustomDrawer extends StatelessWidget {
                 size: width * .018,
               ),
               title: 'HOTELS'),
+
           drawerRow(context,
               settingProvider: settingProvider,
               num: 2,
@@ -59,6 +58,8 @@ class CustomDrawer extends StatelessWidget {
                 size: width * .018,
               ),
               title: 'GROUP'),
+
+
           drawerRow(context,
               settingProvider: settingProvider,
               num: 3,
@@ -70,7 +71,9 @@ class CustomDrawer extends StatelessWidget {
                 size: width * .018,
               ),
               title: 'ABOUT US'),
-          Row(
+
+
+         /* Row(
             children: [
               //arabic lang
               lang(context,
@@ -83,11 +86,8 @@ class CustomDrawer extends StatelessWidget {
                   newLang: "en",
                   title: "English") //english lang
             ],
-          ),
-          Expanded(
-              flex: 4,
-              child: Container(
-                  color: AppColors.whiteColor, child: const Text(""))),
+          ),*/
+          Expanded(flex: 4, child: Container(color: AppColors.whiteColor, child: const Text(""))),
           Expanded(
             flex: 1,
             child: Center(
