@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:travelagency/Helper/my_theme.dart';
 import 'package:travelagency/Helper/text_style.dart';
@@ -72,25 +73,20 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                       Expanded(
                         flex: 4,
                         child: ListView(
-                          // ignore: prefer__ructors
                           physics: const NeverScrollableScrollPhysics(),
                           children: [
                             Text("HOTEL", style: screenTitle(context)),
-                            //form fileds
                             Container(
                               height: heght * .5,
                               margin: EdgeInsets.symmetric(
                                   horizontal: wedth * .009),
                               decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.circular(wedth * .015),
-                                boxShadow: const [
-                                  BoxShadow(
-                                      color: Color.fromARGB(118, 0, 0, 0),
-                                      offset: Offset(-2, 2),
-                                      blurRadius: 2),
-                                  BoxShadow(color: Colors.white),
-                                ],
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(
+                                  width: 1.0,
+                                  color: AppColors.grayColor.withOpacity(0.09),
+                                  style: BorderStyle.solid,
+                                ),
                               ),
                               padding: EdgeInsets.symmetric(
                                   horizontal: wedth * .011,
@@ -146,15 +142,7 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                               ),
                             ),
                             SizedBox(height: heght * 0.02),
-                            hotelList(heght, wedth, hotelsProvider,
-                                translate: translate,
-                                formKey1: formKey1,
-                                nameCont: nameCont,
-                                noteCont: noteCont,
-                                phoneCont: phoneCont,
-                                emailCont: emailCont,
-                                fromDateCont: checkInDateController,
-                                toDateCont: checkoutDateController),
+                            hotelList(heght, wedth, hotelsProvider, translate: translate, formKey1: formKey1, nameCont: nameCont, noteCont: noteCont, phoneCont: phoneCont, emailCont: emailCont, fromDateCont: checkInDateController, toDateCont: checkoutDateController),
                           ],
                         ),
                       ),
@@ -404,16 +392,9 @@ hotelWidget(BuildContext context,
 hotelList(
   double heght,
   double wedth,
-  HotelsVM hotelsProvider, {
-  required AppLocalizations translate,
-  required GlobalKey<FormState> formKey1,
-  required TextEditingController nameCont,
-  required TextEditingController phoneCont,
-  required TextEditingController emailCont,
-  required TextEditingController noteCont,
-  required TextEditingController fromDateCont,
-  required TextEditingController toDateCont,
-}) {
+  HotelsVM hotelsProvider, {required AppLocalizations translate, required GlobalKey<FormState> formKey1, required TextEditingController nameCont, required TextEditingController phoneCont, required TextEditingController emailCont,
+  required TextEditingController noteCont, required TextEditingController fromDateCont, required TextEditingController toDateCont,})
+  {
   return SizedBox(
       height: heght * .45,
       child: ListView.builder(
@@ -516,22 +497,28 @@ hotelName(String title, double height, double width) {
 ////////////////search with country//////////////////////
 countriesDropDown(HotelsVM hotelsProvider, double wedth, BuildContext context) {
   return Container(
-    height: MediaQuery.of(context).size.height * .121,
+    height: MediaQuery.of(context).size.height * .075,
     padding: EdgeInsets.all(wedth * .005),
-    child: DropdownButton(
-        itemHeight: null,
-        isExpanded: true,
-        value: hotelsProvider.selectedCountry,
-        items: List.generate(hotelsProvider.countries.length, (index) {
-          return DropdownMenuItem(
-              value: hotelsProvider.countries[index],
-              child: Text(
-                hotelsProvider.countries[index],
-                style: black15lato(context),
-              ));
-        }),
-        onChanged: (country) {
-          hotelsProvider.changeSelectedCountry(country.toString());
-        }),
+    child: ListTile(
+      title: Text('Select Country You Wanaa Find Hotel In'),
+      subtitle: DropdownButton(
+          isExpanded: true,
+          value: hotelsProvider.selectedCountry,
+          items: List.generate(hotelsProvider.countries.length, (index) {
+            return DropdownMenuItem(
+                value: hotelsProvider.countries[index],
+                child: Text(
+                  hotelsProvider.countries[index],
+                  style:GoogleFonts.lato(
+                    color: AppColors.grayColor,
+                    fontSize: 22,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ));
+          }),
+          onChanged: (country) {
+            hotelsProvider.changeSelectedCountry(country.toString());
+          }),
+    ),
   );
 }

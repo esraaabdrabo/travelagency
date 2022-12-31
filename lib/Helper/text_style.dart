@@ -7,7 +7,7 @@ screenTitle(BuildContext context) {
   return GoogleFonts.lato(
       letterSpacing: 4,
       color: AppColors.pomegranateColor,
-      fontSize: MediaQuery.of(context).size.height * .08,
+      fontSize: 38,
       fontWeight: FontWeight.w900);
 }
 
@@ -16,6 +16,7 @@ var red36lato = GoogleFonts.lato(
     color: AppColors.pomegranateColor,
     fontSize: 28,
     fontWeight: FontWeight.w900);
+
 var red22lato = GoogleFonts.lato(
     letterSpacing: .12,
     color: AppColors.pomegranateColor,
@@ -27,14 +28,18 @@ var red22lato = GoogleFonts.lato(
           blurRadius: 2)
     ],
     fontWeight: FontWeight.w700);
+
 var red15lato = GoogleFonts.lato(
     fontSize: 12,
     fontWeight: FontWeight.w700,
     color: AppColors.pomegranateColor);
+
+
 black22AbeezeTS(BuildContext context) {
-  return GoogleFonts.aBeeZee(
-      fontSize: MediaQuery.of(context).size.height * .04,
-      letterSpacing: .05,
+  return GoogleFonts.lato(
+      fontSize: 22,
+      //fontSize: MediaQuery.of(context).size.height * .04,
+      letterSpacing: .07,
       fontWeight: FontWeight.bold,
       color: Colors.black);
 }
@@ -56,6 +61,8 @@ var black20LatoWShadow = GoogleFonts.lato(
           blurRadius: 3,
           color: Color.fromARGB(173, 255, 255, 255))
     ]);
+
+
 black15lato(BuildContext context) {
   return GoogleFonts.lato(
       fontSize: MediaQuery.of(context).size.height * .025,
@@ -71,9 +78,10 @@ var white20LatoTS = GoogleFonts.lato(
     fontWeight: FontWeight.bold,
     letterSpacing: .1,
     color: AppColors.whiteColor);
+
 white15lato(BuildContext context) {
   return GoogleFonts.lato(
-      fontSize: MediaQuery.of(context).size.height * .03,
+      fontSize: 20,
       fontWeight: FontWeight.w700,
       color: AppColors.whiteColor);
 }
