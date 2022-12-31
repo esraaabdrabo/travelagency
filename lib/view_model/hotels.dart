@@ -163,10 +163,13 @@ class HotelsVM extends ChangeNotifier {
   void search(BuildContext context) {
     changeIsLoading(true);
     searchResults = [];
-    for (var hotel in hotels) {
-      log(hotel.countryEn!);
-      if (hotel.countryEn == selectedCountry) {
-        searchResults.add(hotel);
+    for (int i = 0; i < hotels.length; i++) {
+      if (hotels[i].countryEn!.replaceAll(" ", "").toLowerCase() ==
+          selectedCountry.replaceAll(" ", "").toLowerCase()) {
+        if (searchResults.indexWhere((hotel) => hotel.name == hotels[i].name) ==
+            -1) {
+          searchResults.add(hotels[i]);
+        }
       }
     }
     searchResults.isEmpty
