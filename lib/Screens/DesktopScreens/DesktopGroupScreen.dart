@@ -34,15 +34,15 @@ class _DesktopGroupScreenState extends State<DesktopGroupScreen> {
 
         GroupsVM groupsProvider = Provider.of(context);
         return Scaffold(
-          body: groupsProvider.isLoading
-              ? CustomWidgets.loading
-              : Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Expanded(flex: 1, child: CustomDrawer()),
-                    Expanded(
-                      flex: 4,
-                      child: Padding(
+          body: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Expanded(flex: 1, child: CustomDrawer()),
+              Expanded(
+                flex: 4,
+                child: groupsProvider.isLoading
+                    ? CustomWidgets.loading
+                    : Padding(
                         padding: EdgeInsets.symmetric(horizontal: wedth * .01),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,9 +159,9 @@ class _DesktopGroupScreenState extends State<DesktopGroupScreen> {
                           ],
                         ),
                       ),
-                    ),
-                  ],
-                ),
+              ),
+            ],
+          ),
         );
       },
     );

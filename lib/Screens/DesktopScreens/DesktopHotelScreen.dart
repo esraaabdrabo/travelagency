@@ -61,18 +61,16 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
           HotelsVM hotelsProvider = Provider.of(context);
           return Scaffold(
             backgroundColor: AppColors.whiteColor,
-            body: hotelsProvider.isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : Row(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      //left draw
-                      const Expanded(flex: 1, child: CustomDrawer()),
-                      Expanded(
-                        flex: 4,
-                        child: ListView(
+            body: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                //left draw
+                const Expanded(flex: 1, child: CustomDrawer()),
+                Expanded(
+                  flex: 4,
+                  child: hotelsProvider.isLoading
+                      ? CustomWidgets.loading
+                      : ListView(
                           physics: const NeverScrollableScrollPhysics(),
                           children: [
                             Text("HOTEL", style: screenTitle(context)),
@@ -142,12 +140,20 @@ class _desktopHotelScreenState extends State<DesktopHotelScreen> {
                               ),
                             ),
                             SizedBox(height: heght * 0.02),
-                            hotelList(heght, wedth, hotelsProvider, translate: translate, formKey1: formKey1, nameCont: nameCont, noteCont: noteCont, phoneCont: phoneCont, emailCont: emailCont, fromDateCont: checkInDateController, toDateCont: checkoutDateController),
+                            hotelList(heght, wedth, hotelsProvider,
+                                translate: translate,
+                                formKey1: formKey1,
+                                nameCont: nameCont,
+                                noteCont: noteCont,
+                                phoneCont: phoneCont,
+                                emailCont: emailCont,
+                                fromDateCont: checkInDateController,
+                                toDateCont: checkoutDateController),
                           ],
                         ),
-                      ),
-                    ],
-                  ),
+                ),
+              ],
+            ),
           );
         });
   }
@@ -392,9 +398,16 @@ hotelWidget(BuildContext context,
 hotelList(
   double heght,
   double wedth,
-  HotelsVM hotelsProvider, {required AppLocalizations translate, required GlobalKey<FormState> formKey1, required TextEditingController nameCont, required TextEditingController phoneCont, required TextEditingController emailCont,
-  required TextEditingController noteCont, required TextEditingController fromDateCont, required TextEditingController toDateCont,})
-  {
+  HotelsVM hotelsProvider, {
+  required AppLocalizations translate,
+  required GlobalKey<FormState> formKey1,
+  required TextEditingController nameCont,
+  required TextEditingController phoneCont,
+  required TextEditingController emailCont,
+  required TextEditingController noteCont,
+  required TextEditingController fromDateCont,
+  required TextEditingController toDateCont,
+}) {
   return SizedBox(
       height: heght * .45,
       child: ListView.builder(
@@ -509,7 +522,7 @@ countriesDropDown(HotelsVM hotelsProvider, double wedth, BuildContext context) {
                 value: hotelsProvider.countries[index],
                 child: Text(
                   hotelsProvider.countries[index],
-                  style:GoogleFonts.lato(
+                  style: GoogleFonts.lato(
                     color: AppColors.grayColor,
                     fontSize: 22,
                     fontWeight: FontWeight.w700,
